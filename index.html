@@ -198,7 +198,12 @@ footer{padding:26px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
   </a>
 </div>
 
-<script src="cfg/demo.js"></script>
+<script>
+(function(){
+  var m = (location.search.match(/[?&]c=([a-z0-9-]{1,40})/) || [])[1];
+  document.write('<script src="cfg/' + (m || 'demo') + '.js"><\/script>');
+})();
+</script>
 <script>
 (function(){
 "use strict";

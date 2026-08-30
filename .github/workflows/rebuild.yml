@@ -1,0 +1,24 @@
+# Rebuilds every client cast from bb_library_items, hourly and on demand.
+# This is what lets an SM's edit in admin.html reach the client page with no
+# developer in the loop. No secrets needed: the caster reads with the same
+# publishable key every BB app ships.
+name: rebuild-casts
+on:
+  schedule:
+    - cron: "20 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/pull-month.py
+      - run: python3 scripts/check-casts.py
+      - name: commit if changed
+        run: |
+          git config user.name "bb-library-bot"
+          git config user.email "businessboosterlk@gmail.com"
+          git add cfg/
+          git diff --cached --quiet && echo "no changes" || (git commit -m "rebuild casts" && git push)
