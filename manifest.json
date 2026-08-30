@@ -1,0 +1,28 @@
+{
+ "name": "Your Library \u00b7 Business Booster",
+ "short_name": "Library",
+ "description": "Everything Business Booster has produced for you, in one place.",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#f5f5f7",
+ "theme_color": "#f5f5f7",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
