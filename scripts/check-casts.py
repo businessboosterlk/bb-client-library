@@ -49,6 +49,9 @@ for c in casts:
     ok(slug and c.stem == slug, f"{c.name}: filename matches slug", f"{c.stem} vs {slug}")
     ok(bool(meta.get("pinHash")), f"{c.name}: PIN hash present")
     ok(bool(meta.get("wa")), f"{c.name}: WhatsApp number present")
+    b = cfg.get("beacon") or {}
+    ok(str(b.get("url", "")).startswith("https://") and bool(b.get("key")),
+       f"{c.name}: beacon wired over https")
 
     # every link https
     links = re.findall(r'"(?:drive|link|href)":"([^"]+)"', m.group(1))
@@ -60,6 +63,27 @@ for c in casts:
     ok(not re.search(r"[\U0001F300-\U0001FAFF]", src), f"{c.name}: no emoji")
     hits = [b for b in BANNED_EVERYWHERE if b.lower() in src.lower()]
     ok(not hits, f"{c.name}: no banned phrases", str(hits))
+
+# L-028: every cast ships its own manifest whose start_url reopens THIS client.
+# A shared "./" start_url installs the DEMO for everyone (the loader fallback).
+mani_checked = 0
+for c in casts:
+    slug = c.stem
+    mp = ROOT / "cfg" / (slug + ".webmanifest")
+    ok(mp.exists(), f"{slug}: webmanifest exists beside the cast")
+    if not mp.exists():
+        continue
+    try:
+        mani = json.loads(mp.read_text())
+    except Exception as e:
+        ok(False, f"{slug}: webmanifest parses as JSON", str(e)); continue
+    mani_checked += 1
+    ok(("?c=" + slug) in mani.get("start_url", ""),
+       f"{slug}: manifest start_url opens THIS cast", mani.get("start_url", ""))
+    ok(mani.get("scope") == "../", f"{slug}: manifest scope is the app root",
+       str(mani.get("scope")))
+    ok(mani.get("display") == "standalone", f"{slug}: manifest installs standalone")
+print(f"-- manifest scan covered {mani_checked} manifests --")
 
 # cross-cast leak: no client's name inside another client's cast
 pairs_checked = 0
@@ -73,9 +97,12 @@ print(f"-- cross-cast leak scan covered {pairs_checked} pairs --")
 
 # master hygiene
 master = (ROOT / "index.html").read_text()
-ok("window.CFG" not in re.sub(r"window\.CFG\b", "", master, count=0) or True, "noop")
 ok("sha-256" in master.lower() or "sha256" in master.lower(), "master: PIN stays hashed")
 ok(not re.search(r"service_role|sb_secret_", master), "master: no secret key material")
+ok(".webmanifest" in master, "master: swaps the manifest per cast")
+sw = (ROOT / "sw.js").read_text()
+ok("bblib-v1" not in sw, "sw: cache name bumped past v1")
+ok("navigate" in sw, "sw: navigations handled, never blanket cache-first")
 admin = (ROOT / "admin.html").read_text()
 ok(not re.search(r"service_role|sb_secret_", admin), "admin: no secret key material")
 

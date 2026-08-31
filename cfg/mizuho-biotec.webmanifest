@@ -1,0 +1,28 @@
+{
+ "background_color": "#f5f5f7",
+ "description": "Everything Business Booster has produced for you, in one place.",
+ "display": "standalone",
+ "icons": [
+  {
+   "sizes": "192x192",
+   "src": "../icon-192.png",
+   "type": "image/png"
+  },
+  {
+   "sizes": "512x512",
+   "src": "../icon-512.png",
+   "type": "image/png"
+  },
+  {
+   "purpose": "maskable",
+   "sizes": "512x512",
+   "src": "../icon-maskable-512.png",
+   "type": "image/png"
+  }
+ ],
+ "name": "Mizuho Biotec · Library",
+ "scope": "../",
+ "short_name": "Mizuho",
+ "start_url": "../?c=mizuho-biotec&src=app",
+ "theme_color": "#f5f5f7"
+}

@@ -67,6 +67,28 @@ def cast(client, items):
     out = ROOT / "cfg" / (slug + ".js")
     out.write_text("/* cast by pull-month.py, do not hand-edit: edits belong in admin.html */\n"
                    "window.CFG=" + js(cfg) + ";\n")
+    # Per-client manifest, minted beside the cast: an installed icon must reopen
+    # THIS client. A shared start_url of "./" reopens the demo (the loader's
+    # fallback), which is the L-028 landmine. Paths resolve relative to cfg/.
+    name = client["name"]
+    mani = {
+        "name": name + " · Library",
+        "short_name": name if len(name) <= 12 else name.split()[0][:12],
+        "description": "Everything Business Booster has produced for you, in one place.",
+        "start_url": "../?c=" + slug + "&src=app",
+        "scope": "../",
+        "display": "standalone",
+        "background_color": "#f5f5f7",
+        "theme_color": "#f5f5f7",
+        "icons": [
+            {"src": "../icon-192.png", "sizes": "192x192", "type": "image/png"},
+            {"src": "../icon-512.png", "sizes": "512x512", "type": "image/png"},
+            {"src": "../icon-maskable-512.png", "sizes": "512x512",
+             "type": "image/png", "purpose": "maskable"},
+        ],
+    }
+    (ROOT / "cfg" / (slug + ".webmanifest")).write_text(
+        json.dumps(mani, ensure_ascii=False, indent=1, sort_keys=True) + "\n")
     return out, len(vis)
 
 def main():
