@@ -59,7 +59,10 @@ def cast(client, items):
         "theme": client.get("theme") or {},
         "copy": {"hello": client.get("hello") or ("Hello, " + client["name"] + "."),
                  "sub": "Everything we have produced for you, in one place."},
-        "months": mlist, "docs": docs, "facts": facts, "beacon": None,
+        "months": mlist, "docs": docs, "facts": facts,
+        # The beacon writes one row per open to bb_library_events. Approved
+        # 2026-08-30. Fire-and-forget in the page, swallowed on failure.
+        "beacon": {"url": BASE + "/bb_library_events", "key": KEY},
     }
     out = ROOT / "cfg" / (slug + ".js")
     out.write_text("/* cast by pull-month.py, do not hand-edit: edits belong in admin.html */\n"
