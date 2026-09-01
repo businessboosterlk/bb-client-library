@@ -1,4 +1,4 @@
-const C = 'bblib-v2';
+const C = 'bblib-v3';
 const SHELL = ['./index.html', './assets/bb-logo.png', './manifest.json'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(C).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -30,8 +30,11 @@ self.addEventListener('fetch', e => {
   }
   // Navigations: NETWORK FIRST, cache only as the offline fallback, per
   // landmine L-BSWL-020. Cache-first HTML ships every future deploy to nobody.
+  // no-cache because GitHub Pages serves max-age=600: a plain network-first
+  // fetch is happily answered by the HTTP cache, so a deploy took up to ten
+  // minutes to reach a client and every update needed "open it twice".
   if (e.request.mode === 'navigate') {
-    e.respondWith(fetch(e.request).then(res => {
+    e.respondWith(fetch(e.request, {cache: 'no-cache'}).then(res => {
       const cp = res.clone();
       caches.open(C).then(c => c.put('./index.html', cp));
       return res;
