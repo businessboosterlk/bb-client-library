@@ -33,6 +33,7 @@
   --dur-fast:150ms; --dur-normal:250ms; --dur-slow:600ms;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{touch-action:manipulation;scroll-behavior:smooth;
   -webkit-text-size-adjust:100%;text-size-adjust:100%}
 html,body{overscroll-behavior-y:none}
@@ -154,8 +155,9 @@ a.row:active{background:var(--bg)}
   stroke-linecap:round;stroke-linejoin:round}
 .empty{padding:28px 20px;text-align:center;color:var(--muted);font-size:14px}
 
-/* month switch content transition */
+/* month switch content transition, and the view switch shares it */
 .mfade{animation:mIn var(--dur-normal) var(--ease-decel) both}
+.view.vfade{animation:mIn var(--dur-normal) var(--ease-decel) both}
 @keyframes mIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
 /* Month picker */
@@ -259,11 +261,11 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
     <img class="r-logo" src="assets/bb-logo.png" alt="Business Booster">
     <div class="r-client"><strong id="r-client">Client</strong><span>Your library</span></div>
     <nav id="railnav">
-      <a href="#top" class="on"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-8.5"/></svg>This month</a>
-      <a href="#s-videos"><svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="14" height="13" rx="2.5"/><path d="m16.5 10 5-3v10l-5-3"/></svg>Videos</a>
-      <a href="#s-posts"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg>Posts</a>
-      <a href="#s-docs"><svg viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"/><path d="M14 2.5v4.5h4.5M8.5 12h7M8.5 16h7"/></svg>Documents</a>
-      <a href="#s-brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3 2"/></svg>Your business</a>
+      <a href="#home" class="on"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5M6 10.5V19a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-8.5"/></svg>This month</a>
+      <a href="#videos"><svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="14" height="13" rx="2.5"/><path d="m16.5 10 5-3v10l-5-3"/></svg>Videos</a>
+      <a href="#posts"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg>Posts</a>
+      <a href="#docs"><svg viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"/><path d="M14 2.5v4.5h4.5M8.5 12h7M8.5 16h7"/></svg>Documents</a>
+      <a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3 2"/></svg>Your business</a>
     </nav>
     <a class="r-wa" id="wa-rail" href="#">
       <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.9-1.4A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.2-3.5-.8-2.9-1.2-4.8-4.2-4.9-4.4-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5.2.6.8 2 .9 2.2.1.2.1.4 0 .6-.1.2-.2.4-.4.6l-.6.7c-.2.2-.4.4-.2.7.2.4.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.8.3.1.5.1.7-.1.2-.2.9-1 1.1-1.3.2-.3.4-.3.7-.2l2.2 1c.3.2.5.3.6.4.1.2.1.7-.1 1.5Z"/></svg>
@@ -279,46 +281,62 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
         <img src="assets/bb-logo.png" alt="Business Booster">
       </div>
       <nav class="chips" id="chips" aria-label="Sections">
-        <a href="#top" class="on">This month</a>
-        <a href="#s-videos">Videos</a>
-        <a href="#s-posts">Posts</a>
-        <a href="#s-docs">Documents</a>
-        <a href="#s-brain">Your business</a>
+        <a href="#home" class="on">This month</a>
+        <a href="#videos">Videos</a>
+        <a href="#posts">Posts</a>
+        <a href="#docs">Documents</a>
+        <a href="#brain">Your business</a>
       </nav>
     </header>
 
     <main>
       <div class="content">
-        <div class="hello rv" id="top">
-          <h2 id="h-title">Hello.</h2>
-          <p id="h-sub">Everything we have produced for you, in one place.</p>
-          <p class="fresh" id="h-fresh"></p>
+
+        <div class="view" id="v-home">
+          <div class="hello rv" id="top">
+            <h2 id="h-title">Hello.</h2>
+            <p id="h-sub">Everything we have produced for you, in one place.</p>
+            <p class="fresh" id="h-fresh"></p>
+          </div>
+          <section aria-label="This month" class="rv">
+            <div class="sec-head"><h3>This month</h3><span id="sum-month"></span></div>
+            <div class="card month-grid" id="summary"></div>
+          </section>
+          <section class="rv" aria-label="Sections">
+            <div class="sec-head"><h3>Your library</h3><span>Tap a section</span></div>
+            <div class="card" id="home-rows"></div>
+          </section>
         </div>
 
-        <section aria-label="Month" class="rv">
-          <div class="months" id="months"></div>
-          <div class="card month-grid" id="summary"></div>
-        </section>
+        <div class="view" id="v-videos" hidden>
+          <section>
+            <div class="sec-head"><h3>Videos</h3><span id="v-count"></span></div>
+            <div class="months" id="v-months"></div>
+            <div class="card" id="list-videos"></div>
+          </section>
+        </div>
 
-        <section class="rv" id="s-videos">
-          <div class="sec-head"><h3>Videos</h3><span id="v-count"></span></div>
-          <div class="card" id="videos"></div>
-        </section>
+        <div class="view" id="v-posts" hidden>
+          <section>
+            <div class="sec-head"><h3>Posts</h3><span id="p-count"></span></div>
+            <div class="months" id="p-months"></div>
+            <div class="card" id="list-posts"></div>
+          </section>
+        </div>
 
-        <section class="rv" id="s-posts">
-          <div class="sec-head"><h3>Posts</h3><span id="p-count"></span></div>
-          <div class="card" id="posts"></div>
-        </section>
+        <div class="view" id="v-docs" hidden>
+          <section>
+            <div class="sec-head"><h3>Documents</h3><span>Reports and strategy</span></div>
+            <div class="card" id="list-docs"></div>
+          </section>
+        </div>
 
-        <section class="rv" id="s-docs">
-          <div class="sec-head"><h3>Documents</h3><span>Reports and strategy</span></div>
-          <div class="card" id="docs"></div>
-        </section>
-
-        <section class="brain rv" id="s-brain">
-          <div class="sec-head"><h3>Your business</h3><span>What we hold on file</span></div>
-          <div class="card"><dl id="facts"></dl></div>
-        </section>
+        <div class="view" id="v-brain" hidden>
+          <section class="brain">
+            <div class="sec-head"><h3>Your business</h3><span>What we hold on file</span></div>
+            <div class="card"><dl id="facts"></dl></div>
+          </section>
+        </div>
 
         <footer id="foot"></footer>
       </div>
@@ -379,7 +397,7 @@ var REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
 var SRC = (location.search.match(/[?&]src=([a-z0-9_-]{1,16})/) || [])[1] || '';
 if(SRC){
   try{ history.replaceState(null, '', location.pathname + '?c=' + C.meta.slug +
-    (location.search.indexOf('selftest') > -1 ? '&selftest' : '')); }catch(e){}
+    (location.search.indexOf('selftest') > -1 ? '&selftest' : '') + location.hash); }catch(e){}
 }
 
 /* per-cast manifest so an installed icon reopens THIS client, never the demo */
@@ -464,6 +482,7 @@ var IC = {
   video:'<svg viewBox="0 0 24 24"><rect x="2.5" y="5.5" width="14" height="13" rx="2.5"/><path d="m16.5 10 5-3v10l-5-3"/></svg>',
   post:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg>',
   doc:'<svg viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"/><path d="M14 2.5v4.5h4.5M8.5 12h7M8.5 16h7"/></svg>',
+  brain:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3 2"/></svg>',
   arrow:'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>',
   out:'<svg viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8M19 14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'
 };
@@ -491,10 +510,10 @@ function fill(el, items, empty, animate){
   return items.length;
 }
 
-/* ── months ── */
+/* ── months: Videos and Posts each own a picker and a selection ── */
 var months = C.months || [];
-var mEl = document.getElementById('months');
-var current = months.length ? months[0].id : null;
+var vSel = months.length ? months[0].id : null;
+var pSel = vSel;
 
 /* month labels carry the year once the library spans more than one */
 var mYears = {};
@@ -517,23 +536,55 @@ if(C.meta.updated){
   if(newest){ var fs = document.createElement('strong'); fs.textContent = newest; fr.appendChild(fs); }
 }
 
-months.forEach(function(m){
-  var b = document.createElement('button');
-  b.type = 'button'; b.textContent = mlabel(m);
-  b.addEventListener('click', function(){
-    if(current === m.id) return;
-    current = m.id; render(true); beacon('month', m.id);
+function monthOf(id){
+  return months.filter(function(x){ return x.id === id; })[0] || { videos:[], posts:[], label:'' };
+}
+function buildPicker(el, onPick){
+  months.forEach(function(m){
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = mlabel(m);
+    b.addEventListener('click', function(){ onPick(m.id); });
+    el.appendChild(b);
   });
-  mEl.appendChild(b);
+}
+function syncPicker(el, sel){
+  Array.prototype.forEach.call(el.children, function(b, i){
+    b.classList.toggle('on', months[i].id === sel);
+  });
+}
+var vmEl = document.getElementById('v-months');
+var pmEl = document.getElementById('p-months');
+buildPicker(vmEl, function(id){
+  if(vSel === id) return;
+  vSel = id; renderVideos(true); beacon('month', 'videos:' + id);
+});
+buildPicker(pmEl, function(id){
+  if(pSel === id) return;
+  pSel = id; renderPosts(true); beacon('month', 'posts:' + id);
 });
 
-var summaryTargets = [];
-function render(animate){
-  Array.prototype.forEach.call(mEl.children, function(b, i){
-    b.classList.toggle('on', months[i].id === current);
-  });
-  var m = months.filter(function(x){ return x.id === current; })[0] || { videos:[], posts:[] };
+function renderVideos(animate){
+  syncPicker(vmEl, vSel);
+  var m = monthOf(vSel);
+  document.getElementById('v-count').textContent = mlabel(m);
+  fill(document.getElementById('list-videos'), m.videos.map(function(v){
+    return row('video', v.title, v.note || 'Tap to watch on Google Drive', v.drive, true);
+  }), 'No videos this month yet.', animate);
+}
+function renderPosts(animate){
+  syncPicker(pmEl, pSel);
+  var m = monthOf(pSel);
+  document.getElementById('p-count').textContent = mlabel(m);
+  fill(document.getElementById('list-posts'), m.posts.map(function(p){
+    return row('post', p.title, p.date + (p.platform ? ' · ' + p.platform : ''), p.link, !!p.link);
+  }), 'No posts this month yet.', animate);
+}
 
+/* home: the newest month at a glance, then one row into each section */
+var summaryTargets = [];
+function renderSummary(){
+  var m = months[0] || { videos:[], posts:[] };
+  document.getElementById('sum-month').textContent = mlabel(m);
   var s = document.getElementById('summary');
   s.innerHTML = '';
   summaryTargets = [
@@ -548,19 +599,27 @@ function render(animate){
     d.querySelector('span').textContent = p[1];
     s.appendChild(d);
   });
-
-  document.getElementById('v-count').textContent = mlabel(m);
-  fill(document.getElementById('videos'), m.videos.map(function(v){
-    return row('video', v.title, v.note || 'Tap to watch on Google Drive', v.drive, true);
-  }), 'No videos this month yet.', animate);
-
-  document.getElementById('p-count').textContent = mlabel(m);
-  fill(document.getElementById('posts'), m.posts.map(function(p){
-    return row('post', p.title, p.date + (p.platform ? ' · ' + p.platform : ''), p.link, !!p.link);
-  }), 'No posts this month yet.', animate);
+}
+function plural(n, one, many){ return n + ' ' + (n === 1 ? one : many); }
+function renderHome(){
+  var vTot = 0, pTot = 0;
+  months.forEach(function(m){ vTot += m.videos.length; pTot += m.posts.length; });
+  var mSpan = plural(months.length, 'month', 'months');
+  var hr = document.getElementById('home-rows');
+  hr.textContent = '';
+  hr.appendChild(row('video', 'Videos',
+    vTot ? plural(vTot, 'video', 'videos') + ' across ' + mSpan : 'Nothing here yet', '#videos'));
+  hr.appendChild(row('post', 'Posts',
+    pTot ? plural(pTot, 'post', 'posts') + ' across ' + mSpan : 'Nothing here yet', '#posts'));
+  hr.appendChild(row('doc', 'Documents',
+    (C.docs||[]).length ? plural((C.docs||[]).length, 'document', 'documents') + ' on file'
+                        : 'Your reports will appear here', '#docs'));
+  hr.appendChild(row('brain', 'Your business',
+    (C.facts||[]).length ? plural((C.facts||[]).length, 'thing', 'things') + ' we hold on file'
+                         : 'Nothing on file yet', '#brain'));
 }
 
-fill(document.getElementById('docs'), (C.docs||[]).map(function(d){
+fill(document.getElementById('list-docs'), (C.docs||[]).map(function(d){
   return row('doc', d.title, d.kind + ' · ' + d.date, d.href, true);
 }), 'Your reports will appear here.');
 
@@ -573,7 +632,7 @@ var facts = document.getElementById('facts');
   facts.appendChild(d);
 });
 
-if(current) render(false);
+renderSummary(); renderHome(); renderVideos(false); renderPosts(false);
 
 /* ── motion: staggered reveals, count-up, rail highlight ── */
 function startReveals(){
@@ -609,44 +668,56 @@ function countUp(){
 }
 if(preOpened){ beacon('open', SRC || 'direct'); startReveals(); countUp(); }
 
-/* section highlight: desktop rail and phone chips share one active state */
-var SECTION_IDS = ['top','s-videos','s-posts','s-docs','s-brain'];
+/* ── views: every section is its own screen. The hash is the router, so the
+   phone back button walks back through sections and a bookmark lands on one. ── */
+var VIEWS = ['home','videos','posts','docs','brain'];
 var navLinks = Array.prototype.slice.call(document.querySelectorAll('#railnav a, #chips a'));
 var chipsEl = document.getElementById('chips');
-function setActive(id){
+var curView = 'home';
+function showView(v, animate){
+  if(VIEWS.indexOf(v) < 0) v = 'home';
+  VIEWS.forEach(function(k){
+    var el = document.getElementById('v-' + k);
+    if(k === v){
+      el.hidden = false;
+      if(animate && !REDUCED){ el.classList.remove('vfade'); void el.offsetWidth; el.classList.add('vfade'); }
+    } else { el.hidden = true; }
+  });
   navLinks.forEach(function(a){
-    a.classList.toggle('on', a.getAttribute('href') === '#' + id);
+    a.classList.toggle('on', a.getAttribute('href') === '#' + v);
   });
   if(chipsEl && chipsEl.getBoundingClientRect().height > 0){
     var act = chipsEl.querySelector('a.on');
     if(act) chipsEl.scrollTo({ left: Math.max(0, act.offsetLeft - 20),
       behavior: REDUCED ? 'auto' : 'smooth' });
   }
+  scrollTo(0, 0);
+  curView = v;
 }
-navLinks.forEach(function(a){
-  a.addEventListener('click', function(){ setActive(a.getAttribute('href').slice(1)); });
-});
-if('IntersectionObserver' in window && navLinks.length){
-  var so = new IntersectionObserver(function(es){
-    es.forEach(function(en){ if(en.isIntersecting) setActive(en.target.id); });
-  }, { rootMargin:'-30% 0px -60% 0px' });
-  SECTION_IDS.forEach(function(id){
-    var el = document.getElementById(id); if(el) so.observe(el);
-  });
+function route(userNav){
+  var v = location.hash.replace('#', '') || 'home';
+  showView(v, userNav);
+  if(userNav) beacon('view', v);
 }
-/* the last section can never fill the observer band, so the page bottom wins */
-addEventListener('scroll', function(){
-  if(innerHeight + scrollY >= document.documentElement.scrollHeight - 2){
-    setActive(SECTION_IDS[SECTION_IDS.length - 1]);
-  }
-}, { passive: true });
+addEventListener('hashchange', function(){ route(true); });
+route(false);
 
 /* ── ?selftest: zero writes, prints its denominator ── */
 if(location.search.indexOf('selftest') > -1){
   var T = [], pass = 0;
   var ok = function(name, cond, note){ T.push([cond, name, note||'']); if(cond) pass++; };
   ok('CFG present with slug + pinHash + wa', !!(C.meta && C.meta.slug && C.meta.pinHash && C.meta.wa));
-  ok('months render buttons', mEl.children.length === months.length && months.length > 0);
+  ok('videos view renders a month picker', vmEl.children.length === months.length && months.length > 0);
+  ok('posts view renders a month picker', pmEl.children.length === months.length && months.length > 0);
+  ok('exactly one section view is visible',
+     document.querySelectorAll('.view:not([hidden])').length === 1);
+  var _was = curView;
+  showView('videos', false);
+  var sepOk = !document.getElementById('v-videos').hidden && document.getElementById('v-home').hidden;
+  showView(_was, false);
+  ok('a section opens as its own view', sepOk);
+  ok('home lists the four section rows',
+     document.querySelectorAll('#home-rows .row').length === 4);
   ok('summary shows three figures', document.querySelectorAll('#summary > div').length === 3);
   ok('every drive link is https', (months[0].videos||[]).every(function(v){ return /^https:\/\//.test(v.drive); }));
   ok('no emoji glyphs in page text', !/[\u{1F300}-\u{1FAFF}]/u.test(document.body.innerText));
