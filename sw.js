@@ -15,7 +15,8 @@ self.addEventListener('fetch', e => {
   // last good copy as the offline fallback, and a 404 PURGES the copy so an
   // offboarded client's cached library dies on its first online open.
   if (u.pathname.includes('/cfg/')) {
-    e.respondWith(fetch(e.request).then(res => {
+    // no-cache: always revalidate, so an SM's edit reaches the next open
+    e.respondWith(fetch(e.request, {cache: 'no-cache'}).then(res => {
       if (res.ok) {
         const cp = res.clone();
         caches.open(C).then(c => c.put(e.request, cp));

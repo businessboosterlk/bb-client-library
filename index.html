@@ -22,6 +22,7 @@
 :root{
   --brand:#2563eb; --brand-dark:#1d4ed8; --brand-deep:#1a357a; --brand-ink:#0d1b3e;
   --brand-soft:#eaf1fe; --brand-glow:rgba(37,99,235,.25);
+  --brand-lite:#7ea2f5; --brand-soft-d:#1e2027;
   --grad-a:var(--brand); --grad-b:var(--brand-dark);
   --bg:#f5f5f7; --surface:#ffffff; --ink:#1d1d1f; --muted:#6e6e73;
   --line:rgba(29,29,31,.09); --radius:18px;
@@ -56,7 +57,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--ink);
 .gate-card{width:min(380px,100%);text-align:center;
   animation:gateIn 600ms var(--ease-decel) both}
 @keyframes gateIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
-.gate-card img{height:24px;margin-bottom:38px;filter:brightness(0) invert(1);opacity:.85}
+.gate-card img{display:block;height:24px;margin:0 auto 38px;filter:brightness(0) invert(1);opacity:.85}
+.gate-mark{display:inline-flex;background:#fff;border-radius:16px;padding:12px 18px;
+  margin-bottom:24px;animation:gateIn 600ms var(--ease-decel) both}
+.gate-mark img{height:30px;margin:0;filter:none;opacity:1}
 .gate-card h1{font-family:var(--font-display);font-weight:800;font-size:30px;
   letter-spacing:-.02em;color:#fff;margin-bottom:10px}
 .gate-card p{color:rgba(255,255,255,.68);font-size:14px;line-height:1.55;
@@ -135,6 +139,30 @@ section{margin-top:36px;scroll-margin-top:calc(122px + var(--sat))}
   font-size:30px;letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
 .month-grid span{font-size:11px;color:rgba(255,255,255,.75)}
 
+/* Search: the client's two-word question answered in a second */
+.search{margin-top:20px}
+.sfield{display:flex;align-items:center;gap:10px;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;padding:0 14px;min-height:50px}
+.sfield svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;
+  stroke-linecap:round;color:var(--muted);flex:0 0 auto}
+.sfield input{flex:1;min-width:0;border:0;background:none;font-family:inherit;
+  font-size:16px;color:var(--ink);min-height:48px}
+.sfield input:focus{outline:none}
+#q-out{margin-top:10px}
+
+/* Featured lead video: the one brand moment on the Videos screen */
+.feat{display:block;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:12px;color:inherit;
+  text-decoration:none;box-shadow:0 1px 2px rgba(29,29,31,.03)}
+.feat-media{display:grid;place-items:center;aspect-ratio:16/9;
+  background:linear-gradient(135deg,var(--grad-a),var(--grad-b))}
+.feat-media svg{width:58px;height:58px}
+.feat-tx{display:block;padding:14px 16px}
+.feat-tx em{font-style:normal;font-size:12px;color:var(--muted);display:block}
+.feat-tx strong{font-family:var(--font-display);font-weight:700;font-size:18px;
+  letter-spacing:-.02em;display:block;margin-top:2px}
+a.feat:active{background:var(--bg)}
+
 /* Rows: one pattern for posts, videos and documents */
 .row{display:flex;align-items:center;gap:14px;padding:16px;min-height:58px;
   color:inherit;text-decoration:none;border-top:1px solid var(--line);
@@ -150,6 +178,9 @@ a.row:active{background:var(--bg)}
 .row .tx strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
   font-size:15px;letter-spacing:-.01em;overflow:hidden}
 .row .tx span{font-size:12.5px;color:var(--muted)}
+.row .new{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.02em;
+  color:var(--brand-deep);background:var(--brand-soft);padding:2px 8px;
+  border-radius:999px;margin-left:8px;vertical-align:2px}
 .row .go{flex:0 0 auto;color:var(--muted);transition:transform var(--dur-fast) var(--ease-snappy)}
 .row .go svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;
   stroke-linecap:round;stroke-linejoin:round}
@@ -188,6 +219,25 @@ a.row:active{background:var(--bg)}
   transition:transform var(--dur-fast) var(--ease-snappy),box-shadow var(--dur-fast) var(--ease-smooth)}
 .warail a:active{transform:scale(.98)}
 .warail svg{width:19px;height:19px;fill:currentColor}
+
+/* install teaching and the one-tap month rating: quiet, dismissible, honest */
+.hint{display:flex;align-items:center;gap:12px;padding:14px 16px;margin-top:24px}
+.hint-tx{flex:1;min-width:0}
+.hint-tx strong{display:block;font-size:14px}
+.hint-tx span{font-size:12.5px;color:var(--muted)}
+.hint-tx svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round;vertical-align:-2px}
+.hint-x{flex:0 0 40px;height:40px;border:0;background:none;color:var(--muted);
+  display:grid;place-items:center;cursor:pointer;font-family:inherit}
+.hint-x svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.rate{display:flex;align-items:center;gap:10px;padding:14px 16px;margin-top:12px}
+.rate span{flex:1;font-size:14px}
+.rate button{flex:0 0 46px;height:46px;border:1px solid var(--line);border-radius:12px;
+  background:var(--surface);color:var(--muted);display:grid;place-items:center;
+  cursor:pointer;font-family:inherit;transition:transform var(--dur-fast) var(--ease-snappy)}
+.rate button:active{transform:scale(.94)}
+.rate button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round}
 
 footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
 
@@ -235,6 +285,22 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
   .brain dl{grid-template-columns:1fr 1fr}
   .brain .fact:nth-child(2){border-top:0}
 }
+
+/* ═══ DARK MODE: neutrals flip, the brand world stays ═══ */
+@media (prefers-color-scheme:dark){
+  :root{--bg:#0c0d10;--surface:#141519;--ink:#f2f3f5;--muted:#a9adba;
+    --line:rgba(255,255,255,.08)}
+  .topbar{background:rgba(12,13,16,.82)}
+  .warail{background:rgba(12,13,16,.86)}
+  .topbar-in img,.rail .r-logo{filter:brightness(0) invert(1);opacity:.8}
+  .chips a.on,.months button.on{background:var(--brand-soft-d);color:var(--brand-lite)}
+  .row .ic{background:var(--brand-soft-d);color:var(--brand-lite)}
+  .row .new{background:var(--brand-soft-d);color:var(--brand-lite)}
+  .rail nav a.on{background:var(--brand-soft-d);color:var(--brand-lite)}
+  .hello .fresh strong{color:var(--ink)}
+  a.row:active,a.feat:active,a.row:hover{background:var(--bg)}
+  .card,.months button,.chips a,.rate button,.sfield,.feat{box-shadow:none}
+}
 </style>
 </head>
 <body>
@@ -243,6 +309,7 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
 <div id="gate">
   <div class="gate-card">
     <img id="g-logo" src="assets/bb-logo.png" alt="Business Booster">
+    <span class="gate-mark" id="g-mark" hidden><img id="g-mark-img" alt=""></span>
     <h1 id="g-title">Your library</h1>
     <p id="g-sub">Enter your four digit code.</p>
     <div class="pinrow" id="pinrow">
@@ -298,20 +365,44 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
             <p id="h-sub">Everything we have produced for you, in one place.</p>
             <p class="fresh" id="h-fresh"></p>
           </div>
-          <section aria-label="This month" class="rv">
+          <div class="search rv">
+            <div class="sfield">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+              <input id="q" type="search" enterkeyhint="search" autocomplete="off"
+                placeholder="Search your library" aria-label="Search your library">
+            </div>
+            <div class="card" id="q-out" hidden></div>
+          </div>
+          <section aria-label="This month" class="rv" id="h-sum">
             <div class="sec-head"><h3>This month</h3><span id="sum-month"></span></div>
             <div class="card month-grid" id="summary"></div>
           </section>
-          <section class="rv" aria-label="Sections">
+          <section class="rv" aria-label="Sections" id="h-rows-sec">
             <div class="sec-head"><h3>Your library</h3><span>Tap a section</span></div>
             <div class="card" id="home-rows"></div>
           </section>
+          <div class="hint card" id="install-hint" hidden>
+            <div class="hint-tx"><strong>Keep this on your phone</strong><span id="hint-how"></span></div>
+            <button class="hint-x" id="hint-x" aria-label="Dismiss">
+              <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+          <div class="rate card" id="rate" hidden>
+            <span id="rate-q">Was this month useful?</span>
+            <button type="button" data-r="up" aria-label="Yes, useful">
+              <svg viewBox="0 0 24 24"><path d="M7 11v9M7 11l4-7a2 2 0 0 1 2 2v4h5a2 2 0 0 1 2 2.4l-1.2 5A2 2 0 0 1 16.8 20H7"/></svg>
+            </button>
+            <button type="button" data-r="down" aria-label="Not really">
+              <svg viewBox="0 0 24 24"><path d="M17 13V4M17 13l-4 7a2 2 0 0 1-2-2v-4H6a2 2 0 0 1-2-2.4l1.2-5A2 2 0 0 1 7.2 4H17"/></svg>
+            </button>
+          </div>
         </div>
 
         <div class="view" id="v-videos" hidden>
           <section>
             <div class="sec-head"><h3>Videos</h3><span id="v-count"></span></div>
             <div class="months" id="v-months"></div>
+            <a class="feat" id="feat-video" hidden></a>
             <div class="card" id="list-videos"></div>
           </section>
         </div>
@@ -382,6 +473,8 @@ if(th.brand && /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(th.brand)){
   rs.setProperty('--brand-ink', mix(B, K, .8));
   rs.setProperty('--brand-soft', mix(B, W, .9));
   rs.setProperty('--brand-glow', 'rgba(' + B.join(',') + ',.28)');
+  rs.setProperty('--brand-lite', mix(B, W, .5));
+  rs.setProperty('--brand-soft-d', mix(B, [22, 23, 28], .85));
   /* a light brand cannot hold white numerals, so the panel deepens */
   if((.299*B[0] + .587*B[1] + .114*B[2]) / 255 > .66){
     rs.setProperty('--grad-a', mix(B, K, .3)); rs.setProperty('--grad-b', mix(B, K, .52));
@@ -462,6 +555,10 @@ function beacon(ev, detail){
 document.title = C.meta.name + ' · Your Library';
 ['t-client','r-client'].forEach(function(id){ document.getElementById(id).textContent = C.meta.name; });
 document.getElementById('g-title').textContent = C.meta.name;
+if(th.logo){
+  document.getElementById('g-mark-img').src = th.logo;
+  document.getElementById('g-mark').hidden = false;
+}
 if(C.meta.updated) document.getElementById('g-sub').textContent =
   'Your videos, posts, reports and strategy. Updated ' + C.meta.updated +
   '. Enter your four digit code.';
@@ -515,6 +612,22 @@ var months = C.months || [];
 var vSel = months.length ? months[0].id : null;
 var pSel = vSel;
 
+/* new since the last visit: the stamp is read BEFORE this open updates it */
+var SEEN_KEY = 'bblib_seen_' + C.meta.slug;
+var NEW_REF = 0;
+try{ NEW_REF = parseInt(localStorage.getItem(SEEN_KEY) || '0', 10) || 0; }catch(e){}
+function isNew(added, ref){
+  if(!ref || !added) return false;
+  var t = Date.parse(added);
+  return !!t && t > ref;
+}
+function markNew(a){
+  var em = document.createElement('em');
+  em.className = 'new'; em.textContent = 'New';
+  a.querySelector('.tx strong').appendChild(em);
+  return a;
+}
+
 /* month labels carry the year once the library spans more than one */
 var mYears = {};
 months.forEach(function(m){ mYears[String(m.id).slice(0, 4)] = 1; });
@@ -567,16 +680,33 @@ function renderVideos(animate){
   syncPicker(vmEl, vSel);
   var m = monthOf(vSel);
   document.getElementById('v-count').textContent = mlabel(m);
-  fill(document.getElementById('list-videos'), m.videos.map(function(v){
-    return row('video', v.title, v.note || 'Tap to watch on Google Drive', v.drive, true);
+  var rest = (m.videos || []).slice();
+  var feat = document.getElementById('feat-video');
+  if(rest.length){
+    var f = rest.shift();
+    feat.hidden = false; feat.href = f.drive; feat.target = '_blank'; feat.rel = 'noreferrer';
+    feat.innerHTML = '<span class="feat-media"><svg viewBox="0 0 48 48">' +
+      '<circle cx="24" cy="24" r="23" fill="rgba(255,255,255,.16)"/>' +
+      '<path d="M20 16l14 8-14 8z" fill="#fff"/></svg></span>' +
+      '<span class="feat-tx"><em></em><strong></strong></span>';
+    feat.querySelector('em').textContent = (f.note || 'Video') + ' · ' + mlabel(m);
+    feat.querySelector('strong').textContent = f.title;
+    if(animate && !REDUCED){ feat.classList.remove('mfade'); void feat.offsetWidth; feat.classList.add('mfade'); }
+  } else { feat.hidden = true; }
+  var lc = document.getElementById('list-videos');
+  fill(lc, rest.map(function(v){
+    var r = row('video', v.title, v.note || 'Tap to watch on Google Drive', v.drive, true);
+    return isNew(v.added, NEW_REF) ? markNew(r) : r;
   }), 'No videos this month yet.', animate);
+  lc.hidden = (rest.length === 0 && !feat.hidden);
 }
 function renderPosts(animate){
   syncPicker(pmEl, pSel);
   var m = monthOf(pSel);
   document.getElementById('p-count').textContent = mlabel(m);
   fill(document.getElementById('list-posts'), m.posts.map(function(p){
-    return row('post', p.title, p.date + (p.platform ? ' · ' + p.platform : ''), p.link, !!p.link);
+    var r = row('post', p.title, p.date + (p.platform ? ' · ' + p.platform : ''), p.link, !!p.link);
+    return isNew(p.added, NEW_REF) ? markNew(r) : r;
   }), 'No posts this month yet.', animate);
 }
 
@@ -602,25 +732,32 @@ function renderSummary(){
 }
 function plural(n, one, many){ return n + ' ' + (n === 1 ? one : many); }
 function renderHome(){
-  var vTot = 0, pTot = 0;
-  months.forEach(function(m){ vTot += m.videos.length; pTot += m.posts.length; });
+  var vTot = 0, pTot = 0, vNew = 0, pNew = 0, dNew = 0;
+  months.forEach(function(m){
+    vTot += m.videos.length; pTot += m.posts.length;
+    m.videos.forEach(function(v){ if(isNew(v.added, NEW_REF)) vNew++; });
+    m.posts.forEach(function(p){ if(isNew(p.added, NEW_REF)) pNew++; });
+  });
+  (C.docs||[]).forEach(function(d){ if(isNew(d.added, NEW_REF)) dNew++; });
+  function fresh(n){ return n ? ' · ' + n + ' new' : ''; }
   var mSpan = plural(months.length, 'month', 'months');
   var hr = document.getElementById('home-rows');
   hr.textContent = '';
   hr.appendChild(row('video', 'Videos',
-    vTot ? plural(vTot, 'video', 'videos') + ' across ' + mSpan : 'Nothing here yet', '#videos'));
+    (vTot ? plural(vTot, 'video', 'videos') + ' across ' + mSpan : 'Nothing here yet') + fresh(vNew), '#videos'));
   hr.appendChild(row('post', 'Posts',
-    pTot ? plural(pTot, 'post', 'posts') + ' across ' + mSpan : 'Nothing here yet', '#posts'));
+    (pTot ? plural(pTot, 'post', 'posts') + ' across ' + mSpan : 'Nothing here yet') + fresh(pNew), '#posts'));
   hr.appendChild(row('doc', 'Documents',
-    (C.docs||[]).length ? plural((C.docs||[]).length, 'document', 'documents') + ' on file'
-                        : 'Your reports will appear here', '#docs'));
+    ((C.docs||[]).length ? plural((C.docs||[]).length, 'document', 'documents') + ' on file'
+                        : 'Your reports will appear here') + fresh(dNew), '#docs'));
   hr.appendChild(row('brain', 'Your business',
     (C.facts||[]).length ? plural((C.facts||[]).length, 'thing', 'things') + ' we hold on file'
                          : 'Nothing on file yet', '#brain'));
 }
 
 fill(document.getElementById('list-docs'), (C.docs||[]).map(function(d){
-  return row('doc', d.title, d.kind + ' · ' + d.date, d.href, true);
+  var r = row('doc', d.title, d.kind + ' · ' + d.date, d.href, true);
+  return isNew(d.added, NEW_REF) ? markNew(r) : r;
 }), 'Your reports will appear here.');
 
 var facts = document.getElementById('facts');
@@ -633,6 +770,89 @@ var facts = document.getElementById('facts');
 });
 
 renderSummary(); renderHome(); renderVideos(false); renderPosts(false);
+try{ localStorage.setItem(SEEN_KEY, String(Date.now())); }catch(e){}
+
+/* ── search: one flat index over everything in the cast ── */
+var INDEX = [];
+months.forEach(function(m){
+  (m.videos||[]).forEach(function(v){
+    INDEX.push({ ic:'video', t:v.title, s:(v.note || 'Video') + ' · ' + mlabel(m), href:v.drive, ext:true });
+  });
+  (m.posts||[]).forEach(function(p){
+    INDEX.push({ ic:'post', t:p.title, s:(p.date ? p.date + ' · ' : '') + mlabel(m), href:p.link, ext:!!p.link });
+  });
+});
+(C.docs||[]).forEach(function(d){ INDEX.push({ ic:'doc', t:d.title, s:d.kind, href:d.href, ext:true }); });
+(C.facts||[]).forEach(function(f){ INDEX.push({ ic:'brain', t:f.k, s:f.v }); });
+function searchLib(q){
+  q = String(q || '').toLowerCase().trim();
+  if(q.length < 2) return null;
+  return INDEX.filter(function(it){
+    return (it.t + ' ' + it.s).toLowerCase().indexOf(q) > -1;
+  }).slice(0, 12);
+}
+var hintOn = false, rateOn = false, curResults = null;
+var qIn = document.getElementById('q'), qOut = document.getElementById('q-out');
+function applyHomeVis(){
+  var searching = !!curResults;
+  document.getElementById('h-sum').hidden = searching;
+  document.getElementById('h-rows-sec').hidden = searching;
+  document.getElementById('install-hint').hidden = searching || !hintOn;
+  document.getElementById('rate').hidden = searching || !rateOn;
+  qOut.hidden = !searching;
+}
+qIn.addEventListener('input', function(){
+  curResults = searchLib(qIn.value);
+  if(curResults){
+    qOut.textContent = '';
+    if(curResults.length){
+      curResults.forEach(function(it){ qOut.appendChild(row(it.ic, it.t, it.s, it.href, it.ext)); });
+    } else {
+      var d = document.createElement('div'); d.className = 'empty';
+      d.textContent = 'Nothing matches that yet.'; qOut.appendChild(d);
+    }
+  }
+  applyHomeVis();
+});
+
+/* ── install teaching: shown once, phone only, gone when installed ── */
+function shouldHint(coarse, standalone, dismissed){ return coarse && !standalone && !dismissed; }
+(function(){
+  var standalone = matchMedia('(display-mode: standalone)').matches || !!navigator.standalone;
+  var dismissed = false; try{ dismissed = localStorage.getItem('bblib_hint') === '1'; }catch(e){}
+  hintOn = shouldHint(matchMedia('(pointer: coarse)').matches, standalone, dismissed);
+  if(hintOn){
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    document.getElementById('hint-how').innerHTML = isIOS
+      ? 'In Safari tap <svg viewBox="0 0 24 24"><path d="M12 3v12M8 7l4-4 4 4M5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8"/></svg> then Add to Home Screen.'
+      : 'In Chrome tap <svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg> then Add to Home screen.';
+  }
+  document.getElementById('hint-x').addEventListener('click', function(){
+    try{ localStorage.setItem('bblib_hint', '1'); }catch(e){}
+    hintOn = false; applyHomeVis();
+  });
+  addEventListener('appinstalled', function(){ hintOn = false; applyHomeVis(); });
+})();
+
+/* ── one tap: was this month useful? Telemetry, never a conversation. ── */
+(function(){
+  if(!months.length) return;
+  var mid = months[0].id, RK = 'bblib_rate_' + C.meta.slug + '_' + mid;
+  var done = false; try{ done = !!localStorage.getItem(RK); }catch(e){}
+  if(done) return;
+  rateOn = true;
+  document.getElementById('rate-q').textContent = 'Was ' + mlabel(months[0]) + ' useful?';
+  Array.prototype.forEach.call(document.querySelectorAll('#rate button'), function(b){
+    b.addEventListener('click', function(){
+      var r = b.getAttribute('data-r');
+      beacon('rating', mid + ':' + r);
+      try{ localStorage.setItem(RK, r); }catch(e){}
+      document.getElementById('rate').innerHTML = '<span>Thank you, noted.</span>';
+      setTimeout(function(){ rateOn = false; applyHomeVis(); }, 1600);
+    });
+  });
+})();
+applyHomeVis();
 
 /* ── motion: staggered reveals, count-up, rail highlight ── */
 function startReveals(){
@@ -694,10 +914,20 @@ function showView(v, animate){
   scrollTo(0, 0);
   curView = v;
 }
+function parseHash(h){
+  var p = String(h || '').replace('#', '').split('/');
+  return { v: p[0] || 'home', mid: p[1] || '' };
+}
 function route(userNav){
-  var v = location.hash.replace('#', '') || 'home';
-  showView(v, userNav);
-  if(userNav) beacon('view', v);
+  var ph = parseHash(location.hash);
+  /* #videos/2026-07 lands straight on that month, so the monthly WhatsApp
+     message can open exactly the work it announces */
+  if(ph.mid && months.some(function(m){ return m.id === ph.mid; })){
+    if(ph.v === 'videos' && vSel !== ph.mid){ vSel = ph.mid; renderVideos(false); }
+    if(ph.v === 'posts' && pSel !== ph.mid){ pSel = ph.mid; renderPosts(false); }
+  }
+  showView(ph.v, userNav);
+  if(userNav) beacon('view', ph.v);
 }
 addEventListener('hashchange', function(){ route(true); });
 route(false);
@@ -751,6 +981,20 @@ if(location.search.indexOf('selftest') > -1){
   ok('brand palette derived per cast, no default-blue leak',
      !(C.theme && C.theme.brand) ||
      (document.documentElement.style.getPropertyValue('--brand-soft') || '') !== '');
+  ok('dark palette derived beside the light one',
+     !(C.theme && C.theme.brand) ||
+     (document.documentElement.style.getPropertyValue('--brand-lite') || '') !== '');
+  ok('search finds a known item',
+     INDEX.length === 0 || (searchLib(INDEX[0].t.slice(0, 4)) || []).length > 0);
+  ok('install hint logic: phone only, never when installed or dismissed',
+     shouldHint(true, false, false) === true && shouldHint(true, true, false) === false &&
+     shouldHint(false, false, false) === false && shouldHint(true, false, true) === false);
+  ok('new badge honours the last visit stamp',
+     isNew('2099-01-01', 1) === true && isNew('2000-01-01', Date.now()) === false &&
+     isNew('2099-01-01', 0) === false);
+  ok('deep links parse view and month',
+     parseHash('#videos/2026-07').v === 'videos' &&
+     parseHash('#videos/2026-07').mid === '2026-07' && parseHash('').v === 'home');
   console.log('BBLIB SELFTEST: ' + pass + '/' + T.length + ' passed');
   T.forEach(function(t){ console.log((t[0] ? 'PASS ' : 'FAIL ') + t[1] + (t[2] ? ' (' + t[2] + ')' : '')); });
 }

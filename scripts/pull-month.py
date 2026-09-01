@@ -43,12 +43,15 @@ def cast(client, items):
         b = months[mid]
         mlist.append({
             "id": mid, "label": label,
-            "videos": [{"title": v["title"], "note": v["sub"], "drive": v["url"]}
+            "videos": [{"title": v["title"], "note": v["sub"], "drive": v["url"],
+                        "added": (v.get("updated_at") or "")[:10]}
                        for v in sorted(b["videos"], key=lambda x: (x["sort"], x["id"]))],
-            "posts": [{"title": p["title"], "date": p["sub"], "platform": "", "link": p["url"]}
+            "posts": [{"title": p["title"], "date": p["sub"], "platform": "", "link": p["url"],
+                       "added": (p.get("updated_at") or "")[:10]}
                       for p in sorted(b["posts"], key=lambda x: (x["sort"], x["id"]))],
         })
-    docs = [{"title": d["title"], "kind": d["sub"] or "Document", "date": "", "href": d["url"]}
+    docs = [{"title": d["title"], "kind": d["sub"] or "Document", "date": "", "href": d["url"],
+             "added": (d.get("updated_at") or "")[:10]}
             for d in sorted([i for i in vis if i["kind"] == "doc"], key=lambda x: (x["sort"], x["id"]))]
     facts = [{"k": f["title"], "v": f["sub"]}
              for f in sorted([i for i in vis if i["kind"] == "fact"], key=lambda x: (x["sort"], x["id"]))]
