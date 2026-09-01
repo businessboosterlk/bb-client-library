@@ -68,7 +68,10 @@ tr.row{cursor:pointer;transition:background .15s}
 tr.row:hover{background:color-mix(in srgb,var(--pri) 6%,transparent)}
 td b{font-weight:650}
 td.n{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+/* let the table keep an honest width and scroll, rather than squeezing
+   client names into two cramped lines on a phone */
 .tscroll{overflow-x:auto}
+.tscroll table{min-width:660px}
 .muted{color:var(--tm)}
 .zero{color:var(--tm);opacity:.5}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}

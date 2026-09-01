@@ -35,6 +35,17 @@ window.CFG = {
         { title: "Origin story, part one", date: "24 Jul", platform: "Instagram", link: "https://www.instagram.com/p/demo4", added: "2026-07-24" },
         { title: "Iced season opener", date: "10 Jul", platform: "Instagram", link: "https://www.instagram.com/p/demo5", added: "2026-07-10" }
       ]
+    },
+    /* an older year, so the demo exercises the month labels growing a year
+       once a library spans more than one. A real cast gets this from its
+       own data, never from a fixture. */
+    { id: "2025-12", label: "December",
+      videos: [
+        { title: "Gifting season film", note: "Final cut · 38 seconds", drive: "https://drive.google.com/drive/folders/demo-dec-v1", added: "2025-12-12" }
+      ],
+      posts: [
+        { title: "The hamper, unwrapped", date: "18 Dec", platform: "Instagram", link: "https://www.instagram.com/p/demo6", added: "2025-12-18" }
+      ]
     }
   ],
   docs: [
