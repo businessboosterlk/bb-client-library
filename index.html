@@ -1107,8 +1107,12 @@ if(location.search.indexOf('selftest') > -1){
   var T = [], pass = 0;
   var ok = function(name, cond, note){ T.push([cond, name, note||'']); if(cond) pass++; };
   ok('CFG present with slug + wa', !!(C.meta && C.meta.slug && C.meta.wa));
-  ok('videos view renders a month picker', vmEl.children.length === months.length && months.length > 0);
-  ok('posts view renders a month picker', pmEl.children.length === months.length && months.length > 0);
+  /* a client with nothing loaded yet is a legitimate state, so these report
+     their denominator rather than failing or crashing on an empty library */
+  ok('videos view renders a month picker', vmEl.children.length === months.length,
+     months.length + ' months loaded');
+  ok('posts view renders a month picker', pmEl.children.length === months.length,
+     months.length + ' months loaded');
   ok('exactly one section view is visible',
      document.querySelectorAll('.view:not([hidden])').length === 1);
   var _was = curView;
@@ -1119,7 +1123,18 @@ if(location.search.indexOf('selftest') > -1){
   ok('home lists the four section rows',
      document.querySelectorAll('#home-rows .row').length === 4);
   ok('summary shows three figures', document.querySelectorAll('#summary > div').length === 3);
-  ok('every drive link is https', (months[0].videos||[]).every(function(v){ return /^https:\/\//.test(v.drive); }));
+  /* every outbound link in the whole cast, not just the newest month's videos.
+     The old form read months[0] and CRASHED on a client with nothing loaded,
+     which was both pilot clients (L-014: a crash is not a pass). */
+  var allLinks = [];
+  months.forEach(function(m){
+    (m.videos||[]).forEach(function(v){ if(v.drive) allLinks.push(v.drive); });
+    (m.posts||[]).forEach(function(p){ if(p.link) allLinks.push(p.link); });
+  });
+  (C.docs||[]).forEach(function(d){ if(d.href) allLinks.push(d.href); });
+  ok('every outbound link is https',
+     allLinks.every(function(l){ return /^https:\/\//.test(l); }),
+     allLinks.length + ' links checked');
   ok('no emoji glyphs in page text', !/[\u{1F300}-\u{1FAFF}]/u.test(document.body.innerText));
   /* escapes, never the literals: a sweep for these characters would rewrite
      the check itself and leave it asserting nothing (L-BSWL-019) */
