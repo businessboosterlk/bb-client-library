@@ -4,80 +4,207 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Library Admin · Business Booster</title>
+<title>Library Backend · Business Booster</title>
 <style>
-/* SM editor for the Client Library. BB staff surface, shared-anon posture like
-   the SMM Workspace. Every write lands in bb_library_items; casts rebuild from
-   there, so nothing an SM does here needs the development team. */
-:root{--bg:#f5f5f7;--surface:#fff;--ink:#1d1d1f;--muted:#6e6e73;--line:rgba(29,29,31,.11);
-  --brand:#2563eb;--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-html,body{overscroll-behavior-y:none}
+/* BB CLIENT LIBRARY BACKEND. Staff surface, shared-anon posture like the SMM
+   Workspace. Visual language taken from the consultancy report forge: deep
+   ground, inset-lit panels, pill buttons, mono output. Every write lands in
+   bb_library_items and the casts rebuild from there, so nothing an SM does
+   here needs a developer. */
+:root{
+  --bg:#0A1728; --surface:#122338; --pri:#1DB4DA; --acc:#F5A623;
+  --tp:#FFFFFF; --tm:#8A9FB4; --bd:#1E3550;
+  --sans:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --pri-08:color-mix(in srgb,var(--pri) 8%,transparent);
+  --pri-35:color-mix(in srgb,var(--pri) 35%,transparent);
+  --acc-10:color-mix(in srgb,var(--acc) 10%,transparent);
+  --acc-40:color-mix(in srgb,var(--acc) 40%,transparent);
+  --ink:color-mix(in srgb,var(--bg) 92%,black);
+  --bd-soft:color-mix(in srgb,var(--bd) 60%,transparent);
+  --ok:#7BD8A0;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}
+body{font-family:var(--sans);font-size:15px;line-height:1.6;color:var(--tp);background:var(--bg);
+  background-image:radial-gradient(120% 105% at 50% 30%, var(--bg) 52%, color-mix(in srgb,var(--bg) 58%,black) 100%);
+  -webkit-font-smoothing:antialiased;min-height:100dvh}
+button,input,textarea,select{font-family:inherit;font-size:inherit;color:inherit}
+button{background:none;border:none;cursor:pointer}
+[hidden]{display:none!important}
+a{color:var(--pri);text-decoration:none}
+:focus-visible{outline:2px solid var(--pri);outline-offset:2px;border-radius:6px}
 @media (pointer:coarse){input,select,textarea{font-size:16px!important}}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  background:var(--bg);color:var(--ink);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
-#gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,52px)}
+
+#gate{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
 #gate.off{display:none}
-#gate input{width:170px;height:54px;text-align:center;font-size:22px;letter-spacing:.3em;
-  border:1.5px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink)}
-#gate input:focus{outline:none;border-color:var(--brand)}
-#gate p{margin-top:14px;color:var(--muted);font-size:13px}
-header{position:sticky;top:0;z-index:50;background:rgba(245,245,247,.9);backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding-top:var(--sat)}
-.hin{max-width:900px;margin:0 auto;padding:12px 18px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.hin strong{font-size:15px}
-select,input[type=text],input[type=url]{min-height:42px;padding:0 12px;border:1px solid var(--line);
-  border-radius:11px;background:var(--surface);color:var(--ink);font:inherit;font-size:14px}
-main{max-width:900px;margin:0 auto;padding:16px 18px calc(40px + var(--sab))}
-.tabs{display:flex;gap:8px;margin:6px 0 16px;overflow-x:auto}
-.tabs button{min-height:38px;padding:0 15px;border:1px solid var(--line);border-radius:999px;
-  background:var(--surface);color:var(--ink);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;flex:0 0 auto}
-.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px}
-.item{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:13px 15px;border-top:1px solid var(--line)}
-.item:first-child{border-top:0}
-.item strong{font-size:14.5px}
-.item .sub{grid-column:1;color:var(--muted);font-size:12.5px;word-break:break-all}
-.item.hid strong,.item.hid .sub{opacity:.4;text-decoration:line-through}
-.item .ops{grid-row:1/3;display:flex;gap:6px;align-items:center}
-.ops button{min-width:44px;min-height:36px;border:1px solid var(--line);border-radius:9px;
-  background:var(--surface);color:var(--ink);font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
-.ops button.danger{color:#c62828}
-.addbar{display:grid;gap:8px;padding:14px 15px;background:var(--bg);border-top:1px solid var(--line)}
-.addbar .r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.addbar button{min-height:44px;border:0;border-radius:11px;background:var(--brand);color:#fff;
-  font:inherit;font-weight:650;cursor:pointer}
-.note{padding:12px 2px;color:var(--muted);font-size:12.5px}
-#toast{position:fixed;left:50%;bottom:calc(24px + var(--sab));transform:translateX(-50%);
-  background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:13.5px;
-  opacity:0;transition:opacity .25s;pointer-events:none;z-index:300}
-#toast.on{opacity:1}
-.empty{padding:24px;text-align:center;color:var(--muted);font-size:13.5px}
+.gate-card{width:min(380px,100%);background:color-mix(in srgb,var(--surface) 82%,var(--bg));
+  border:1px solid var(--bd);border-radius:16px;padding:34px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 20px 50px rgba(0,0,0,.4)}
+.gate-card h1{font-size:19px;font-weight:650;letter-spacing:-.01em}
+.gate-card p{color:var(--tm);font-size:13px;margin:5px 0 22px}
+
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+h1.title{font-size:clamp(24px,3vw,32px);font-weight:650;letter-spacing:-.02em}
+.sub{color:var(--tm);font-size:13.5px;margin-top:4px}
+
+.panel{background:color-mix(in srgb,var(--surface) 72%,transparent);
+  border:1px solid var(--bd);border-radius:16px;padding:clamp(18px,2.4vw,26px);margin-top:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 12px 32px rgba(0,0,0,.22)}
+.panel h2{font-size:16px;font-weight:650;letter-spacing:-.01em}
+.panel .hint{color:var(--tm);font-size:12.5px;margin-top:4px;margin-bottom:18px}
+.phead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap}
+
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:600;color:var(--tm);text-align:left;padding:0 10px 9px;white-space:nowrap}
+td{padding:12px 10px;border-top:1px solid var(--bd-soft);font-size:13.5px;vertical-align:middle}
+td b{font-weight:650}
+td.n{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.tscroll{overflow-x:auto}
+.muted{color:var(--tm)}
+.zero{color:var(--tm);opacity:.55}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:1px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:40px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:600;
+  border:1px solid var(--bd);background:color-mix(in srgb,var(--surface) 55%,transparent);
+  transition:border-color .15s,background .15s,transform .12s;white-space:nowrap}
+.btn:hover{border-color:color-mix(in srgb,var(--tm) 55%,transparent)}
+.btn:active{transform:scale(.98)}
+.btn.pri{border-color:var(--pri);color:var(--pri);background:var(--pri-08)}
+.btn.solid{background:var(--pri);border-color:var(--pri);color:var(--ink);font-weight:700}
+.btn.acc{border-color:var(--acc-40);color:var(--acc);background:var(--acc-10)}
+.btn.sm{min-height:32px;padding:0 12px;font-size:12px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;
+  border:1px solid var(--bd);color:var(--tm);transition:border-color .15s,color .15s,background .15s}
+.chip.on{border-color:var(--pri);color:var(--pri);background:var(--pri-08)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+label.fld{display:block}
+label.fld > span{display:block;font-size:12px;font-weight:600;color:var(--tm);margin-bottom:6px}
+input[type=text],input[type=url],input[type=password],select{width:100%;min-height:46px;padding:11px 14px;
+  background:color-mix(in srgb,var(--surface) 78%,var(--bg));
+  border:1px solid var(--bd);border-radius:10px;transition:border-color .15s}
+input:focus,select:focus{outline:none;border-color:var(--pri)}
+select:disabled{opacity:.4}
+.err{min-height:20px;font-size:12.5px;color:var(--acc);margin-top:10px}
+
+.rows{display:grid;gap:8px}
+.item{display:flex;align-items:center;gap:12px;padding:12px 14px;
+  border:1px solid var(--bd);border-radius:11px;background:color-mix(in srgb,var(--surface) 40%,transparent)}
+.item.hid{opacity:.5}
+.item .tx{flex:1;min-width:0}
+.item .tx b{display:block;font-size:13.5px;font-weight:650}
+.item .tx span{display:block;font-size:11.5px;color:var(--tm);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty{padding:26px;text-align:center;color:var(--tm);font-size:13px;
+  border:1px dashed var(--bd);border-radius:12px}
+
+.feed{display:grid;gap:2px}
+.ev{display:flex;align-items:baseline;gap:10px;padding:9px 2px;border-top:1px solid var(--bd-soft);font-size:13px}
+.ev:first-child{border-top:0}
+.ev b{font-weight:650;flex:0 0 auto}
+.ev time{margin-left:auto;font-size:11.5px;color:var(--tm);white-space:nowrap}
+code{font-family:var(--mono);font-size:12px;background:var(--ink);padding:2px 7px;border-radius:6px;color:#cfe6ef}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:50;
+  background:var(--surface);border:1px solid var(--pri-35);border-radius:999px;
+  padding:11px 22px;font-size:13px;box-shadow:0 18px 44px rgba(0,0,0,.45);opacity:0;pointer-events:none;
+  transition:opacity .2s}
+.toast.on{opacity:1}
 </style>
 </head>
 <body>
-<div id="gate">
-  <div style="text-align:center">
-    <img src="assets/bb-logo.png" alt="Business Booster" style="height:24px;margin-bottom:24px;opacity:.85">
-    <div><input id="staffpin" inputmode="numeric" maxlength="4" placeholder="••••" aria-label="Staff code" autocomplete="off"></div>
-    <p>Library admin. Staff code required.</p>
+
+<section id="gate">
+  <div class="gate-card">
+    <h1>Client Library backend</h1>
+    <p>Business Booster staff only. Enter the four digit staff code.</p>
+    <label class="fld"><span>Staff code</span>
+      <input id="staffpin" inputmode="numeric" maxlength="4" placeholder="0000" autocomplete="off"></label>
+    <p class="err" id="gateErr"></p>
   </div>
-</div>
+</section>
 
-<header><div class="hin">
-  <strong>Library Admin</strong>
-  <select id="client" aria-label="Client"></select>
-  <select id="month" aria-label="Month"></select>
-  <a id="view" href="#" target="_blank" rel="noreferrer" style="margin-left:auto;font-size:13px;color:var(--brand);font-weight:600;text-decoration:none">Open client view</a>
-</div></header>
+<main class="wrap" id="app" hidden>
+  <div class="top">
+    <div>
+      <h1 class="title">Client Library backend</h1>
+      <p class="sub">Everything every client can see, everything they have opened, plus the one place their month gets loaded.</p>
+    </div>
+    <button class="btn" id="btnRefresh" type="button">Refresh</button>
+  </div>
 
-<main>
-  <div class="tabs" id="tabs"></div>
-  <div class="card"><div id="list"></div><div class="addbar" id="addbar"></div></div>
-  <p class="note" id="hint"></p>
+  <section class="panel">
+    <div class="phead">
+      <div>
+        <h2>Every client</h2>
+        <p class="hint">Visible items per section. A client with empty shelves has nothing worth sending yet.</p>
+      </div>
+    </div>
+    <div class="tscroll">
+      <table>
+        <thead><tr>
+          <th>Client</th><th class="n">Videos</th><th class="n">Posts</th><th class="n">Docs</th>
+          <th class="n">Facts</th><th class="n">Hidden</th><th class="n">Months</th>
+          <th>Last opened</th><th>Links</th>
+        </tr></thead>
+        <tbody id="overview"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="phead">
+      <div>
+        <h2>What clients are doing</h2>
+        <p class="hint">The December question lives here: do they come back without being asked. Opens tagged BB are ours and never count as a client return.</p>
+      </div>
+      <div id="returnStat" class="muted"></div>
+    </div>
+    <div class="feed" id="feed"></div>
+  </section>
+
+  <section class="panel">
+    <div class="phead">
+      <div>
+        <h2>Load a client's month</h2>
+        <p class="hint">Changes reach the client page at the next rebuild, within the hour. Hiding beats removing: a hidden item keeps its history.</p>
+      </div>
+      <a class="btn pri" id="view" href="#" target="_blank" rel="noreferrer">Open client view</a>
+    </div>
+    <div class="grid">
+      <label class="fld"><span>Client</span><select id="client"></select></label>
+      <label class="fld"><span>Month</span><select id="month"></select></label>
+    </div>
+    <div class="chips" id="tabs" style="margin-top:18px"></div>
+    <div class="rows" id="list"></div>
+    <div class="grid" style="margin-top:16px">
+      <label class="fld"><span id="lbl-title">Title</span><input type="text" id="a-title"></label>
+      <label class="fld"><span id="lbl-sub">Note</span><input type="text" id="a-sub"></label>
+    </div>
+    <label class="fld" style="margin-top:14px" id="urlwrap"><span id="lbl-url">Link</span><input type="url" id="a-url" placeholder="https://"></label>
+    <div class="actions">
+      <button class="btn solid" id="btnAdd" type="button">Add to the library</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="phead">
+      <div>
+        <h2>Send the month</h2>
+        <p class="hint">Use this exact link in the WhatsApp message. The tag is what tells a prompted open apart from a real return. Without it the pilot proves nothing.</p>
+      </div>
+    </div>
+    <div class="feed" id="sendbox"></div>
+  </section>
 </main>
-<div id="toast" aria-live="polite"></div>
+
+<div class="toast" id="toast"></div>
 
 <script>
 (function(){
@@ -86,113 +213,258 @@ var BASE='https://yyviiwnqgphyklcoijyd.supabase.co/rest/v1';
 var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5dmlpd25xZ3BoeWtsY29panlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MjE5OTEsImV4cCI6MjA5MTI5Nzk5MX0.I8YiBr-rfLVcc6DE8Z1PxEP2oxXCelv6mxqAY_wY7lc';
 var STAFF_HASH='de5d09fc0ab3378669e13413f9d981c424b4d4185b17ef9a69412da3e8669109';
 var H={apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json',Prefer:'return=representation'};
+var SITE=location.href.replace(/admin\.html.*$/,'');
 
 function api(method,path,body){
   return fetch(BASE+path,{method:method,headers:H,body:body?JSON.stringify(body):undefined})
-    .then(function(r){ if(!r.ok) throw new Error(method+' '+path+' -> '+r.status);
+    .then(function(r){ if(!r.ok) throw new Error(method+' '+path+' returned '+r.status);
       return r.status===204?null:r.json(); });
 }
 function toast(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('on');
-  clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('on');},2200); }
+  clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('on');},2400); }
+function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className=cls;
+  if(txt!==undefined) e.textContent=txt; return e; }
+function copy(text,said){ navigator.clipboard.writeText(text).then(function(){ toast(said||'Copied'); },
+  function(){ toast('Could not copy, select it by hand'); }); }
 
-/* gate */
-var gate=document.getElementById('gate'), pin=document.getElementById('staffpin');
-function sha(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s))
-  .then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')});}
-pin.addEventListener('input',function(){
-  pin.value=pin.value.replace(/\D/g,'').slice(0,4);
-  if(pin.value.length===4) sha(pin.value+':bblib-admin').then(function(h){
-    if(h===STAFF_HASH){ try{sessionStorage.setItem('bblib_admin','1')}catch(e){} gate.classList.add('off'); boot(); }
-    else { pin.value=''; toast('Wrong code'); }
+var MONS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+function monthName(id){ var p=String(id||'').split('-');
+  return p.length===2 && MONS[+p[1]-1] ? MONS[+p[1]-1]+' '+p[0] : (id||'that month'); }
+function ago(iso){
+  var s=(Date.now()-Date.parse(iso))/1000;
+  if(!isFinite(s)) return '';
+  if(s<90) return 'just now';
+  if(s<3600) return Math.round(s/60)+' min ago';
+  if(s<86400) return Math.round(s/3600)+' hr ago';
+  var d=Math.round(s/86400);
+  return d===1?'yesterday':d+' days ago';
+}
+var SECN={home:'This month',videos:'Videos',posts:'Posts',docs:'Documents',brain:'Your business'};
+function isOurs(e){ return e.event==='open' && (e.detail==='bb' || e.detail==='test'); }
+function say(e){
+  var d=e.detail||'';
+  if(e.event==='open'){
+    if(d==='wa') return 'opened it from the monthly message';
+    if(d==='app') return 'opened the installed app';
+    if(d==='bb') return 'library opened by Business Booster';
+    if(d==='test') return 'opened during a machine test';
+    if(d==='direct') return 'came back on their own';
+    return 'opened the library'+(d?' ('+d+')':'');
+  }
+  if(e.event==='view') return 'looked at '+(SECN[d]||d);
+  if(e.event==='month'){ var p=d.split(':'); return 'browsed '+(SECN[p[0]]||p[0])+' in '+monthName(p[1]); }
+  if(e.event==='rating'){ var q=d.split(':');
+    return 'said '+monthName(q[0])+' was '+(q[1]==='up'?'useful':'not useful'); }
+  return e.event+(d?' '+d:'');
+}
+
+var gate=document.getElementById('gate'), pinEl=document.getElementById('staffpin');
+function sha(s){ return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s))
+  .then(function(b){ return Array.from(new Uint8Array(b)).map(function(x){ return x.toString(16).padStart(2,'0'); }).join(''); }); }
+pinEl.addEventListener('input',function(){
+  pinEl.value=pinEl.value.replace(/\D/g,'').slice(0,4);
+  if(pinEl.value.length===4) sha(pinEl.value+':bblib-admin').then(function(h){
+    if(h===STAFF_HASH){ try{ sessionStorage.setItem('bblib_admin','1'); }catch(e){} open_(); }
+    else { pinEl.value=''; document.getElementById('gateErr').textContent='That code is not right.'; }
   });
 });
-try{ if(sessionStorage.getItem('bblib_admin')==='1'){ gate.classList.add('off'); boot(); } }catch(e){}
+function open_(){ gate.classList.add('off'); document.getElementById('app').hidden=false; boot(); }
+try{ if(sessionStorage.getItem('bblib_admin')==='1') open_(); }catch(e){}
 
-/* state */
-var clients=[], items=[], slug=null, kind='video', month=defaultMonth();
+var clients=[], items=[], events=[], slug=null, kind='video', month=thisMonth();
 var KINDS=[['video','Videos'],['post','Posts'],['doc','Documents'],['fact','Business facts']];
-function defaultMonth(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+var LABELS={
+  video:['Video title','Note, like: Final cut, 42 seconds','Google Drive link'],
+  post:['Post title','Date and platform, like: 28 Aug, Instagram','Link to the post'],
+  doc:['Document title','Kind, like: Monthly report','Link to the document'],
+  fact:['What it is, like: Who buys','The fact itself',null]
+};
+function thisMonth(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
 function monthOptions(){ var out=[],d=new Date();
-  for(var i=0;i<12;i++){ var y=d.getFullYear(),m=d.getMonth()+1;
-    out.push(y+'-'+String(m).padStart(2,'0')); d.setMonth(d.getMonth()-1); } return out; }
+  for(var i=0;i<15;i++){ out.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));
+    d.setMonth(d.getMonth()-1); } return out; }
 
 function boot(){
-  api('GET','/bb_library_clients?select=slug,name&active=eq.true&order=name').then(function(cs){
-    clients=cs; var sel=document.getElementById('client'); sel.innerHTML='';
-    if(!cs.length){ document.getElementById('list').innerHTML='<div class="empty">No clients yet. Ask the machine to scaffold one with new-cast.py.</div>'; return; }
-    cs.forEach(function(c){ var o=document.createElement('option'); o.value=c.slug; o.textContent=c.name; sel.appendChild(o); });
-    slug=cs[0].slug; sel.onchange=function(){ slug=sel.value; load(); };
-    var ms=document.getElementById('month'); ms.innerHTML='';
-    monthOptions().forEach(function(m){ var o=document.createElement('option'); o.value=m; o.textContent=m; ms.appendChild(o); });
-    ms.value=month; ms.onchange=function(){ month=ms.value; render(); };
-    var tabs=document.getElementById('tabs'); tabs.innerHTML='';
-    KINDS.forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.textContent=k[1];
-      b.onclick=function(){ kind=k[0]; render(); }; tabs.appendChild(b); });
-    load();
+  Promise.all([
+    api('GET','/bb_library_clients?select=slug,name,wa,active&order=name'),
+    api('GET','/bb_library_items?select=*&order=sort,id'),
+    api('GET','/bb_library_events?select=*&order=created_at.desc&limit=400')
+  ]).then(function(r){
+    clients=r[0]; items=r[1]; events=r[2];
+    if(!slug && clients.length) slug=clients[0].slug;
+    buildPickers(); renderOverview(); renderFeed(); renderSend(); render();
   }).catch(function(e){ toast('Load failed: '+e.message); });
 }
-function load(){
-  document.getElementById('view').href='index.html?c='+encodeURIComponent(slug);
-  api('GET','/bb_library_items?select=*&client_slug=eq.'+encodeURIComponent(slug)+'&order=sort,id')
-    .then(function(rs){ items=rs; render(); })
-    .catch(function(e){ toast('Load failed: '+e.message); });
-}
-function render(){
-  var tabs=document.getElementById('tabs');
-  Array.prototype.forEach.call(tabs.children,function(b,i){ b.classList.toggle('on',KINDS[i][0]===kind); });
-  var monthly = kind==='video'||kind==='post';
-  document.getElementById('month').style.display = monthly?'':'none';
-  var list=document.getElementById('list'); list.innerHTML='';
-  var rows=items.filter(function(i){ return i.kind===kind && (!monthly || i.month===month); });
-  if(!rows.length){ list.innerHTML='<div class="empty">Nothing here yet. Add the first one below.</div>'; }
-  rows.forEach(function(r){
-    var d=document.createElement('div'); d.className='item'+(r.hidden?' hid':'');
-    d.innerHTML='<strong></strong><span class="ops">'+
-      '<button type="button" data-op="hide"></button>'+
-      '<button type="button" data-op="del" class="danger">Remove</button></span>'+
-      '<span class="sub"></span>';
-    d.querySelector('strong').textContent=r.title;
-    d.querySelector('.sub').textContent=(r.sub?r.sub+' · ':'')+(r.url||'no link');
-    d.querySelector('[data-op=hide]').textContent=r.hidden?'Show':'Hide';
-    d.querySelector('[data-op=hide]').onclick=function(){
-      api('PATCH','/bb_library_items?id=eq.'+r.id,{hidden:!r.hidden})
-        .then(function(){ r.hidden=!r.hidden; render(); toast(r.hidden?'Hidden from client':'Visible to client'); })
-        .catch(function(e){ toast(e.message); });
-    };
-    d.querySelector('[data-op=del]').onclick=function(){
-      if(!confirm('Remove "'+r.title+'" for good? Hide is safer.')) return;
-      api('DELETE','/bb_library_items?id=eq.'+r.id)
-        .then(function(){ items=items.filter(function(x){return x.id!==r.id}); render(); toast('Removed'); })
-        .catch(function(e){ toast(e.message); });
-    };
-    list.appendChild(d);
+document.getElementById('btnRefresh').addEventListener('click',function(){ boot(); toast('Reloaded'); });
+
+function itemsOf(s){ return items.filter(function(i){ return i.client_slug===s; }); }
+function countOf(s,k){ return itemsOf(s).filter(function(i){ return i.kind===k && !i.hidden; }).length; }
+
+function renderOverview(){
+  var tb=document.getElementById('overview'); tb.textContent='';
+  clients.forEach(function(c){
+    var mine=itemsOf(c.slug);
+    var months={}; mine.forEach(function(i){ if(i.month && !i.hidden) months[i.month]=1; });
+    var opens=events.filter(function(e){ return e.slug===c.slug && e.event==='open'; });
+    var real=opens.filter(function(e){ return !isOurs(e); });
+    var last=real[0]||opens[0];
+    var tr=el('tr');
+    var name=el('td'); name.appendChild(el('b',null,c.name));
+    name.appendChild(el('div','muted',c.slug)); tr.appendChild(name);
+    [['video'],['post'],['doc'],['fact']].forEach(function(k){
+      var n=countOf(c.slug,k[0]);
+      var td=el('td','n'+(n?'':' zero'),String(n)); tr.appendChild(td);
+    });
+    var hid=mine.filter(function(i){ return i.hidden; }).length;
+    tr.appendChild(el('td','n'+(hid?'':' zero'),String(hid)));
+    tr.appendChild(el('td','n'+(Object.keys(months).length?'':' zero'),String(Object.keys(months).length)));
+    var lastTd=el('td');
+    if(!last){ lastTd.appendChild(el('span','muted','never')); }
+    else {
+      lastTd.appendChild(el('span',null,ago(last.created_at)));
+      lastTd.appendChild(el('div','muted',isOurs(last)?'that was us':say(last)));
+    }
+    tr.appendChild(lastTd);
+    var links=el('td');
+    var a=el('a','btn sm','Open'); a.href=SITE+'?c='+encodeURIComponent(c.slug)+'&src=bb';
+    a.target='_blank'; a.rel='noreferrer'; links.appendChild(a);
+    var b=el('button','btn sm','Copy client link');
+    b.style.marginLeft='8px';
+    b.addEventListener('click',function(){
+      copy(SITE+'?c='+c.slug+'&src=wa','Client link copied, tagged wa');
+    });
+    links.appendChild(b); tr.appendChild(links);
+    tb.appendChild(tr);
   });
-  var labels={video:['Video title','Note, like: Final cut · 42 seconds','Google Drive link'],
-              post:['Post title','Date line, like: 28 Aug · Instagram','Post link (optional)'],
-              doc:['Document title','Kind, like: Monthly report','Link to the document'],
-              fact:['Fact label, like: What you sell','The fact itself','']};
-  var L=labels[kind];
-  var bar=document.getElementById('addbar');
-  bar.innerHTML='<input type="text" id="a-title" placeholder="'+L[0]+'">'+
-    '<div class="r2"><input type="text" id="a-sub" placeholder="'+L[1]+'">'+
-    (L[2]?'<input type="url" id="a-url" placeholder="'+L[2]+'">':'<span></span>')+'</div>'+
-    '<button type="button" id="a-go">Add to library</button>';
-  document.getElementById('a-go').onclick=function(){
-    var title=document.getElementById('a-title').value.trim();
-    var sub=document.getElementById('a-sub').value.trim();
-    var urlEl=document.getElementById('a-url');
-    var url=urlEl?urlEl.value.trim():'';
-    if(!title){ toast('A title is needed'); return; }
-    if(url && !/^https:\/\//.test(url)){ toast('Links must start with https://'); return; }
-    api('POST','/bb_library_items',{client_slug:slug,kind:kind,
-        month:(kind==='video'||kind==='post')?month:null,title:title,sub:sub,url:url})
-      .then(function(rs){ items.push(rs[0]); render(); toast('Added. It reaches the client at the next rebuild.'); })
-      .catch(function(e){ toast(e.message); });
-  };
-  document.getElementById('hint').textContent = kind==='fact'
-    ? 'Facts show under "Your business" on the client page. Keep them things the client already knows and would be glad to see written down.'
-    : 'Changes land on the client page at the next rebuild, within the hour. Hide beats remove: hidden items keep their history.';
+  if(!clients.length) tb.appendChild(el('tr')).appendChild(el('td','muted','No clients yet.')).colSpan=9;
 }
+
+function renderFeed(){
+  var f=document.getElementById('feed'); f.textContent='';
+  var names={}; clients.forEach(function(c){ names[c.slug]=c.name; });
+  var shown=events.slice(0,25);
+  if(!shown.length){ f.appendChild(el('div','empty','Nothing recorded yet. The first client open will appear here.')); }
+  shown.forEach(function(e){
+    var row=el('div','ev');
+    var d=el('span','dot'); d.style.background=isOurs(e)?'var(--tm)':'var(--ok)';
+    row.appendChild(d);
+    row.appendChild(el('b',null,names[e.slug]||e.slug));
+    row.appendChild(el('span',null,say(e)));
+    var t=el('time',null,ago(e.created_at)); row.appendChild(t);
+    f.appendChild(row);
+  });
+  var real=events.filter(function(e){ return e.event==='open' && !isOurs(e); });
+  var unprompted=real.filter(function(e){ return e.detail==='direct' || e.detail==='app'; });
+  document.getElementById('returnStat').textContent =
+    real.length + ' client opens, ' + unprompted.length + ' of them unprompted';
+}
+
+function renderSend(){
+  var box=document.getElementById('sendbox'); box.textContent='';
+  clients.forEach(function(c){
+    var mine=itemsOf(c.slug).filter(function(i){ return !i.hidden && i.month; });
+    var months=mine.map(function(i){ return i.month; }).sort();
+    var newest=months.length?months[months.length-1]:null;
+    var row=el('div','ev');
+    row.appendChild(el('b',null,c.name));
+    if(!newest){ row.appendChild(el('span','muted','nothing loaded yet, do not send this one')); }
+    else{
+      var link=SITE+'?c='+c.slug+'&src=wa';
+      row.appendChild(el('code',null,link));
+      var btn=el('button','btn sm','Copy message');
+      btn.style.marginLeft='auto';
+      btn.addEventListener('click',function(){
+        copy('Your '+monthName(newest)+' work is ready. '+link,'Message copied for '+c.name);
+      });
+      row.appendChild(btn);
+    }
+    box.appendChild(row);
+  });
+}
+
+function buildPickers(){
+  var sel=document.getElementById('client'); sel.textContent='';
+  clients.forEach(function(c){ var o=el('option',null,c.name); o.value=c.slug; sel.appendChild(o); });
+  sel.value=slug; sel.onchange=function(){ slug=sel.value; render(); };
+  var ms=document.getElementById('month'); ms.textContent='';
+  monthOptions().forEach(function(m){ var o=el('option',null,monthName(m)); o.value=m; ms.appendChild(o); });
+  ms.value=month; ms.onchange=function(){ month=ms.value; render(); };
+  var tabs=document.getElementById('tabs'); tabs.textContent='';
+  KINDS.forEach(function(k){
+    var b=el('button','chip',k[1]); b.type='button';
+    b.onclick=function(){ kind=k[0]; render(); };
+    b.dataset.kind=k[0]; tabs.appendChild(b);
+  });
+}
+
+function render(){
+  document.getElementById('view').href=SITE+'?c='+encodeURIComponent(slug)+'&src=bb';
+  Array.prototype.forEach.call(document.getElementById('tabs').children,function(b){
+    b.classList.toggle('on', b.dataset.kind===kind);
+  });
+  var dated = (kind==='video'||kind==='post');
+  document.getElementById('month').disabled=!dated;
+  var L=LABELS[kind];
+  document.getElementById('lbl-title').textContent=L[0];
+  document.getElementById('lbl-sub').textContent=L[1];
+  document.getElementById('urlwrap').hidden=!L[2];
+  if(L[2]) document.getElementById('lbl-url').textContent=L[2];
+
+  var mine=itemsOf(slug).filter(function(i){
+    return i.kind===kind && (!dated || i.month===month);
+  });
+  var list=document.getElementById('list'); list.textContent='';
+  if(!mine.length){
+    list.appendChild(el('div','empty', dated
+      ? 'Nothing in '+monthName(month)+' yet. Add the first one below.'
+      : 'Nothing here yet. Add the first one below.'));
+    return;
+  }
+  mine.forEach(function(r){
+    var row=el('div','item'+(r.hidden?' hid':''));
+    var tx=el('div','tx');
+    tx.appendChild(el('b',null,r.title));
+    tx.appendChild(el('span',null,[r.sub,r.url].filter(Boolean).join('  ·  ')));
+    row.appendChild(tx);
+    var hide=el('button','btn sm',r.hidden?'Show':'Hide');
+    hide.addEventListener('click',function(){
+      api('PATCH','/bb_library_items?id=eq.'+r.id,{hidden:!r.hidden}).then(function(){
+        r.hidden=!r.hidden; toast(r.hidden?'Hidden from the client':'Visible again'); render(); renderOverview();
+      }).catch(function(e){ toast('Failed: '+e.message); });
+    });
+    row.appendChild(hide);
+    var del=el('button','btn sm acc','Remove');
+    del.addEventListener('click',function(){
+      if(!confirm('Remove "'+r.title+'" for good? Hiding keeps the history instead.')) return;
+      api('DELETE','/bb_library_items?id=eq.'+r.id).then(function(){
+        items=items.filter(function(x){ return x.id!==r.id; });
+        toast('Removed'); render(); renderOverview(); renderSend();
+      }).catch(function(e){ toast('Failed: '+e.message); });
+    });
+    row.appendChild(del);
+    list.appendChild(row);
+  });
+}
+
+document.getElementById('btnAdd').addEventListener('click',function(){
+  var t=document.getElementById('a-title').value.trim();
+  var s=document.getElementById('a-sub').value.trim();
+  var u=document.getElementById('a-url').value.trim();
+  var needsUrl=!!LABELS[kind][2];
+  if(!t){ toast('A title is needed'); return; }
+  if(needsUrl && !/^https:\/\//.test(u)){ toast('The link must start with https'); return; }
+  var dated=(kind==='video'||kind==='post');
+  var body={ client_slug:slug, kind:kind, title:t, sub:s, url:needsUrl?u:null,
+    month:dated?month:null, sort:itemsOf(slug).length, hidden:false, updated_by:'admin' };
+  api('POST','/bb_library_items',body).then(function(res){
+    if(res && res[0]) items.push(res[0]);
+    document.getElementById('a-title').value='';
+    document.getElementById('a-sub').value='';
+    document.getElementById('a-url').value='';
+    toast('Added, it reaches the client page within the hour');
+    render(); renderOverview(); renderSend();
+  }).catch(function(e){ toast('Failed: '+e.message); });
+});
 })();
 </script>
 </body>
