@@ -53,8 +53,10 @@ def cast(client, items):
     docs = [{"title": d["title"], "kind": d["sub"] or "Document", "date": "", "href": d["url"],
              "added": (d.get("updated_at") or "")[:10]}
             for d in sorted([i for i in vis if i["kind"] == "doc"], key=lambda x: (x["sort"], x["id"]))]
-    facts = [{"k": f["title"], "v": f["sub"]}
-             for f in sorted([i for i in vis if i["kind"] == "fact"], key=lambda x: (x["sort"], x["id"]))]
+    factrows = sorted([i for i in vis if i["kind"] == "fact"], key=lambda x: (x["sort"], x["id"]))
+    facts = [{"k": f["title"], "v": f["sub"], "added": (f.get("updated_at") or "")[:10]}
+             for f in factrows]
+    frev = max([(f.get("updated_at") or "")[:10] for f in factrows], default="")
     # No pinHash in the cast: Thulaib removed the password gate 2026-09-01.
     # pin_hash stays in bb_library_clients untouched, so the curtain can come
     # back per cast by adding it here again. The Drive sharing is the wall.
@@ -65,6 +67,9 @@ def cast(client, items):
         "copy": {"hello": client.get("hello") or ("Hello, " + client["name"] + "."),
                  "sub": "Everything we have produced for you, in one place."},
         "months": mlist, "docs": docs, "facts": facts,
+        # the business profile prints when it was last touched, honestly
+        **({"factsReviewed": datetime.date.fromisoformat(frev).strftime("%-d %B %Y")}
+           if frev else {}),
         # The beacon writes one row per open to bb_library_events. Approved
         # 2026-08-30. Fire-and-forget in the page, swallowed on failure.
         "beacon": {"url": BASE + "/bb_library_events", "key": KEY},

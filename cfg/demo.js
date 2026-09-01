@@ -43,10 +43,11 @@ window.CFG = {
     { title: "Your customer profile", kind: "ICP", date: "Jul 2026", href: "https://example.com/demo-icp", added: "2026-07-20" }
   ],
   facts: [
-    { k: "What you sell", v: "Single origin Ceylon cinnamon and coffee, retail and wholesale" },
-    { k: "Who buys", v: "Colombo households and boutique hotels, gifting spikes in December" },
-    { k: "Your voice", v: "Warm, craft first, never discount led" },
-    { k: "House rule", v: "Provenance claims always name the estate" }
+    { k: "What you sell", v: "Single origin Ceylon cinnamon and coffee, retail and wholesale", g: "Business", added: "2026-08-15" },
+    { k: "Who buys", v: "Colombo households and boutique hotels, gifting spikes in December", g: "Audience", added: "2026-08-15" },
+    { k: "Your voice", v: "Warm, craft first, never discount led", g: "Brand voice", added: "2026-08-15" },
+    { k: "House rule", v: "Provenance claims always name the estate", g: "Guardrails", added: "2026-08-30" }
   ],
+  factsReviewed: "30 August 2026",
   beacon: null
 };
