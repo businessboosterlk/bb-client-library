@@ -197,6 +197,28 @@ code{font-family:var(--mono);font-size:12px;background:var(--ink);padding:3px 8p
     <section class="panel">
       <div class="phead">
         <div>
+          <h2>Onboard a client</h2>
+          <p class="hint">Registers them and mints their library. The page itself appears at the next rebuild, within the hour, so load their work first and send the link after.</p>
+        </div>
+        <button class="btn" id="btnNewToggle" type="button">New client</button>
+      </div>
+      <div id="newclient" hidden>
+        <div class="grid">
+          <label class="fld"><span>Client name, as they should read it</span><input type="text" id="n-name" placeholder="Cherry Kitchen"></label>
+          <label class="fld"><span>Slug, lowercase and dashes</span><input type="text" id="n-slug" placeholder="cherry-kitchen"></label>
+          <label class="fld"><span>WhatsApp number with country code</span><input type="text" id="n-wa" placeholder="9477XXXXXXX"></label>
+          <label class="fld"><span>Their brand colour</span><input type="text" id="n-brand" placeholder="#1e6f4c"></label>
+        </div>
+        <div class="actions">
+          <button class="btn solid" id="btnNewSave" type="button">Register this client</button>
+          <button class="btn" id="btnNewCancel" type="button">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="phead">
+        <div>
           <h2>Send the month</h2>
           <p class="hint">Use this exact link in the WhatsApp message. The tag is what tells a prompted open apart from a real return. Without it the pilot proves nothing.</p>
         </div>
@@ -376,6 +398,43 @@ function boot(){
 }
 document.getElementById('btnRefresh').addEventListener('click',function(){ boot(); toast('Reloaded'); });
 
+/* ── onboard a client: registers the row, the hourly rebuild mints the cast ── */
+function slugify(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+document.getElementById('btnNewToggle').addEventListener('click',function(){
+  var box=document.getElementById('newclient');
+  box.hidden=!box.hidden;
+  if(!box.hidden) document.getElementById('n-name').focus();
+});
+document.getElementById('btnNewCancel').addEventListener('click',function(){
+  document.getElementById('newclient').hidden=true;
+});
+document.getElementById('n-name').addEventListener('input',function(){
+  var sl=document.getElementById('n-slug');
+  if(!sl.dataset.touched) sl.value=slugify(this.value);
+});
+document.getElementById('n-slug').addEventListener('input',function(){ this.dataset.touched='1'; });
+document.getElementById('btnNewSave').addEventListener('click',function(){
+  var name=document.getElementById('n-name').value.trim();
+  var sl=slugify(document.getElementById('n-slug').value);
+  var wa=document.getElementById('n-wa').value.replace(/\D/g,'');
+  var brand=document.getElementById('n-brand').value.trim();
+  if(!name){ toast('A client name is needed'); return; }
+  if(!sl){ toast('A slug is needed'); return; }
+  if(clients.some(function(c){ return c.slug===sl; })){ toast('That slug is already taken'); return; }
+  if(wa.length<11){ toast('WhatsApp needs the country code, like 9477XXXXXXX'); return; }
+  if(brand && !/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(brand)){ toast('The brand colour must be a hex like #1e6f4c'); return; }
+  api('POST','/bb_library_clients',{ slug:sl, name:name, wa:wa, active:true,
+    theme: brand?{brand:brand}:{} }).then(function(res){
+    if(res && res[0]) clients.push(res[0]);
+    clients.sort(function(a,b){ return a.name.localeCompare(b.name); });
+    document.getElementById('newclient').hidden=true;
+    ['n-name','n-slug','n-wa','n-brand'].forEach(function(id){ document.getElementById(id).value=''; });
+    document.getElementById('n-slug').dataset.touched='';
+    toast(name+' registered. Load their work now, their page appears within the hour.');
+    renderEstate(); renderSend();
+  }).catch(function(e){ toast('Failed: '+e.message); });
+});
+
 /* ── routing: #all or #c/<slug> ── */
 function route(){
   var m=location.hash.match(/^#c\/([a-z0-9-]+)/);
@@ -491,7 +550,7 @@ function renderClient(){
     var b=el('button','btn'); b.type='button';
     b.innerHTML=svg(a[2])+'<span></span>';
     b.querySelector('span').textContent=a[1];
-    b.addEventListener('click',function(){ composing=a[0]; kind=a[0]; renderWork(); });
+    b.addEventListener('click',function(){ composing={kind:a[0],id:null}; kind=a[0]; renderWork(); });
     ab.appendChild(b);
   });
 
@@ -517,24 +576,30 @@ function renderWork(){
 
   var cw=document.getElementById('composer'); cw.textContent='';
   if(composing){
-    var L=LABELS[composing];
+    var L=LABELS[composing.kind];
+    var editing=composing.id ? items.filter(function(i){ return i.id===composing.id; })[0] : null;
     var box=el('div','composer');
-    box.appendChild(el('h3',null, (ADD.filter(function(a){return a[0]===composing;})[0]||[])[1] +
-      (composing==='video'||composing==='post' ? ' to '+monthName(month) : '')));
+    box.appendChild(el('h3',null, editing
+      ? 'Edit this ' + ({video:'video',post:'post',doc:'document',fact:'business fact'})[composing.kind]
+      : (ADD.filter(function(a){return a[0]===composing.kind;})[0]||[])[1] +
+        (composing.kind==='video'||composing.kind==='post' ? ' to '+monthName(month) : '')));
     var g=el('div','grid');
     var f1=el('label','fld'); f1.appendChild(el('span',null,L[0]));
-    var i1=el('input'); i1.type='text'; i1.id='a-title'; f1.appendChild(i1); g.appendChild(f1);
+    var i1=el('input'); i1.type='text'; i1.id='a-title';
+    if(editing) i1.value=editing.title||''; f1.appendChild(i1); g.appendChild(f1);
     var f2=el('label','fld'); f2.appendChild(el('span',null,L[1]));
-    var i2=el('input'); i2.type='text'; i2.id='a-sub'; f2.appendChild(i2); g.appendChild(f2);
+    var i2=el('input'); i2.type='text'; i2.id='a-sub';
+    if(editing) i2.value=editing.sub||''; f2.appendChild(i2); g.appendChild(f2);
     box.appendChild(g);
     if(L[2]){
       var f3=el('label','fld'); f3.style.marginTop='14px';
       f3.appendChild(el('span',null,L[2]));
       var i3=el('input'); i3.type='url'; i3.id='a-url'; i3.placeholder='https://';
+      if(editing) i3.value=editing.url||'';
       f3.appendChild(i3); box.appendChild(f3);
     }
     var acts=el('div','actions');
-    var save=el('button','btn solid','Save it'); save.type='button';
+    var save=el('button','btn solid',editing?'Save the change':'Save it'); save.type='button';
     save.addEventListener('click',saveItem); acts.appendChild(save);
     var cancel=el('button','btn','Cancel'); cancel.type='button';
     cancel.addEventListener('click',function(){ composing=null; renderWork(); }); acts.appendChild(cancel);
@@ -557,6 +622,9 @@ function renderWork(){
     tx.appendChild(el('b',null,r.title));
     tx.appendChild(el('span',null,[r.sub,r.url].filter(Boolean).join('  ·  ')));
     row.appendChild(tx);
+    var edit=el('button','btn sm','Edit');
+    edit.addEventListener('click',function(){ composing={kind:r.kind,id:r.id}; renderWork(); });
+    row.appendChild(edit);
     var hide=el('button','btn sm',r.hidden?'Show':'Hide');
     hide.addEventListener('click',function(){
       api('PATCH','/bb_library_items?id=eq.'+r.id,{hidden:!r.hidden}).then(function(){
@@ -584,17 +652,30 @@ function saveItem(){
   var uEl=document.getElementById('a-url');
   var u=uEl?uEl.value.trim():'';
   t=t.trim(); s=s.trim();
-  var needsUrl=!!LABELS[composing][2];
+  var needsUrl=!!LABELS[composing.kind][2];
   if(!t){ toast('A title is needed'); return; }
   if(needsUrl && !/^https:\/\//.test(u)){ toast('The link must start with https'); return; }
-  var dated=(composing==='video'||composing==='post');
-  api('POST','/bb_library_items',{ client_slug:slug, kind:composing, title:t, sub:s,
-    url:needsUrl?u:null, month:dated?month:null, sort:itemsOf(slug).length,
-    hidden:false, updated_by:'admin' }).then(function(res){
-    if(res && res[0]) items.push(res[0]);
-    toast('Added, it reaches their library within the hour');
+  var dated=(composing.kind==='video'||composing.kind==='post');
+  var body={ title:t, sub:s, url:needsUrl?u:null, updated_by:'admin' };
+  var done=function(res){
+    if(composing.id){
+      var row=items.filter(function(i){ return i.id===composing.id; })[0];
+      if(row && res && res[0]){ row.title=res[0].title; row.sub=res[0].sub; row.url=res[0].url; }
+      toast('Saved, their library updates within the hour');
+    } else {
+      if(res && res[0]) items.push(res[0]);
+      toast('Added, it reaches their library within the hour');
+    }
     composing=null; renderClient(); renderEstate(); renderSend();
-  }).catch(function(e){ toast('Failed: '+e.message); });
+  };
+  if(composing.id){
+    api('PATCH','/bb_library_items?id=eq.'+composing.id, body)
+      .then(done).catch(function(e){ toast('Failed: '+e.message); });
+  } else {
+    body.client_slug=slug; body.kind=composing.kind;
+    body.month=dated?month:null; body.sort=itemsOf(slug).length; body.hidden=false;
+    api('POST','/bb_library_items',body).then(done).catch(function(e){ toast('Failed: '+e.message); });
+  }
 }
 
 function renderVisits(){
@@ -642,6 +723,11 @@ function selftest(){
   ok('visit grouping returns nothing for an unknown client', far.length===0);
   ok('every add button maps to a real kind',
      ADD.every(function(a){ return !!LABELS[a[0]]; }) && ADD.length===4);
+  ok('a slug is derived safely from any client name',
+     slugify('Cherry Kitchen')==='cherry-kitchen' && slugify('  A&B  Co. ')==='a-b-co' &&
+     slugify('Waverley')==='waverley');
+  ok('editing reuses the composer rather than a second form',
+     document.querySelectorAll('#composer').length===1);
   ok('only videos and posts are filed under a month',
      LABELS.doc[2] !== null && LABELS.fact[2] === null);
   ok('the send rail refuses a client with nothing loaded',
