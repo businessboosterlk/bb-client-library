@@ -1,13 +1,12 @@
 /* BB CLIENT LIBRARY · demo cast.
    FICTIONAL client, fictional links, per the demo rule: no real client data
    enters a cast until scripts/pull-month.py bakes it from the live systems.
-   PIN for this demo is 4271. Only its salted hash ships. */
+   No PIN since 2026-09-01: the library opens straight from the link. */
 window.CFG = {
   meta: {
     slug: "demo",
     name: "Cinnamon & Co",
     wa: "94766584993",
-    pinHash: "82664e7777e87f75b6837fc0c3ed5ac0d890c54ffbb7df11cac653db5ba2e93e",
     updated: "30 August 2026"
   },
   theme: { brand: "#8a5a2b", "brand-soft": "#f5ede2", "brand-glow": "rgba(138,90,43,.3)",

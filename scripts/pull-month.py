@@ -55,9 +55,11 @@ def cast(client, items):
             for d in sorted([i for i in vis if i["kind"] == "doc"], key=lambda x: (x["sort"], x["id"]))]
     facts = [{"k": f["title"], "v": f["sub"]}
              for f in sorted([i for i in vis if i["kind"] == "fact"], key=lambda x: (x["sort"], x["id"]))]
+    # No pinHash in the cast: Thulaib removed the password gate 2026-09-01.
+    # pin_hash stays in bb_library_clients untouched, so the curtain can come
+    # back per cast by adding it here again. The Drive sharing is the wall.
     cfg = {
         "meta": {"slug": slug, "name": client["name"], "wa": client["wa"],
-                 "pinHash": client["pin_hash"],
                  "updated": datetime.date.today().strftime("%-d %B %Y")},
         "theme": client.get("theme") or {},
         "copy": {"hello": client.get("hello") or ("Hello, " + client["name"] + "."),

@@ -47,7 +47,9 @@ for c in casts:
     slug = meta.get("slug", "")
     names_by_slug[slug] = meta.get("name", "")
     ok(slug and c.stem == slug, f"{c.name}: filename matches slug", f"{c.stem} vs {slug}")
-    ok(bool(meta.get("pinHash")), f"{c.name}: PIN hash present")
+    # Posture flipped 2026-09-01 on Thulaib's call: libraries open with no
+    # password. A cast that ships a pinHash now is a mistake, not a feature.
+    ok(not meta.get("pinHash"), f"{c.name}: no PIN baked into the cast")
     ok(bool(meta.get("wa")), f"{c.name}: WhatsApp number present")
     b = cfg.get("beacon") or {}
     ok(str(b.get("url", "")).startswith("https://") and bool(b.get("key")),
