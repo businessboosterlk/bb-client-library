@@ -8,9 +8,9 @@
 <style>
 /* BB CLIENT LIBRARY BACKEND. Staff surface, shared-anon posture like the SMM
    Workspace. Visual language taken from the consultancy report forge: deep
-   ground, inset-lit panels, pill buttons, mono output. Every write lands in
-   bb_library_items and the casts rebuild from there, so nothing an SM does
-   here needs a developer. */
+   ground, inset-lit panels, pill buttons, mono output. Two levels: the estate,
+   then one client's workspace. Every write lands in bb_library_items and the
+   casts rebuild hourly, so nothing here needs a developer. */
 :root{
   --bg:#0A1728; --surface:#122338; --pri:#1DB4DA; --acc:#F5A623;
   --tp:#FFFFFF; --tm:#8A9FB4; --bd:#1E3550;
@@ -25,7 +25,7 @@
   --ok:#7BD8A0;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation;scroll-behavior:smooth}
 body{font-family:var(--sans);font-size:15px;line-height:1.6;color:var(--tp);background:var(--bg);
   background-image:radial-gradient(120% 105% at 50% 30%, var(--bg) 52%, color-mix(in srgb,var(--bg) 58%,black) 100%);
   -webkit-font-smoothing:antialiased;min-height:100dvh}
@@ -36,6 +36,7 @@ a{color:var(--pri);text-decoration:none}
 :focus-visible{outline:2px solid var(--pri);outline-offset:2px;border-radius:6px}
 @media (pointer:coarse){input,select,textarea{font-size:16px!important}}
 .wrap{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,52px)}
+svg{flex:none}
 
 #gate{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
 #gate.off{display:none}
@@ -46,8 +47,12 @@ a{color:var(--pri);text-decoration:none}
 .gate-card p{color:var(--tm);font-size:13px;margin:5px 0 22px}
 
 .top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
-h1.title{font-size:clamp(24px,3vw,32px);font-weight:650;letter-spacing:-.02em}
+h1.title{font-size:clamp(23px,3vw,31px);font-weight:650;letter-spacing:-.02em}
 .sub{color:var(--tm);font-size:13.5px;margin-top:4px}
+.back{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;
+  color:var(--tm);margin-bottom:14px}
+.back:hover{color:var(--tp)}
+.back svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 .panel{background:color-mix(in srgb,var(--surface) 72%,transparent);
   border:1px solid var(--bd);border-radius:16px;padding:clamp(18px,2.4vw,26px);margin-top:18px;
@@ -58,13 +63,16 @@ h1.title{font-size:clamp(24px,3vw,32px);font-weight:650;letter-spacing:-.02em}
 
 table{width:100%;border-collapse:collapse}
 th{font-size:11px;font-weight:600;color:var(--tm);text-align:left;padding:0 10px 9px;white-space:nowrap}
-td{padding:12px 10px;border-top:1px solid var(--bd-soft);font-size:13.5px;vertical-align:middle}
+td{padding:13px 10px;border-top:1px solid var(--bd-soft);font-size:13.5px;vertical-align:middle}
+tr.row{cursor:pointer;transition:background .15s}
+tr.row:hover{background:color-mix(in srgb,var(--pri) 6%,transparent)}
 td b{font-weight:650}
 td.n{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
 .tscroll{overflow-x:auto}
 .muted{color:var(--tm)}
-.zero{color:var(--tm);opacity:.55}
-.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:1px}
+.zero{color:var(--tm);opacity:.5}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex:none}
+.chev{width:16px;height:16px;stroke:var(--tm);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;
   min-height:40px;padding:0 16px;border-radius:999px;font-size:13px;font-weight:600;
@@ -72,16 +80,24 @@ td.n{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
   transition:border-color .15s,background .15s,transform .12s;white-space:nowrap}
 .btn:hover{border-color:color-mix(in srgb,var(--tm) 55%,transparent)}
 .btn:active{transform:scale(.98)}
+.btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .btn.pri{border-color:var(--pri);color:var(--pri);background:var(--pri-08)}
 .btn.solid{background:var(--pri);border-color:var(--pri);color:var(--ink);font-weight:700}
 .btn.acc{border-color:var(--acc-40);color:var(--acc);background:var(--acc-10)}
 .btn.sm{min-height:32px;padding:0 12px;font-size:12px}
 .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.addbar{display:flex;gap:10px;flex-wrap:wrap}
 
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;
   border:1px solid var(--bd);color:var(--tm);transition:border-color .15s,color .15s,background .15s}
 .chip.on{border-color:var(--pri);color:var(--pri);background:var(--pri-08)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:12px}
+.stat{border:1px solid var(--bd);border-radius:12px;padding:14px 16px;
+  background:color-mix(in srgb,var(--surface) 40%,transparent)}
+.stat b{display:block;font-size:23px;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat span{display:block;font-size:11.5px;color:var(--tm);margin-top:2px}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:760px){.grid{grid-template-columns:1fr}}
@@ -91,8 +107,11 @@ input[type=text],input[type=url],input[type=password],select{width:100%;min-heig
   background:color-mix(in srgb,var(--surface) 78%,var(--bg));
   border:1px solid var(--bd);border-radius:10px;transition:border-color .15s}
 input:focus,select:focus{outline:none;border-color:var(--pri)}
-select:disabled{opacity:.4}
 .err{min-height:20px;font-size:12.5px;color:var(--acc);margin-top:10px}
+
+.composer{border:1px solid var(--pri-35);background:var(--pri-08);border-radius:14px;
+  padding:18px;margin-bottom:16px}
+.composer h3{font-size:14px;font-weight:650;margin-bottom:14px}
 
 .rows{display:grid;gap:8px}
 .item{display:flex;align-items:center;gap:12px;padding:12px 14px;
@@ -104,12 +123,26 @@ select:disabled{opacity:.4}
 .empty{padding:26px;text-align:center;color:var(--tm);font-size:13px;
   border:1px dashed var(--bd);border-radius:12px}
 
-.feed{display:grid;gap:2px}
+.visit{border:1px solid var(--bd);border-radius:12px;padding:14px 16px;margin-bottom:10px;
+  background:color-mix(in srgb,var(--surface) 40%,transparent)}
+.visit.ours{opacity:.55}
+.visit .vh{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.visit .vh b{font-size:13.5px;font-weight:650}
+.visit .vh span{font-size:11.5px;color:var(--tm)}
+.visit .vh .tag{font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 9px;border-radius:999px;
+  border:1px solid var(--bd);color:var(--tm)}
+.visit .vh .tag.win{border-color:var(--ok);color:var(--ok)}
+.visit ul{list-style:none;margin-top:9px;display:grid;gap:5px}
+.visit li{font-size:12.5px;color:var(--tm);padding-left:15px;position:relative}
+.visit li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;border-radius:50%;background:var(--bd)}
+
 .ev{display:flex;align-items:baseline;gap:10px;padding:9px 2px;border-top:1px solid var(--bd-soft);font-size:13px}
 .ev:first-child{border-top:0}
 .ev b{font-weight:650;flex:0 0 auto}
 .ev time{margin-left:auto;font-size:11.5px;color:var(--tm);white-space:nowrap}
-code{font-family:var(--mono);font-size:12px;background:var(--ink);padding:2px 7px;border-radius:6px;color:#cfe6ef}
+.feed{display:grid;gap:2px}
+code{font-family:var(--mono);font-size:12px;background:var(--ink);padding:3px 8px;border-radius:6px;
+  color:#cfe6ef;overflow:hidden;text-overflow:ellipsis}
 
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:50;
   background:var(--surface);border:1px solid var(--pri-35);border-radius:999px;
@@ -131,77 +164,93 @@ code{font-family:var(--mono);font-size:12px;background:var(--ink);padding:2px 7p
 </section>
 
 <main class="wrap" id="app" hidden>
-  <div class="top">
-    <div>
-      <h1 class="title">Client Library backend</h1>
-      <p class="sub">Everything every client can see, everything they have opened, plus the one place their month gets loaded.</p>
-    </div>
-    <button class="btn" id="btnRefresh" type="button">Refresh</button>
-  </div>
 
-  <section class="panel">
-    <div class="phead">
+  <section id="v-all">
+    <div class="top">
       <div>
-        <h2>Every client</h2>
-        <p class="hint">Visible items per section. A client with empty shelves has nothing worth sending yet.</p>
+        <h1 class="title">Client Library backend</h1>
+        <p class="sub">Every client, everything on their shelves, everything they have opened.</p>
       </div>
+      <button class="btn" id="btnRefresh" type="button">Refresh</button>
     </div>
-    <div class="tscroll">
-      <table>
-        <thead><tr>
-          <th>Client</th><th class="n">Videos</th><th class="n">Posts</th><th class="n">Docs</th>
-          <th class="n">Facts</th><th class="n">Hidden</th><th class="n">Months</th>
-          <th>Last opened</th><th>Links</th>
-        </tr></thead>
-        <tbody id="overview"></tbody>
-      </table>
-    </div>
+
+    <section class="panel">
+      <div class="phead">
+        <div>
+          <h2>Every client</h2>
+          <p class="hint">Tap a client to open their workspace. A client with empty shelves has nothing worth sending yet.</p>
+        </div>
+        <div class="muted" id="estateStat"></div>
+      </div>
+      <div class="tscroll">
+        <table>
+          <thead><tr>
+            <th>Client</th><th class="n">Videos</th><th class="n">Posts</th><th class="n">Docs</th>
+            <th class="n">Facts</th><th class="n">Hidden</th><th class="n">Visits</th>
+            <th>Last opened</th><th></th>
+          </tr></thead>
+          <tbody id="overview"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="phead">
+        <div>
+          <h2>Send the month</h2>
+          <p class="hint">Use this exact link in the WhatsApp message. The tag is what tells a prompted open apart from a real return. Without it the pilot proves nothing.</p>
+        </div>
+      </div>
+      <div class="feed" id="sendbox"></div>
+    </section>
   </section>
 
-  <section class="panel">
-    <div class="phead">
+  <section id="v-client" hidden>
+    <a class="back" href="#all">
+      <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>All clients
+    </a>
+    <div class="top">
       <div>
-        <h2>What clients are doing</h2>
-        <p class="hint">The December question lives here: do they come back without being asked. Opens tagged BB are ours and never count as a client return.</p>
+        <h1 class="title" id="c-name">Client</h1>
+        <p class="sub" id="c-sub"></p>
       </div>
-      <div id="returnStat" class="muted"></div>
+      <div class="addbar">
+        <a class="btn pri" id="c-view" href="#" target="_blank" rel="noreferrer">Open their library</a>
+        <button class="btn" id="c-copy" type="button">Copy monthly message</button>
+      </div>
     </div>
-    <div class="feed" id="feed"></div>
+
+    <section class="panel">
+      <div class="stats" id="c-stats"></div>
+    </section>
+
+    <section class="panel">
+      <div class="phead">
+        <div>
+          <h2>Their work</h2>
+          <p class="hint">Changes reach the client page at the next rebuild, within the hour. Hiding beats removing: a hidden item keeps its history.</p>
+        </div>
+        <div class="addbar" id="addbar"></div>
+      </div>
+      <div id="composer"></div>
+      <div class="phead" style="margin-bottom:14px">
+        <div class="chips" id="tabs"></div>
+        <label class="fld" style="min-width:180px"><select id="month"></select></label>
+      </div>
+      <div class="rows" id="list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="phead">
+        <div>
+          <h2>Every time they opened it</h2>
+          <p class="hint">One card per visit, showing what they did inside it. There is no login, so this counts opens rather than people: two people at the same client look the same.</p>
+        </div>
+      </div>
+      <div id="visits"></div>
+    </section>
   </section>
 
-  <section class="panel">
-    <div class="phead">
-      <div>
-        <h2>Load a client's month</h2>
-        <p class="hint">Changes reach the client page at the next rebuild, within the hour. Hiding beats removing: a hidden item keeps its history.</p>
-      </div>
-      <a class="btn pri" id="view" href="#" target="_blank" rel="noreferrer">Open client view</a>
-    </div>
-    <div class="grid">
-      <label class="fld"><span>Client</span><select id="client"></select></label>
-      <label class="fld"><span>Month</span><select id="month"></select></label>
-    </div>
-    <div class="chips" id="tabs" style="margin-top:18px"></div>
-    <div class="rows" id="list"></div>
-    <div class="grid" style="margin-top:16px">
-      <label class="fld"><span id="lbl-title">Title</span><input type="text" id="a-title"></label>
-      <label class="fld"><span id="lbl-sub">Note</span><input type="text" id="a-sub"></label>
-    </div>
-    <label class="fld" style="margin-top:14px" id="urlwrap"><span id="lbl-url">Link</span><input type="url" id="a-url" placeholder="https://"></label>
-    <div class="actions">
-      <button class="btn solid" id="btnAdd" type="button">Add to the library</button>
-    </div>
-  </section>
-
-  <section class="panel">
-    <div class="phead">
-      <div>
-        <h2>Send the month</h2>
-        <p class="hint">Use this exact link in the WhatsApp message. The tag is what tells a prompted open apart from a real return. Without it the pilot proves nothing.</p>
-      </div>
-    </div>
-    <div class="feed" id="sendbox"></div>
-  </section>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -214,6 +263,7 @@ var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6In
 var STAFF_HASH='de5d09fc0ab3378669e13413f9d981c424b4d4185b17ef9a69412da3e8669109';
 var H={apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':'application/json',Prefer:'return=representation'};
 var SITE=location.href.replace(/admin\.html.*$/,'');
+var VISIT_GAP=30*60*1000;
 
 function api(method,path,body){
   return fetch(BASE+path,{method:method,headers:H,body:body?JSON.stringify(body):undefined})
@@ -226,12 +276,14 @@ function el(tag,cls,txt){ var e=document.createElement(tag); if(cls) e.className
   if(txt!==undefined) e.textContent=txt; return e; }
 function copy(text,said){ navigator.clipboard.writeText(text).then(function(){ toast(said||'Copied'); },
   function(){ toast('Could not copy, select it by hand'); }); }
+function svg(d){ return '<svg viewBox="0 0 24 24"><path d="'+d+'"/></svg>'; }
 
 var MONS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 function monthName(id){ var p=String(id||'').split('-');
   return p.length===2 && MONS[+p[1]-1] ? MONS[+p[1]-1]+' '+p[0] : (id||'that month'); }
-function ago(iso){
-  var s=(Date.now()-Date.parse(iso))/1000;
+function ago(ms){
+  var s=(Date.now()-ms)/1000;
   if(!isFinite(s)) return '';
   if(s<90) return 'just now';
   if(s<3600) return Math.round(s/60)+' min ago';
@@ -239,14 +291,20 @@ function ago(iso){
   var d=Math.round(s/86400);
   return d===1?'yesterday':d+' days ago';
 }
+function stamp(ms){
+  var d=new Date(ms);
+  return DAYS[d.getDay()]+' '+d.getDate()+' '+MONS[d.getMonth()]+', '+
+    String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
+}
 var SECN={home:'This month',videos:'Videos',posts:'Posts',docs:'Documents',brain:'Your business'};
 function isOurs(e){ return e.event==='open' && (e.detail==='bb' || e.detail==='test'); }
+function isUnprompted(e){ return e.event==='open' && (e.detail==='direct' || e.detail==='app'); }
 function say(e){
   var d=e.detail||'';
   if(e.event==='open'){
     if(d==='wa') return 'opened it from the monthly message';
     if(d==='app') return 'opened the installed app';
-    if(d==='bb') return 'library opened by Business Booster';
+    if(d==='bb') return 'opened by Business Booster';
     if(d==='test') return 'opened during a machine test';
     if(d==='direct') return 'came back on their own';
     return 'opened the library'+(d?' ('+d+')':'');
@@ -256,6 +314,18 @@ function say(e){
   if(e.event==='rating'){ var q=d.split(':');
     return 'said '+monthName(q[0])+' was '+(q[1]==='up'?'useful':'not useful'); }
   return e.event+(d?' '+d:'');
+}
+/* a visit is a run of one client's events with no 30 minute gap */
+function visitsOf(s){
+  var evs=events.filter(function(e){ return e.slug===s; })
+    .sort(function(a,b){ return Date.parse(a.created_at)-Date.parse(b.created_at); });
+  var out=[],cur=null;
+  evs.forEach(function(e){
+    var t=Date.parse(e.created_at);
+    if(!cur || (t-cur.end)>VISIT_GAP){ cur={start:t,end:t,events:[e],ours:isOurs(e)}; out.push(cur); }
+    else { cur.end=t; cur.events.push(e); if(isOurs(e)) cur.ours=true; }
+  });
+  return out.reverse();
 }
 
 var gate=document.getElementById('gate'), pinEl=document.getElementById('staffpin');
@@ -271,8 +341,14 @@ pinEl.addEventListener('input',function(){
 function open_(){ gate.classList.add('off'); document.getElementById('app').hidden=false; boot(); }
 try{ if(sessionStorage.getItem('bblib_admin')==='1') open_(); }catch(e){}
 
-var clients=[], items=[], events=[], slug=null, kind='video', month=thisMonth();
+var clients=[], items=[], events=[], slug=null, kind='video', month=thisMonth(), composing=null;
 var KINDS=[['video','Videos'],['post','Posts'],['doc','Documents'],['fact','Business facts']];
+var ADD=[
+  ['video','Add video','M2.5 5.5h14v13h-14zM16.5 10l5-3v10l-5-3'],
+  ['post','Add post','M3.5 3.5h17v17h-17zM4 17l5-5 4 4 3-3 4 4'],
+  ['doc','Add document','M6 2.5h8l4 4V21H6zM14 2.5v4.5h4.5'],
+  ['fact','Add business fact','M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17M12 7.5v5l3 2']
+];
 var LABELS={
   video:['Video title','Note, like: Final cut, 42 seconds','Google Drive link'],
   post:['Post title','Date and platform, like: 28 Aug, Instagram','Link to the post'],
@@ -283,80 +359,83 @@ function thisMonth(){ var d=new Date(); return d.getFullYear()+'-'+String(d.getM
 function monthOptions(){ var out=[],d=new Date();
   for(var i=0;i<15;i++){ out.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));
     d.setMonth(d.getMonth()-1); } return out; }
+function clientOf(s){ return clients.filter(function(c){ return c.slug===s; })[0]; }
+function itemsOf(s){ return items.filter(function(i){ return i.client_slug===s; }); }
+function countOf(s,k){ return itemsOf(s).filter(function(i){ return i.kind===k && !i.hidden; }).length; }
 
 function boot(){
   Promise.all([
-    api('GET','/bb_library_clients?select=slug,name,wa,active&order=name'),
+    api('GET','/bb_library_clients?select=slug,name,wa,active,theme&order=name'),
     api('GET','/bb_library_items?select=*&order=sort,id'),
-    api('GET','/bb_library_events?select=*&order=created_at.desc&limit=400')
+    api('GET','/bb_library_events?select=*&order=created_at.desc&limit=1000')
   ]).then(function(r){
     clients=r[0]; items=r[1]; events=r[2];
-    if(!slug && clients.length) slug=clients[0].slug;
-    buildPickers(); renderOverview(); renderFeed(); renderSend(); render();
+    renderEstate(); renderSend(); route();
+    if(location.search.indexOf('selftest')>-1) selftest();
   }).catch(function(e){ toast('Load failed: '+e.message); });
 }
 document.getElementById('btnRefresh').addEventListener('click',function(){ boot(); toast('Reloaded'); });
 
-function itemsOf(s){ return items.filter(function(i){ return i.client_slug===s; }); }
-function countOf(s,k){ return itemsOf(s).filter(function(i){ return i.kind===k && !i.hidden; }).length; }
+/* ── routing: #all or #c/<slug> ── */
+function route(){
+  var m=location.hash.match(/^#c\/([a-z0-9-]+)/);
+  if(m && clientOf(m[1])){
+    slug=m[1]; composing=null;
+    document.getElementById('v-all').hidden=true;
+    document.getElementById('v-client').hidden=false;
+    renderClient();
+  } else {
+    document.getElementById('v-client').hidden=true;
+    document.getElementById('v-all').hidden=false;
+  }
+  scrollTo(0,0);
+}
+addEventListener('hashchange',route);
 
-function renderOverview(){
+/* ── estate ── */
+function renderEstate(){
   var tb=document.getElementById('overview'); tb.textContent='';
   clients.forEach(function(c){
     var mine=itemsOf(c.slug);
-    var months={}; mine.forEach(function(i){ if(i.month && !i.hidden) months[i.month]=1; });
-    var opens=events.filter(function(e){ return e.slug===c.slug && e.event==='open'; });
-    var real=opens.filter(function(e){ return !isOurs(e); });
-    var last=real[0]||opens[0];
-    var tr=el('tr');
-    var name=el('td'); name.appendChild(el('b',null,c.name));
-    name.appendChild(el('div','muted',c.slug)); tr.appendChild(name);
-    [['video'],['post'],['doc'],['fact']].forEach(function(k){
-      var n=countOf(c.slug,k[0]);
-      var td=el('td','n'+(n?'':' zero'),String(n)); tr.appendChild(td);
+    var vs=visitsOf(c.slug).filter(function(v){ return !v.ours; });
+    var last=vs[0];
+    var tr=el('tr','row');
+    tr.addEventListener('click',function(){ location.hash='c/'+c.slug; });
+    var name=el('td');
+    var head=el('div'); head.style.display='flex'; head.style.alignItems='center'; head.style.gap='9px';
+    var dot=el('span','dot');
+    dot.style.background=(c.theme && c.theme.brand) ? c.theme.brand : 'var(--bd)';
+    head.appendChild(dot); head.appendChild(el('b',null,c.name));
+    name.appendChild(head); name.appendChild(el('div','muted',c.slug)); tr.appendChild(name);
+    ['video','post','doc','fact'].forEach(function(k){
+      var n=countOf(c.slug,k);
+      tr.appendChild(el('td','n'+(n?'':' zero'),String(n)));
     });
     var hid=mine.filter(function(i){ return i.hidden; }).length;
     tr.appendChild(el('td','n'+(hid?'':' zero'),String(hid)));
-    tr.appendChild(el('td','n'+(Object.keys(months).length?'':' zero'),String(Object.keys(months).length)));
+    tr.appendChild(el('td','n'+(vs.length?'':' zero'),String(vs.length)));
     var lastTd=el('td');
-    if(!last){ lastTd.appendChild(el('span','muted','never')); }
-    else {
-      lastTd.appendChild(el('span',null,ago(last.created_at)));
-      lastTd.appendChild(el('div','muted',isOurs(last)?'that was us':say(last)));
+    if(!last) lastTd.appendChild(el('span','muted','never'));
+    else{
+      lastTd.appendChild(el('span',null,ago(last.end)));
+      lastTd.appendChild(el('div','muted',say(last.events[0])));
     }
     tr.appendChild(lastTd);
-    var links=el('td');
-    var a=el('a','btn sm','Open'); a.href=SITE+'?c='+encodeURIComponent(c.slug)+'&src=bb';
-    a.target='_blank'; a.rel='noreferrer'; links.appendChild(a);
-    var b=el('button','btn sm','Copy client link');
-    b.style.marginLeft='8px';
-    b.addEventListener('click',function(){
-      copy(SITE+'?c='+c.slug+'&src=wa','Client link copied, tagged wa');
-    });
-    links.appendChild(b); tr.appendChild(links);
+    var ch=el('td'); ch.style.textAlign='right';
+    ch.innerHTML='<svg class="chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>';
+    tr.appendChild(ch);
     tb.appendChild(tr);
   });
-  if(!clients.length) tb.appendChild(el('tr')).appendChild(el('td','muted','No clients yet.')).colSpan=9;
-}
-
-function renderFeed(){
-  var f=document.getElementById('feed'); f.textContent='';
-  var names={}; clients.forEach(function(c){ names[c.slug]=c.name; });
-  var shown=events.slice(0,25);
-  if(!shown.length){ f.appendChild(el('div','empty','Nothing recorded yet. The first client open will appear here.')); }
-  shown.forEach(function(e){
-    var row=el('div','ev');
-    var d=el('span','dot'); d.style.background=isOurs(e)?'var(--tm)':'var(--ok)';
-    row.appendChild(d);
-    row.appendChild(el('b',null,names[e.slug]||e.slug));
-    row.appendChild(el('span',null,say(e)));
-    var t=el('time',null,ago(e.created_at)); row.appendChild(t);
-    f.appendChild(row);
+  var allVisits=0, unprompted=0;
+  clients.forEach(function(c){
+    visitsOf(c.slug).forEach(function(v){
+      if(v.ours) return;
+      allVisits++;
+      if(v.events.some(isUnprompted)) unprompted++;
+    });
   });
-  var real=events.filter(function(e){ return e.event==='open' && !isOurs(e); });
-  var unprompted=real.filter(function(e){ return e.detail==='direct' || e.detail==='app'; });
-  document.getElementById('returnStat').textContent =
-    real.length + ' client opens, ' + unprompted.length + ' of them unprompted';
+  document.getElementById('estateStat').textContent =
+    allVisits+' client visits, '+unprompted+' of them unprompted';
 }
 
 function renderSend(){
@@ -367,12 +446,11 @@ function renderSend(){
     var newest=months.length?months[months.length-1]:null;
     var row=el('div','ev');
     row.appendChild(el('b',null,c.name));
-    if(!newest){ row.appendChild(el('span','muted','nothing loaded yet, do not send this one')); }
+    if(!newest) row.appendChild(el('span','muted','nothing loaded yet, do not send this one'));
     else{
       var link=SITE+'?c='+c.slug+'&src=wa';
       row.appendChild(el('code',null,link));
-      var btn=el('button','btn sm','Copy message');
-      btn.style.marginLeft='auto';
+      var btn=el('button','btn sm','Copy message'); btn.style.marginLeft='auto';
       btn.addEventListener('click',function(){
         copy('Your '+monthName(newest)+' work is ready. '+link,'Message copied for '+c.name);
       });
@@ -382,42 +460,95 @@ function renderSend(){
   });
 }
 
-function buildPickers(){
-  var sel=document.getElementById('client'); sel.textContent='';
-  clients.forEach(function(c){ var o=el('option',null,c.name); o.value=c.slug; sel.appendChild(o); });
-  sel.value=slug; sel.onchange=function(){ slug=sel.value; render(); };
-  var ms=document.getElementById('month'); ms.textContent='';
-  monthOptions().forEach(function(m){ var o=el('option',null,monthName(m)); o.value=m; ms.appendChild(o); });
-  ms.value=month; ms.onchange=function(){ month=ms.value; render(); };
+/* ── one client's workspace ── */
+function renderClient(){
+  var c=clientOf(slug);
+  document.getElementById('c-name').textContent=c.name;
+  var mine=itemsOf(slug);
+  var months={}; mine.forEach(function(i){ if(i.month && !i.hidden) months[i.month]=1; });
+  var nm=Object.keys(months).length;
+  document.getElementById('c-sub').textContent=
+    c.slug+'  ·  '+nm+(nm===1?' month':' months')+' loaded  ·  WhatsApp '+c.wa;
+  document.getElementById('c-view').href=SITE+'?c='+encodeURIComponent(slug)+'&src=bb';
+  var newest=Object.keys(months).sort().pop();
+  document.getElementById('c-copy').onclick=function(){
+    if(!newest){ toast('Nothing loaded yet, do not send this one'); return; }
+    copy('Your '+monthName(newest)+' work is ready. '+SITE+'?c='+slug+'&src=wa','Message copied');
+  };
+
+  var vs=visitsOf(slug).filter(function(v){ return !v.ours; });
+  var unp=vs.filter(function(v){ return v.events.some(isUnprompted); });
+  var st=document.getElementById('c-stats'); st.textContent='';
+  [[countOf(slug,'video'),'videos'],[countOf(slug,'post'),'posts'],
+   [countOf(slug,'doc'),'documents'],[countOf(slug,'fact'),'business facts'],
+   [vs.length,'visits'],[unp.length,'unprompted']].forEach(function(p){
+    var d=el('div','stat'); d.appendChild(el('b',null,String(p[0])));
+    d.appendChild(el('span',null,p[1])); st.appendChild(d);
+  });
+
+  var ab=document.getElementById('addbar'); ab.textContent='';
+  ADD.forEach(function(a){
+    var b=el('button','btn'); b.type='button';
+    b.innerHTML=svg(a[2])+'<span></span>';
+    b.querySelector('span').textContent=a[1];
+    b.addEventListener('click',function(){ composing=a[0]; kind=a[0]; renderWork(); });
+    ab.appendChild(b);
+  });
+
   var tabs=document.getElementById('tabs'); tabs.textContent='';
   KINDS.forEach(function(k){
-    var b=el('button','chip',k[1]); b.type='button';
-    b.onclick=function(){ kind=k[0]; render(); };
-    b.dataset.kind=k[0]; tabs.appendChild(b);
+    var b=el('button','chip',k[1]); b.type='button'; b.dataset.kind=k[0];
+    b.onclick=function(){ kind=k[0]; composing=null; renderWork(); };
+    tabs.appendChild(b);
   });
+  var ms=document.getElementById('month'); ms.textContent='';
+  monthOptions().forEach(function(m){ var o=el('option',null,monthName(m)); o.value=m; ms.appendChild(o); });
+  ms.value=month; ms.onchange=function(){ month=ms.value; renderWork(); };
+
+  renderWork(); renderVisits();
 }
 
-function render(){
-  document.getElementById('view').href=SITE+'?c='+encodeURIComponent(slug)+'&src=bb';
+function renderWork(){
   Array.prototype.forEach.call(document.getElementById('tabs').children,function(b){
     b.classList.toggle('on', b.dataset.kind===kind);
   });
-  var dated = (kind==='video'||kind==='post');
+  var dated=(kind==='video'||kind==='post');
   document.getElementById('month').disabled=!dated;
-  var L=LABELS[kind];
-  document.getElementById('lbl-title').textContent=L[0];
-  document.getElementById('lbl-sub').textContent=L[1];
-  document.getElementById('urlwrap').hidden=!L[2];
-  if(L[2]) document.getElementById('lbl-url').textContent=L[2];
 
-  var mine=itemsOf(slug).filter(function(i){
-    return i.kind===kind && (!dated || i.month===month);
-  });
+  var cw=document.getElementById('composer'); cw.textContent='';
+  if(composing){
+    var L=LABELS[composing];
+    var box=el('div','composer');
+    box.appendChild(el('h3',null, (ADD.filter(function(a){return a[0]===composing;})[0]||[])[1] +
+      (composing==='video'||composing==='post' ? ' to '+monthName(month) : '')));
+    var g=el('div','grid');
+    var f1=el('label','fld'); f1.appendChild(el('span',null,L[0]));
+    var i1=el('input'); i1.type='text'; i1.id='a-title'; f1.appendChild(i1); g.appendChild(f1);
+    var f2=el('label','fld'); f2.appendChild(el('span',null,L[1]));
+    var i2=el('input'); i2.type='text'; i2.id='a-sub'; f2.appendChild(i2); g.appendChild(f2);
+    box.appendChild(g);
+    if(L[2]){
+      var f3=el('label','fld'); f3.style.marginTop='14px';
+      f3.appendChild(el('span',null,L[2]));
+      var i3=el('input'); i3.type='url'; i3.id='a-url'; i3.placeholder='https://';
+      f3.appendChild(i3); box.appendChild(f3);
+    }
+    var acts=el('div','actions');
+    var save=el('button','btn solid','Save it'); save.type='button';
+    save.addEventListener('click',saveItem); acts.appendChild(save);
+    var cancel=el('button','btn','Cancel'); cancel.type='button';
+    cancel.addEventListener('click',function(){ composing=null; renderWork(); }); acts.appendChild(cancel);
+    box.appendChild(acts);
+    cw.appendChild(box);
+    setTimeout(function(){ i1.focus(); },30);
+  }
+
+  var mine=itemsOf(slug).filter(function(i){ return i.kind===kind && (!dated || i.month===month); });
   var list=document.getElementById('list'); list.textContent='';
   if(!mine.length){
     list.appendChild(el('div','empty', dated
-      ? 'Nothing in '+monthName(month)+' yet. Add the first one below.'
-      : 'Nothing here yet. Add the first one below.'));
+      ? 'Nothing in '+monthName(month)+' yet.'
+      : 'Nothing here yet.'));
     return;
   }
   mine.forEach(function(r){
@@ -429,7 +560,8 @@ function render(){
     var hide=el('button','btn sm',r.hidden?'Show':'Hide');
     hide.addEventListener('click',function(){
       api('PATCH','/bb_library_items?id=eq.'+r.id,{hidden:!r.hidden}).then(function(){
-        r.hidden=!r.hidden; toast(r.hidden?'Hidden from the client':'Visible again'); render(); renderOverview();
+        r.hidden=!r.hidden; toast(r.hidden?'Hidden from the client':'Visible again');
+        renderWork(); renderEstate();
       }).catch(function(e){ toast('Failed: '+e.message); });
     });
     row.appendChild(hide);
@@ -438,7 +570,7 @@ function render(){
       if(!confirm('Remove "'+r.title+'" for good? Hiding keeps the history instead.')) return;
       api('DELETE','/bb_library_items?id=eq.'+r.id).then(function(){
         items=items.filter(function(x){ return x.id!==r.id; });
-        toast('Removed'); render(); renderOverview(); renderSend();
+        toast('Removed'); renderWork(); renderEstate(); renderSend(); renderClient();
       }).catch(function(e){ toast('Failed: '+e.message); });
     });
     row.appendChild(del);
@@ -446,25 +578,89 @@ function render(){
   });
 }
 
-document.getElementById('btnAdd').addEventListener('click',function(){
-  var t=document.getElementById('a-title').value.trim();
-  var s=document.getElementById('a-sub').value.trim();
-  var u=document.getElementById('a-url').value.trim();
-  var needsUrl=!!LABELS[kind][2];
+function saveItem(){
+  var t=(document.getElementById('a-title')||{}).value||'';
+  var s=(document.getElementById('a-sub')||{}).value||'';
+  var uEl=document.getElementById('a-url');
+  var u=uEl?uEl.value.trim():'';
+  t=t.trim(); s=s.trim();
+  var needsUrl=!!LABELS[composing][2];
   if(!t){ toast('A title is needed'); return; }
   if(needsUrl && !/^https:\/\//.test(u)){ toast('The link must start with https'); return; }
-  var dated=(kind==='video'||kind==='post');
-  var body={ client_slug:slug, kind:kind, title:t, sub:s, url:needsUrl?u:null,
-    month:dated?month:null, sort:itemsOf(slug).length, hidden:false, updated_by:'admin' };
-  api('POST','/bb_library_items',body).then(function(res){
+  var dated=(composing==='video'||composing==='post');
+  api('POST','/bb_library_items',{ client_slug:slug, kind:composing, title:t, sub:s,
+    url:needsUrl?u:null, month:dated?month:null, sort:itemsOf(slug).length,
+    hidden:false, updated_by:'admin' }).then(function(res){
     if(res && res[0]) items.push(res[0]);
-    document.getElementById('a-title').value='';
-    document.getElementById('a-sub').value='';
-    document.getElementById('a-url').value='';
-    toast('Added, it reaches the client page within the hour');
-    render(); renderOverview(); renderSend();
+    toast('Added, it reaches their library within the hour');
+    composing=null; renderClient(); renderEstate(); renderSend();
   }).catch(function(e){ toast('Failed: '+e.message); });
-});
+}
+
+function renderVisits(){
+  var wrap=document.getElementById('visits'); wrap.textContent='';
+  var vs=visitsOf(slug);
+  if(!vs.length){
+    wrap.appendChild(el('div','empty','They have not opened it yet. The first visit will appear here.'));
+    return;
+  }
+  vs.slice(0,40).forEach(function(v){
+    var card=el('div','visit'+(v.ours?' ours':''));
+    var h=el('div','vh');
+    h.appendChild(el('b',null,stamp(v.start)));
+    h.appendChild(el('span',null,ago(v.end)));
+    var mins=Math.round((v.end-v.start)/60000);
+    if(mins>=1) h.appendChild(el('span',null,'stayed about '+mins+' min'));
+    if(v.ours) h.appendChild(el('span','tag','ours'));
+    else if(v.events.some(isUnprompted)) h.appendChild(el('span','tag win','unprompted'));
+    card.appendChild(h);
+    var ul=el('ul');
+    v.events.forEach(function(e){ ul.appendChild(el('li',null,say(e))); });
+    card.appendChild(ul);
+    wrap.appendChild(card);
+  });
+}
+
+/* ── ?selftest: zero writes, prints its denominator ── */
+function selftest(){
+  var T=[],pass=0;
+  var ok=function(name,cond,note){ T.push([cond,name,note||'']); if(cond) pass++; };
+  ok('clients loaded', clients.length>0, clients.length+' clients');
+  ok('every client row is clickable into a workspace',
+     document.querySelectorAll('#overview tr.row').length===clients.length);
+  ok('the estate counts only visible items',
+     clients.every(function(c){
+       return countOf(c.slug,'video')===itemsOf(c.slug).filter(function(i){
+         return i.kind==='video' && !i.hidden; }).length; }));
+  ok('BB and test opens are never counted as client visits',
+     isOurs({event:'open',detail:'bb'}) && isOurs({event:'open',detail:'test'}) &&
+     !isOurs({event:'open',detail:'direct'}) && !isOurs({event:'view',detail:'bb'}));
+  ok('an unprompted visit is direct or the installed app',
+     isUnprompted({event:'open',detail:'direct'}) && isUnprompted({event:'open',detail:'app'}) &&
+     !isUnprompted({event:'open',detail:'wa'}));
+  var far=visitsOf('__none__');
+  ok('visit grouping returns nothing for an unknown client', far.length===0);
+  ok('every add button maps to a real kind',
+     ADD.every(function(a){ return !!LABELS[a[0]]; }) && ADD.length===4);
+  ok('only videos and posts are filed under a month',
+     LABELS.doc[2] !== null && LABELS.fact[2] === null);
+  ok('the send rail refuses a client with nothing loaded',
+     document.getElementById('sendbox').textContent.indexOf('do not send') > -1 ||
+     clients.every(function(c){ return itemsOf(c.slug).some(function(i){ return i.month && !i.hidden; }); }));
+  ok('no emoji anywhere in the backend', !/[\u{1F300}-\u{1FAFF}]/u.test(document.body.innerText));
+  /* escapes, never the literals: a sweep for these characters would rewrite
+     the check itself and assert nothing (L-BSWL-019) */
+  ok('no em or en dash in the copy',
+     document.body.innerText.indexOf('\u2014')<0 && document.body.innerText.indexOf('\u2013')<0);
+  var over=Array.prototype.filter.call(document.querySelectorAll('body *'),function(e){
+    return e.getBoundingClientRect().right>innerWidth+1 && getComputedStyle(e).position!=='fixed'
+      && !(function(x){ for(var p=x.parentElement;p&&p!==document.body;p=p.parentElement){
+        var o=getComputedStyle(p).overflowX; if(o==='auto'||o==='scroll') return true; } return false; })(e);
+  });
+  ok('nothing clipped off the right edge', over.length===0, over.length+' offenders');
+  console.log('BBLIB ADMIN SELFTEST: '+pass+'/'+T.length+' passed');
+  T.forEach(function(t){ console.log((t[0]?'PASS ':'FAIL ')+t[1]+(t[2]?' ('+t[2]+')':'')); });
+}
 })();
 </script>
 </body>

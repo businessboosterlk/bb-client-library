@@ -195,7 +195,7 @@ a.row:active{background:var(--bg)}
   stroke-linecap:round;stroke-linejoin:round}
 .empty{padding:28px 20px;text-align:center;color:var(--muted);font-size:14px}
 
-/* month switch content transition, and the view switch shares it */
+/* month switch content transition; the view switch shares it */
 .mfade{animation:mIn var(--dur-normal) var(--ease-decel) both}
 .view.vfade{animation:mIn var(--dur-normal) var(--ease-decel) both}
 @keyframes mIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -1031,7 +1031,7 @@ function showView(v, animate){
   navLinks.forEach(function(a){
     a.classList.toggle('on', a.getAttribute('href') === '#' + v);
   });
-  /* centre the active chip AFTER layout, or a deep link lands with the
+  /* centre the active chip AFTER layout. A deep link otherwise lands with the
      active section chip parked outside the visible strip */
   requestAnimationFrame(function(){
     if(!chipsEl || chipsEl.getBoundingClientRect().height === 0) return;
@@ -1077,13 +1077,13 @@ function route(userNav){
     });
   }
   /* a deep link into a section is a real section visit: record it on landing
-     too, or December undercounts exactly the returns that matter most */
+     too. December otherwise undercounts the returns that matter most */
   if(userNav || ph.v !== 'home') beacon('view', ph.v);
 }
 addEventListener('hashchange', function(){ route(true); });
 route(false);
 
-/* search reachable from every screen, and only on screen when asked for */
+/* search reachable from every screen; on screen only when asked for */
 function openSearch(){
   if(parseHash(location.hash).v !== 'home') location.hash = 'home';
   searchWrap.classList.add('open');
@@ -1121,7 +1121,9 @@ if(location.search.indexOf('selftest') > -1){
   ok('summary shows three figures', document.querySelectorAll('#summary > div').length === 3);
   ok('every drive link is https', (months[0].videos||[]).every(function(v){ return /^https:\/\//.test(v.drive); }));
   ok('no emoji glyphs in page text', !/[\u{1F300}-\u{1FAFF}]/u.test(document.body.innerText));
-  ok('no em or en dash in copy', document.body.innerText.indexOf('—') < 0 && document.body.innerText.indexOf('–') < 0);
+  /* escapes, never the literals: a sweep for these characters would rewrite
+     the check itself and leave it asserting nothing (L-BSWL-019) */
+  ok('no em or en dash in copy', document.body.innerText.indexOf('\u2014') < 0 && document.body.innerText.indexOf('\u2013') < 0);
   ok('WhatsApp rail carries the library tag', /\[Library\]/.test(decodeURIComponent(document.getElementById('wa-main').href)));
   ok(NEED_PIN ? 'gate inputs are numeric and 16px+' : 'library opens with no password gate',
      NEED_PIN ? (ins.length === 4 && ins.every(function(i){ return parseFloat(getComputedStyle(i).fontSize) >= 16; }))
