@@ -60,5 +60,8 @@ window.CFG = {
     { k: "House rule", v: "Provenance claims always name the estate", g: "Guardrails", added: "2026-08-30" }
   ],
   factsReviewed: "30 August 2026",
+  /* Your sales: the free tier's door. A cast NEVER carries a lead, a customer
+     name or a phone number. This flag only turns the section on. */
+  sales: { on: true, note: "Sign in to see your enquiries" },
   beacon: null
 };

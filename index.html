@@ -233,6 +233,18 @@ a.row:active{background:var(--bg)}
 .b-btn:active{transform:scale(.97)}
 @keyframes factFlash{from{background:var(--brand-soft-d)}to{background:transparent}}
 .fact.flash{animation:factFlash 1.6s var(--ease-smooth) both}
+.gate-in{padding:26px 20px;text-align:center}
+.gate-in .gi-ic{width:46px;height:46px;margin:0 auto 14px;border-radius:14px;display:grid;
+  place-items:center;background:var(--brand-soft-d);color:var(--brand-lite)}
+.gate-in .gi-ic svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;
+  stroke-linecap:round;stroke-linejoin:round}
+.gate-in strong{display:block;font-family:var(--font-display);font-weight:600;font-size:18px;
+  letter-spacing:-.01em}
+.gate-in p{color:var(--muted);font-size:13.5px;line-height:1.55;max-width:44ch;margin:8px auto 18px}
+.row.locked{opacity:.55}
+.row.locked .ic{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.row .lock{flex:0 0 auto;color:var(--muted)}
+.row .lock svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round}
 .tsearch{width:40px;height:40px;border:0;background:none;color:var(--muted);
   display:grid;place-items:center;cursor:pointer;flex:0 0 auto}
 .tsearch svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
@@ -364,6 +376,7 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
       <a href="#posts"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg>Posts</a>
       <a href="#docs"><svg viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"/><path d="M14 2.5v4.5h4.5M8.5 12h7M8.5 16h7"/></svg>Documents</a>
       <a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3 2"/></svg>Your business</a>
+      <a href="#sales" id="nav-sales" hidden><svg viewBox="0 0 24 24"><path d="M3 20.5h18M6.5 20.5v-7M11.5 20.5v-11M16.5 20.5v-5"/></svg>Your sales</a>
     </nav>
     <button class="r-search" id="r-search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -391,6 +404,7 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
         <a href="#posts">Posts</a>
         <a href="#docs">Documents</a>
         <a href="#brain">Your business</a>
+        <a href="#sales" id="chip-sales" hidden>Your sales</a>
       </nav>
     </header>
 
@@ -458,6 +472,27 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
           <section>
             <div class="sec-head"><h3>Documents</h3><span>Reports and strategy</span></div>
             <div class="card" id="list-docs"></div>
+          </section>
+        </div>
+
+        <div class="view" id="v-sales" hidden>
+          <section>
+            <div class="bhead">
+              <h3>Your sales desk</h3>
+              <p>Your enquiries, who they came from and what to do next.</p>
+            </div>
+            <div class="card gate-in">
+              <div class="gi-ic"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></div>
+              <strong>Sign in to open your sales desk</strong>
+              <p>Your customers' names and numbers sit behind a password. Your videos, posts and reports do not need one, which is why they open straight away.</p>
+              <a class="b-btn" id="sales-wa" href="#">Ask us to set this up</a>
+            </div>
+            <div class="sec-head" style="margin-top:26px"><h3>In the full system</h3><span>Locked</span></div>
+            <div class="card" id="locked-rows"></div>
+            <div class="hint card b-fix">
+              <div class="hint-tx"><strong>Want the full system?</strong><span>Quotes, money owed, reports and your whole team, in one place.</span></div>
+              <a class="b-btn" id="upgrade-wa" href="#">Talk to us about it</a>
+            </div>
           </section>
         </div>
 
@@ -844,12 +879,46 @@ function renderHome(){
   hr.appendChild(row('brain', 'Your business',
     (C.facts||[]).length ? plural((C.facts||[]).length, 'fact', 'facts') + ' guiding your work'
                          : 'Your profile is on its way', '#brain'));
+  if(C.sales && C.sales.on){
+    hr.appendChild(row('brain', 'Your sales',
+      C.sales.note || 'Your enquiries and what to do next', '#sales'));
+  }
 }
 
 fill(document.getElementById('list-docs'), (C.docs||[]).map(function(d){
   var r = row('doc', d.title, d.kind + ' · ' + d.date, d.href, true);
   return isNew(d.added, NEW_REF) ? markNew(r) : r;
 }), 'Your reports will appear here.');
+
+/* Your sales: shown ONLY when a cast opts in. The client's own customers never
+   enter a cast, so this screen holds a sign-in door and the upgrade ladder,
+   never a lead. The locked rows ARE the upsell: a client should see what the
+   full system adds, not be told it exists. */
+var LOCKED = [
+  ['doc', 'Quotes and invoices', 'Send a quote, see when it is accepted'],
+  ['brain', 'Money owed', 'Who owes you, and since when'],
+  ['post', 'Reports', 'Where your sales come from, month by month'],
+  ['video', 'Your team', 'Give your staff their own login and see who is doing what']
+];
+function renderSales(){
+  var on = !!(C.sales && C.sales.on);
+  document.getElementById('nav-sales').hidden = !on;
+  document.getElementById('chip-sales').hidden = !on;
+  if(!on) return;
+  var lr = document.getElementById('locked-rows'); lr.textContent = '';
+  LOCKED.forEach(function(l){
+    var r = row(l[0], l[1], l[2]);
+    r.classList.add('locked');
+    var go = r.querySelector('.go');
+    if(go){ go.className = 'lock';
+      go.innerHTML = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; }
+    lr.appendChild(r);
+  });
+  document.getElementById('sales-wa').href = 'https://wa.me/' + C.meta.wa + '?text=' +
+    encodeURIComponent('Hello, this is ' + C.meta.name + ' [Library]. Please set up my sales desk.');
+  document.getElementById('upgrade-wa').href = 'https://wa.me/' + C.meta.wa + '?text=' +
+    encodeURIComponent('Hello, this is ' + C.meta.name + ' [Library]. Tell me about the full system.');
+}
 
 function factSlug(k){
   return String(k).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -892,7 +961,7 @@ function renderBrain(){
   });
 }
 
-renderSummary(); renderHome(); renderVideos(false); renderPosts(false); renderBrain();
+renderSummary(); renderHome(); renderVideos(false); renderPosts(false); renderBrain(); renderSales();
 try{ localStorage.setItem(SEEN_KEY, String(Date.now())); }catch(e){}
 
 /* ── search: one flat index over everything in the cast ── */
@@ -1016,7 +1085,7 @@ if(preOpened){ beacon('open', SRC || 'direct'); startReveals(); countUp(); }
 
 /* ── views: every section is its own screen. The hash is the router, so the
    phone back button walks back through sections and a bookmark lands on one. ── */
-var VIEWS = ['home','videos','posts','docs','brain'];
+var VIEWS = ['home','videos','posts','docs','brain','sales'];
 var navLinks = Array.prototype.slice.call(document.querySelectorAll('#railnav a, #chips a'));
 var chipsEl = document.getElementById('chips');
 var curView = 'home';
@@ -1121,8 +1190,9 @@ if(location.search.indexOf('selftest') > -1){
   var sepOk = !document.getElementById('v-videos').hidden && document.getElementById('v-home').hidden;
   showView(_was, false);
   ok('a section opens as its own view', sepOk);
-  ok('home lists the four section rows',
-     document.querySelectorAll('#home-rows .row').length === 4);
+  ok('home lists a section row for each screen',
+     document.querySelectorAll('#home-rows .row').length === (4 + ((C.sales && C.sales.on) ? 1 : 0)),
+     document.querySelectorAll('#home-rows .row').length + ' rows');
   ok('summary shows three figures', document.querySelectorAll('#summary > div').length === 3);
   /* every outbound link in the whole cast, not just the newest month's videos.
      The old form read months[0] and CRASHED on a client with nothing loaded,
@@ -1186,7 +1256,7 @@ if(location.search.indexOf('selftest') > -1){
      parseHash('#videos/2026-07').v === 'videos' &&
      parseHash('#videos/2026-07').mid === '2026-07' && parseHash('').v === 'home');
   ok('business screen carries the profile header, not a field dump',
-     /understands/.test(document.querySelector('.bhead h3').textContent));
+     /understands/.test(document.querySelector('#v-brain .bhead h3').textContent));
   ok('every fact search result opens somewhere',
      (C.facts||[]).length === 0 ||
      INDEX.filter(function(it){ return it.ic === 'brain'; })
@@ -1207,6 +1277,14 @@ if(location.search.indexOf('selftest') > -1){
      document.querySelectorAll('input[type=search]').length === 1);
   if(!_wasOpen) closeSearch();
   var fabW = document.querySelector('.warail a').getBoundingClientRect().width;
+  ok('sales section appears only when the cast opts in',
+     (!!(C.sales && C.sales.on)) === !document.getElementById('nav-sales').hidden);
+  ok('no cast ever carries a lead, a customer name or a phone number',
+     !/\b(leads|customers|contacts)\s*:/.test(JSON.stringify(C)) &&
+     !/[+]?\d[\d\s-]{8,}/.test(JSON.stringify((C.sales)||{})));
+  ok('the full system is shown as locked, never hidden',
+     !(C.sales && C.sales.on) ||
+     document.querySelectorAll('#locked-rows .row.locked').length === 4);
   ok('the standing action is a floating control, never a full-width bar',
      isDesk ? getComputedStyle(document.querySelector('.warail')).display === 'none'
             : fabW > 0 && fabW < innerWidth * 0.4,
