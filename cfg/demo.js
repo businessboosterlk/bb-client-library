@@ -62,6 +62,6 @@ window.CFG = {
   factsReviewed: "30 August 2026",
   /* Your sales: the free tier's door. A cast NEVER carries a lead, a customer
      name or a phone number. This flag only turns the section on. */
-  sales: { on: true, note: "Sign in to see your enquiries" },
+  sales: { on: true, note: "Your enquiries and what to do next" },
   beacon: null
 };

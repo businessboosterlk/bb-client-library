@@ -233,6 +233,34 @@ a.row:active{background:var(--bg)}
 .b-btn:active{transform:scale(.97)}
 @keyframes factFlash{from{background:var(--brand-soft-d)}to{background:transparent}}
 .fact.flash{animation:factFlash 1.6s var(--ease-smooth) both}
+.sd-add{padding:14px;display:grid;gap:8px}
+.sd-add input{width:100%;min-height:48px;padding:12px 14px;font-size:16px;font-family:inherit;
+  color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:12px}
+.sd-add input:focus{outline:none;border-color:var(--brand-lite)}
+.sd-go{justify-content:center;width:100%;border:0;cursor:pointer;font-family:inherit}
+.sd-note{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:14px;padding:0 2px}
+.sd{display:flex;align-items:center;gap:12px;padding:14px 16px;border-top:1px solid var(--line)}
+.sd:first-child{border-top:0}
+.sd.done .sd-tx strong{text-decoration:line-through;opacity:.55}
+.sd-tx{flex:1;min-width:0}
+.sd-tx strong{display:block;font-size:15px;letter-spacing:-.01em}
+.sd-tx span{display:block;font-size:12.5px;color:var(--muted);overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.sd-st{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:3px 9px;
+  border-radius:999px;background:var(--brand-soft-d);color:var(--brand-lite);
+  border:0;cursor:pointer;font-family:inherit}
+.sd-wa{flex:0 0 38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:#008069;color:#fff;text-decoration:none}
+.sd-wa svg{width:17px;height:17px;fill:currentColor}
+.sd-x{flex:0 0 34px;height:34px;border:0;background:none;color:var(--muted);cursor:pointer;
+  display:grid;place-items:center;font-family:inherit}
+.sd-x svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+.td-tick{flex:0 0 26px;height:26px;border-radius:8px;border:1.5px solid var(--line);
+  background:none;cursor:pointer;display:grid;place-items:center;color:var(--brand-lite)}
+.td-tick svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.6;
+  stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.sd.done .td-tick{border-color:var(--brand-lite)}
+.sd.done .td-tick svg{opacity:1}
 .gate-in{padding:26px 20px;text-align:center}
 .gate-in .gi-ic{width:46px;height:46px;margin:0 auto 14px;border-radius:14px;display:grid;
   place-items:center;background:var(--brand-soft-d);color:var(--brand-lite)}
@@ -479,18 +507,33 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
           <section>
             <div class="bhead">
               <h3>Your sales desk</h3>
-              <p>Your enquiries, who they came from and what to do next.</p>
+              <p>Enquiries and what to do next, kept on this phone.</p>
             </div>
-            <div class="card gate-in">
-              <div class="gi-ic"><svg viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg></div>
-              <strong>Sign in to open your sales desk</strong>
-              <p>Your customers' names and numbers sit behind a password. Your videos, posts and reports do not need one, which is why they open straight away.</p>
-              <a class="b-btn" id="sales-wa" href="#">Ask us to set this up</a>
+
+            <div class="card sd-add">
+              <input id="sd-name" type="text" placeholder="Who enquired" enterkeyhint="next" autocomplete="off">
+              <input id="sd-phone" type="tel" inputmode="tel" placeholder="Their number" enterkeyhint="next" autocomplete="off">
+              <input id="sd-note" type="text" placeholder="What they want, optional" enterkeyhint="done" autocomplete="off">
+              <button class="b-btn sd-go" id="sd-save" type="button">Add enquiry</button>
             </div>
+
+            <div class="sec-head" style="margin-top:24px"><h3>Enquiries</h3><span id="sd-count"></span></div>
+            <div class="months" id="sd-filters" style="margin-bottom:12px"></div>
+            <div class="card" id="sd-list"></div>
+
+            <div class="sec-head" style="margin-top:26px"><h3>To do</h3><span id="td-count"></span></div>
+            <div class="card sd-add">
+              <input id="td-text" type="text" placeholder="Something to do" enterkeyhint="done" autocomplete="off">
+              <button class="b-btn sd-go" id="td-save" type="button">Add</button>
+            </div>
+            <div class="card" id="td-list" style="margin-top:8px"></div>
+
+            <p class="sd-note" id="sd-privacy"></p>
+
             <div class="sec-head" style="margin-top:26px"><h3>In the full system</h3><span>Locked</span></div>
             <div class="card" id="locked-rows"></div>
             <div class="hint card b-fix">
-              <div class="hint-tx"><strong>Want the full system?</strong><span>Quotes, money owed, reports and your whole team, in one place.</span></div>
+              <div class="hint-tx"><strong>Want it on every device, with your team?</strong><span>Quotes, money owed, reports and logins for your staff.</span></div>
               <a class="b-btn" id="upgrade-wa" href="#">Talk to us about it</a>
             </div>
           </section>
@@ -706,9 +749,16 @@ var IC = {
   post:'<svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg>',
   doc:'<svg viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"/><path d="M14 2.5v4.5h4.5M8.5 12h7M8.5 16h7"/></svg>',
   brain:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3 2"/></svg>',
+  sales:'<svg viewBox="0 0 24 24"><path d="M3 20.5h18M6.5 20.5v-7M11.5 20.5v-11M16.5 20.5v-5"/></svg>',
   arrow:'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>',
   out:'<svg viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8M19 14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'
 };
+function el(tag, cls, txt){
+  var e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(txt !== undefined) e.textContent = txt;
+  return e;
+}
 function row(ic, title, sub, href, external){
   var a = document.createElement(href ? 'a' : 'div');
   a.className = 'row';
@@ -880,7 +930,7 @@ function renderHome(){
     (C.facts||[]).length ? plural((C.facts||[]).length, 'fact', 'facts') + ' guiding your work'
                          : 'Your profile is on its way', '#brain'));
   if(C.sales && C.sales.on){
-    hr.appendChild(row('brain', 'Your sales',
+    hr.appendChild(row('sales', 'Your sales',
       C.sales.note || 'Your enquiries and what to do next', '#sales'));
   }
 }
@@ -896,6 +946,40 @@ fill(document.getElementById('list-docs'), (C.docs||[]).map(function(d){
    full system adds, not be told it exists. */
 var LOCKED = [
   ['doc', 'Quotes and invoices', 'Send a quote, see when it is accepted'],
+  ['sales', 'Money owed', 'Who owes you, and since when'],
+  ['post', 'Reports', 'Where your sales come from, month by month'],
+  ['video', 'Your team', 'Give your staff their own login and see who is doing what']
+];
+var SD_KEY='bblib_sales_'+C.meta.slug, SD_FILTER='open';
+var STATES=[['new','New'],['talking','Talking'],['won','Won'],['lost','Lost']];
+function sdLoad(){
+  try{ var r=JSON.parse(localStorage.getItem(SD_KEY)||'{}');
+    return { leads: r.leads||[], todos: r.todos||[] }; }
+  catch(e){ return { leads: [], todos: [] }; }
+}
+function sdSave(d){ try{ localStorage.setItem(SD_KEY, JSON.stringify(d)); }catch(e){
+  toastLike('This phone will not let the page save. Nothing was lost, but nothing was kept either.'); } }
+function toastLike(m){ var n=document.getElementById('sd-privacy'); if(n) n.textContent=m; }
+function sdId(){ return 'x'+(sdLoad().leads.length+sdLoad().todos.length)+'-'+performance.now().toString(36).replace('.',''); }
+function stLabel(k){ var f=STATES.filter(function(x){return x[0]===k;})[0]; return f?f[1]:'New'; }
+function nextState(k){ var i=STATES.map(function(x){return x[0];}).indexOf(k); return STATES[(i+1)%STATES.length][0]; }
+function waHref(phone,name){
+  var digits=String(phone||'').replace(/\D/g,'');
+  if(!digits) return null;
+  if(digits.length===9 && digits[0]!=='0') digits='94'+digits;
+  else if(digits[0]==='0') digits='94'+digits.slice(1);
+  return 'https://wa.me/'+digits+'?text='+encodeURIComponent('Hello '+(name||'')+', ');
+}
+var IC_WA='<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
+var IC_X='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+var IC_TICK='<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>';
+
+/* Your sales: the free tier. Everything a client types stays in THIS browser.
+   Nothing reaches a cast, the database or BB, because a cast is a public file
+   and a customer's name is not ours to publish. The device-only limit is also
+   the honest upgrade reason: the full system syncs and has team logins. */
+var LOCKED = [
+  ['doc', 'Quotes and invoices', 'Send a quote, see when it is accepted'],
   ['brain', 'Money owed', 'Who owes you, and since when'],
   ['post', 'Reports', 'Where your sales come from, month by month'],
   ['video', 'Your team', 'Give your staff their own login and see who is doing what']
@@ -905,19 +989,102 @@ function renderSales(){
   document.getElementById('nav-sales').hidden = !on;
   document.getElementById('chip-sales').hidden = !on;
   if(!on) return;
-  var lr = document.getElementById('locked-rows'); lr.textContent = '';
+  var d = sdLoad();
+
+  var fw = document.getElementById('sd-filters'); fw.textContent = '';
+  [['open','Open'],['won','Won'],['lost','Lost'],['all','All']].forEach(function(f){
+    var b = el('button', SD_FILTER===f[0]?'on':'', f[1]);
+    b.type='button';
+    b.addEventListener('click', function(){ SD_FILTER=f[0]; renderSales(); });
+    fw.appendChild(b);
+  });
+
+  var shown = d.leads.filter(function(l){
+    if(SD_FILTER==='all') return true;
+    if(SD_FILTER==='open') return l.st==='new' || l.st==='talking';
+    return l.st===SD_FILTER;
+  });
+  document.getElementById('sd-count').textContent =
+    d.leads.length ? shown.length + ' of ' + d.leads.length : '';
+
+  var list = document.getElementById('sd-list'); list.textContent='';
+  if(!shown.length){
+    list.appendChild(el('div','empty', d.leads.length
+      ? 'Nothing in this list.' : 'No enquiries yet. Add the first one above.'));
+  }
+  shown.forEach(function(l){
+    var r = el('div','sd');
+    var st = el('button','sd-st', stLabel(l.st)); st.type='button';
+    st.addEventListener('click', function(){
+      l.st = nextState(l.st); sdSave(d); renderSales();
+    });
+    r.appendChild(st);
+    var tx = el('div','sd-tx');
+    tx.appendChild(el('strong',null,l.name));
+    tx.appendChild(el('span',null,[l.phone,l.note].filter(Boolean).join('  ·  ')));
+    r.appendChild(tx);
+    var wa = waHref(l.phone, l.name);
+    if(wa){ var a=el('a','sd-wa'); a.href=wa; a.target='_blank'; a.rel='noreferrer';
+      a.setAttribute('aria-label','Message '+l.name); a.innerHTML=IC_WA; r.appendChild(a); }
+    var x = el('button','sd-x'); x.type='button'; x.innerHTML=IC_X;
+    x.setAttribute('aria-label','Remove '+l.name);
+    x.addEventListener('click', function(){
+      if(!confirm('Remove '+l.name+'?')) return;
+      d.leads = d.leads.filter(function(y){ return y.id!==l.id; }); sdSave(d); renderSales();
+    });
+    r.appendChild(x);
+    list.appendChild(r);
+  });
+
+  var tl = document.getElementById('td-list'); tl.textContent='';
+  var openT = d.todos.filter(function(t){ return !t.done; }).length;
+  document.getElementById('td-count').textContent = d.todos.length ? openT+' open' : '';
+  if(!d.todos.length) tl.appendChild(el('div','empty','Nothing to do yet.'));
+  d.todos.forEach(function(t){
+    var r = el('div','sd'+(t.done?' done':''));
+    var tk = el('button','td-tick'); tk.type='button'; tk.innerHTML=IC_TICK;
+    tk.setAttribute('aria-label', t.done?'Mark not done':'Mark done');
+    tk.addEventListener('click', function(){ t.done=!t.done; sdSave(d); renderSales(); });
+    r.appendChild(tk);
+    var tx = el('div','sd-tx'); tx.appendChild(el('strong',null,t.text)); r.appendChild(tx);
+    var x = el('button','sd-x'); x.type='button'; x.innerHTML=IC_X;
+    x.setAttribute('aria-label','Remove');
+    x.addEventListener('click', function(){
+      d.todos = d.todos.filter(function(y){ return y.id!==t.id; }); sdSave(d); renderSales();
+    });
+    r.appendChild(x);
+    tl.appendChild(r);
+  });
+
+  document.getElementById('sd-privacy').textContent =
+    'This list is kept on this phone only. It is not sent to Business Booster and nobody else can see it. '
+    + 'If you clear your browser or change phone, it does not travel with you.';
+
+  var lr = document.getElementById('locked-rows'); lr.textContent='';
   LOCKED.forEach(function(l){
     var r = row(l[0], l[1], l[2]);
     r.classList.add('locked');
     var go = r.querySelector('.go');
-    if(go){ go.className = 'lock';
-      go.innerHTML = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; }
+    if(go){ go.className='lock';
+      go.innerHTML='<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; }
     lr.appendChild(r);
   });
-  document.getElementById('sales-wa').href = 'https://wa.me/' + C.meta.wa + '?text=' +
-    encodeURIComponent('Hello, this is ' + C.meta.name + ' [Library]. Please set up my sales desk.');
   document.getElementById('upgrade-wa').href = 'https://wa.me/' + C.meta.wa + '?text=' +
     encodeURIComponent('Hello, this is ' + C.meta.name + ' [Library]. Tell me about the full system.');
+}
+function sdAddLead(){
+  var n=document.getElementById('sd-name'), p=document.getElementById('sd-phone'), o=document.getElementById('sd-note');
+  var name=n.value.trim();
+  if(!name){ n.focus(); return; }
+  var d=sdLoad();
+  d.leads.unshift({ id:sdId(), name:name, phone:p.value.trim(), note:o.value.trim(), st:'new' });
+  sdSave(d); n.value=''; p.value=''; o.value=''; SD_FILTER='open'; renderSales(); n.focus();
+}
+function sdAddTodo(){
+  var t=document.getElementById('td-text'); var v=t.value.trim();
+  if(!v){ t.focus(); return; }
+  var d=sdLoad(); d.todos.push({ id:sdId(), text:v, done:false });
+  sdSave(d); t.value=''; renderSales(); t.focus();
 }
 
 function factSlug(k){
@@ -962,6 +1129,14 @@ function renderBrain(){
 }
 
 renderSummary(); renderHome(); renderVideos(false); renderPosts(false); renderBrain(); renderSales();
+if(C.sales && C.sales.on){
+  document.getElementById('sd-save').addEventListener('click', sdAddLead);
+  document.getElementById('td-save').addEventListener('click', sdAddTodo);
+  ['sd-name','sd-phone','sd-note'].forEach(function(id){
+    document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter') sdAddLead(); });
+  });
+  document.getElementById('td-text').addEventListener('keydown', function(e){ if(e.key==='Enter') sdAddTodo(); });
+}
 try{ localStorage.setItem(SEEN_KEY, String(Date.now())); }catch(e){}
 
 /* ── search: one flat index over everything in the cast ── */
@@ -1285,6 +1460,13 @@ if(location.search.indexOf('selftest') > -1){
   ok('the full system is shown as locked, never hidden',
      !(C.sales && C.sales.on) ||
      document.querySelectorAll('#locked-rows .row.locked').length === 4);
+  ok('the sales desk keeps its data on the device, never in a cast or the beacon',
+     !(C.sales && C.sales.on) || (
+       SD_KEY.indexOf('bblib_sales_') === 0 &&
+       !/leads|todos/.test(JSON.stringify(C)) ));
+  ok('a local phone number becomes a real WhatsApp link',
+     waHref('0771234567','X') === 'https://wa.me/94771234567?text=Hello%20X%2C%20' &&
+     waHref('','X') === null);
   ok('the standing action is a floating control, never a full-width bar',
      isDesk ? getComputedStyle(document.querySelector('.warail')).display === 'none'
             : fabW > 0 && fabW < innerWidth * 0.4,
