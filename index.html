@@ -245,7 +245,7 @@ a.row:active{background:var(--bg)}
 .sd-tx{flex:1;min-width:0}
 .sd-tx strong{display:block;font-size:15px;letter-spacing:-.01em}
 .sd-tx span{display:block;font-size:12.5px;color:var(--muted);overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap}
+  text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
 .sd-st{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:3px 9px;
   border-radius:999px;background:var(--brand-soft-d);color:var(--brand-lite);
   border:0;cursor:pointer;font-family:inherit}
@@ -261,6 +261,48 @@ a.row:active{background:var(--bg)}
   stroke-linecap:round;stroke-linejoin:round;opacity:0}
 .sd.done .td-tick{border-color:var(--brand-lite)}
 .sd.done .td-tick svg{opacity:1}
+.nav-sec-2{margin-top:18px !important}
+.sales-grid{display:grid;grid-template-columns:repeat(3,1fr);
+  background:linear-gradient(135deg,var(--grad-a),var(--grad-b));border:0;
+  box-shadow:0 12px 30px var(--brand-glow)}
+.sales-grid>a{padding:20px 10px;text-align:center;text-decoration:none;color:inherit}
+.sales-grid>a+a{border-left:1px solid rgba(255,255,255,.16)}
+.sales-grid strong{display:block;font-family:var(--font-display);font-weight:600;
+  font-size:29px;letter-spacing:-.02em;color:#fff;font-variant-numeric:tabular-nums}
+.sales-grid span{display:block;font-size:11px;color:rgba(255,255,255,.75);margin-top:2px}
+.sales-grid em{display:block;font-style:normal;font-size:11px;color:#fff;opacity:.9;margin-top:4px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.s-back{display:inline-flex;align-items:center;gap:4px;min-height:36px;margin:-6px 0 6px -6px;
+  padding:0 8px 0 4px;border-radius:10px;color:var(--muted);font-size:13.5px;text-decoration:none}
+.s-back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;
+  stroke-linejoin:round}
+.sd-start{flex:0 0 auto;min-height:36px;padding:0 13px;border-radius:10px;border:0;cursor:pointer;
+  background:var(--brand-soft-d);color:var(--brand-lite);font-weight:700;font-size:13px;font-family:inherit}
+.deal{padding:14px 16px;border-top:1px solid var(--line)}
+.deal:first-child{border-top:0}
+.deal-top{display:flex;align-items:center;gap:12px}
+.deal-top .sd-tx strong{font-size:15.5px}
+.deal-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.deal-meta input{flex:1 1 120px;min-width:0;min-height:40px;padding:8px 12px;font-size:16px;
+  font-family:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.deal-meta input:focus{outline:none;border-color:var(--brand-lite)}
+.stages{display:flex;gap:6px;margin-top:10px}
+.stages button{flex:1 1 0;min-height:36px;border-radius:999px;border:1px solid var(--line);
+  background:none;color:var(--muted);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;
+  transition:transform var(--dur-fast) var(--ease-snappy)}
+.stages button:active{transform:scale(.96)}
+.stages button.on{background:var(--brand-soft-d);color:var(--brand-lite);border-color:transparent}
+.stages button.won.on{background:#0e7a4f;color:#fff}
+.stages button.lost.on{background:var(--line);color:var(--ink)}
+.pp-group{margin-top:14px}
+.pp-group .sec-head{margin-bottom:8px}
+.pp-group .sec-head h3{font-size:16px}
+.s-toast{position:fixed;left:50%;bottom:calc(92px + var(--sab,0px));transform:translateX(-50%) translateY(8px);
+  background:var(--ink);color:var(--bg);padding:11px 16px;border-radius:12px;font-size:13.5px;
+  white-space:nowrap;opacity:0;pointer-events:none;z-index:90;
+  transition:opacity var(--dur-fast) var(--ease-snappy),transform var(--dur-fast) var(--ease-snappy)}
+.s-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.s-toast a{color:inherit;font-weight:700;margin-left:8px;pointer-events:auto}
 .gate-in{padding:26px 20px;text-align:center}
 .gate-in .gi-ic{width:46px;height:46px;margin:0 auto 14px;border-radius:14px;display:grid;
   place-items:center;background:var(--brand-soft-d);color:var(--brand-lite)}
@@ -404,7 +446,13 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
       <a href="#posts"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/><circle cx="9" cy="9" r="1.6"/><path d="m4 17 5-5 4 4 3-3 4 4"/></svg>Posts</a>
       <a href="#docs"><svg viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"/><path d="M14 2.5v4.5h4.5M8.5 12h7M8.5 16h7"/></svg>Documents</a>
       <a href="#brain"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3 2"/></svg>Your business</a>
-      <a href="#sales" id="nav-sales" hidden><svg viewBox="0 0 24 24"><path d="M3 20.5h18M6.5 20.5v-7M11.5 20.5v-11M16.5 20.5v-5"/></svg>Your sales</a>
+    </nav>
+    <div class="nav-sec nav-sec-2" id="nav-sec-sales" hidden>Sales</div>
+    <nav id="railnav-sales" hidden>
+      <a href="#sales" id="nav-sales"><svg viewBox="0 0 24 24"><path d="M3 20.5h18M6.5 20.5v-7M11.5 20.5v-11M16.5 20.5v-5"/></svg>Overview</a>
+      <a href="#sales/enquiries"><svg viewBox="0 0 24 24"><path d="M3.5 6.5h17v11h-17z"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>Enquiries</a>
+      <a href="#sales/pipeline"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h11M4 18h6"/><circle cx="19" cy="17.5" r="2.5"/></svg>Pipeline</a>
+      <a href="#sales/customers"><svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M16 5.5a3.2 3.2 0 0 1 0 6.2M21 20c0-3-1.9-5.2-4.5-5.8"/></svg>Customers</a>
     </nav>
     <button class="r-search" id="r-search">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -458,6 +506,10 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
             <div class="sec-head"><h3>Your library</h3><span>Tap a section</span></div>
             <div class="card" id="home-rows"></div>
           </section>
+          <section class="rv" aria-label="Your sales" id="h-sales-sec" hidden>
+            <div class="sec-head"><h3>Your sales</h3><span>Kept on this phone</span></div>
+            <div class="card" id="home-sales"></div>
+          </section>
           <section aria-label="This month" class="rv" id="h-sum">
             <div class="sec-head"><h3>This month</h3><span id="sum-month"></span></div>
             <div class="card month-grid" id="summary"></div>
@@ -504,32 +556,16 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
         </div>
 
         <div class="view" id="v-sales" hidden>
-          <section>
+
+          <section class="s-pane" id="s-home">
             <div class="bhead">
-              <h3>Your sales desk</h3>
-              <p>Enquiries and what to do next, kept on this phone.</p>
+              <h3>Your sales</h3>
+              <p>Enquiries, your pipeline and your customers, in one place.</p>
             </div>
-
-            <div class="card sd-add">
-              <input id="sd-name" type="text" placeholder="Who enquired" enterkeyhint="next" autocomplete="off">
-              <input id="sd-phone" type="tel" inputmode="tel" placeholder="Their number" enterkeyhint="next" autocomplete="off">
-              <input id="sd-note" type="text" placeholder="What they want, optional" enterkeyhint="done" autocomplete="off">
-              <button class="b-btn sd-go" id="sd-save" type="button">Add enquiry</button>
-            </div>
-
-            <div class="sec-head" style="margin-top:24px"><h3>Enquiries</h3><span id="sd-count"></span></div>
-            <div class="months" id="sd-filters" style="margin-bottom:12px"></div>
-            <div class="card" id="sd-list"></div>
-
-            <div class="sec-head" style="margin-top:26px"><h3>To do</h3><span id="td-count"></span></div>
-            <div class="card sd-add">
-              <input id="td-text" type="text" placeholder="Something to do" enterkeyhint="done" autocomplete="off">
-              <button class="b-btn sd-go" id="td-save" type="button">Add</button>
-            </div>
-            <div class="card" id="td-list" style="margin-top:8px"></div>
-
+            <div class="card sales-grid" id="s-stats"></div>
+            <div class="sec-head" style="margin-top:24px"><h3>Sections</h3><span>Tap one</span></div>
+            <div class="card" id="s-rows"></div>
             <p class="sd-note" id="sd-privacy"></p>
-
             <div class="sec-head" style="margin-top:26px"><h3>In the full system</h3><span>Locked</span></div>
             <div class="card" id="locked-rows"></div>
             <div class="hint card b-fix">
@@ -537,6 +573,40 @@ footer{padding:28px 0 8px;text-align:center;font-size:12px;color:var(--muted)}
               <a class="b-btn" id="upgrade-wa" href="#">Talk to us about it</a>
             </div>
           </section>
+
+          <section class="s-pane" id="s-enq" hidden>
+            <a class="s-back" href="#sales"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg>Your sales</a>
+            <div class="bhead"><h3>Enquiries</h3><p>Everyone who has asked. Start one and it moves to your pipeline.</p></div>
+            <div class="card sd-add">
+              <input id="sd-name" type="text" placeholder="Who enquired" enterkeyhint="next" autocomplete="off">
+              <input id="sd-phone" type="tel" inputmode="tel" placeholder="Their number" enterkeyhint="next" autocomplete="off">
+              <input id="sd-note" type="text" placeholder="What they want, optional" enterkeyhint="done" autocomplete="off">
+              <button class="b-btn sd-go" id="sd-save" type="button">Add enquiry</button>
+            </div>
+            <div class="sec-head" style="margin-top:24px"><h3>Waiting</h3><span id="sd-count"></span></div>
+            <div class="card" id="sd-list"></div>
+          </section>
+
+          <section class="s-pane" id="s-pipe" hidden>
+            <a class="s-back" href="#sales"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg>Your sales</a>
+            <div class="bhead"><h3>Pipeline</h3><p id="pp-sub">Every deal you are working, and the next step on each.</p></div>
+            <div class="months" id="pp-filters"></div>
+            <div id="pp-list"></div>
+          </section>
+
+          <section class="s-pane" id="s-cust" hidden>
+            <a class="s-back" href="#sales"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg>Your sales</a>
+            <div class="bhead"><h3>Customers</h3><p>People who have bought from you. A won deal lands here on its own.</p></div>
+            <div class="card sd-add">
+              <input id="cu-name" type="text" placeholder="Customer name" enterkeyhint="next" autocomplete="off">
+              <input id="cu-phone" type="tel" inputmode="tel" placeholder="Their number" enterkeyhint="next" autocomplete="off">
+              <input id="cu-bought" type="text" placeholder="What they bought, optional" enterkeyhint="done" autocomplete="off">
+              <button class="b-btn sd-go" id="cu-save" type="button">Add customer</button>
+            </div>
+            <div class="sec-head" style="margin-top:24px"><h3>Your customers</h3><span id="cu-count"></span></div>
+            <div class="card" id="cu-list"></div>
+          </section>
+
         </div>
 
         <div class="view" id="v-brain" hidden>
@@ -750,6 +820,9 @@ var IC = {
   doc:'<svg viewBox="0 0 24 24"><path d="M6 2.5h8l4 4V21a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1Z"/><path d="M14 2.5v4.5h4.5M8.5 12h7M8.5 16h7"/></svg>',
   brain:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5v5l3 2"/></svg>',
   sales:'<svg viewBox="0 0 24 24"><path d="M3 20.5h18M6.5 20.5v-7M11.5 20.5v-11M16.5 20.5v-5"/></svg>',
+  enq:'<svg viewBox="0 0 24 24"><path d="M3.5 6.5h17v11h-17z"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>',
+  pipe:'<svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h11M4 18h6"/><circle cx="19" cy="17.5" r="2.5"/></svg>',
+  cust:'<svg viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><path d="M16 5.5a3.2 3.2 0 0 1 0 6.2M21 20c0-3-1.9-5.2-4.5-5.8"/></svg>',
   arrow:'<svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>',
   out:'<svg viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8M19 14v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'
 };
@@ -929,10 +1002,6 @@ function renderHome(){
   hr.appendChild(row('brain', 'Your business',
     (C.facts||[]).length ? plural((C.facts||[]).length, 'fact', 'facts') + ' guiding your work'
                          : 'Your profile is on its way', '#brain'));
-  if(C.sales && C.sales.on){
-    hr.appendChild(row('sales', 'Your sales',
-      C.sales.note || 'Your enquiries and what to do next', '#sales'));
-  }
 }
 
 fill(document.getElementById('list-docs'), (C.docs||[]).map(function(d){
@@ -940,151 +1009,277 @@ fill(document.getElementById('list-docs'), (C.docs||[]).map(function(d){
   return isNew(d.added, NEW_REF) ? markNew(r) : r;
 }), 'Your reports will appear here.');
 
-/* Your sales: shown ONLY when a cast opts in. The client's own customers never
-   enter a cast, so this screen holds a sign-in door and the upgrade ladder,
-   never a lead. The locked rows ARE the upsell: a client should see what the
-   full system adds, not be told it exists. */
+/* ── Your sales: the free tier, three screens. Enquiries are what came in,
+   the pipeline is what you are working, customers are what you won. Every
+   record lives in THIS browser and nowhere else: a cast is a public file and a
+   customer's name is not ours to publish, so nothing here reaches a cast, the
+   database or BB. That device-only limit is also the honest reason to upgrade:
+   the full system syncs across devices and gives the team their own logins. ── */
 var LOCKED = [
   ['doc', 'Quotes and invoices', 'Send a quote, see when it is accepted'],
   ['sales', 'Money owed', 'Who owes you, and since when'],
   ['post', 'Reports', 'Where your sales come from, month by month'],
   ['video', 'Your team', 'Give your staff their own login and see who is doing what']
 ];
-var SD_KEY='bblib_sales_'+C.meta.slug, SD_FILTER='open';
-var STATES=[['new','New'],['talking','Talking'],['won','Won'],['lost','Lost']];
+var SD_KEY = 'bblib_sales_' + C.meta.slug, PP_FILTER = 'open', S_SUB = '';
+var SALES_ON = !!(C.sales && C.sales.on);
+/* the ladder. An enquiry is "new"; starting it makes it a deal; a deal is
+   talking or quoted until it is won or lost; won makes a customer */
+var STAGES = [['talking','Talking'],['quoted','Quoted'],['won','Won'],['lost','Lost']];
 function sdLoad(){
-  try{ var r=JSON.parse(localStorage.getItem(SD_KEY)||'{}');
-    return { leads: r.leads||[], todos: r.todos||[] }; }
-  catch(e){ return { leads: [], todos: [] }; }
+  try{ var r = JSON.parse(localStorage.getItem(SD_KEY) || '{}');
+    return { leads: r.leads || [], customers: r.customers || [] }; }
+  catch(e){ return { leads: [], customers: [] }; }
 }
-function sdSave(d){ try{ localStorage.setItem(SD_KEY, JSON.stringify(d)); }catch(e){
-  toastLike('This phone will not let the page save. Nothing was lost, but nothing was kept either.'); } }
-function toastLike(m){ var n=document.getElementById('sd-privacy'); if(n) n.textContent=m; }
-function sdId(){ return 'x'+(sdLoad().leads.length+sdLoad().todos.length)+'-'+performance.now().toString(36).replace('.',''); }
-function stLabel(k){ var f=STATES.filter(function(x){return x[0]===k;})[0]; return f?f[1]:'New'; }
-function nextState(k){ var i=STATES.map(function(x){return x[0];}).indexOf(k); return STATES[(i+1)%STATES.length][0]; }
-function waHref(phone,name){
-  var digits=String(phone||'').replace(/\D/g,'');
+function sdSave(d){
+  try{ localStorage.setItem(SD_KEY, JSON.stringify(d)); }
+  catch(e){ toast('This phone will not let the page save, so nothing was kept.'); }
+}
+function sdId(){ return 'x' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function today(){ return new Date().toISOString().slice(0, 10); }
+function niceDate(iso){
+  if(!iso) return '';
+  var d = new Date(iso + 'T00:00:00');
+  return isNaN(d) ? '' : d.getDate() + ' ' + MONTHS[d.getMonth()] + (d.getFullYear() !== new Date().getFullYear() ? ' ' + d.getFullYear() : '');
+}
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function lkr(n){ n = Number(n) || 0; return n ? 'LKR ' + n.toLocaleString('en-GB') : ''; }
+function stLabel(k){ var f = STATES_ALL[k]; return f || 'New'; }
+var STATES_ALL = { 'new':'New', talking:'Talking', quoted:'Quoted', won:'Won', lost:'Lost' };
+function waHref(phone, name){
+  var digits = String(phone || '').replace(/\D/g, '');
   if(!digits) return null;
-  if(digits.length===9 && digits[0]!=='0') digits='94'+digits;
-  else if(digits[0]==='0') digits='94'+digits.slice(1);
-  return 'https://wa.me/'+digits+'?text='+encodeURIComponent('Hello '+(name||'')+', ');
+  if(digits.length === 9 && digits[0] !== '0') digits = '94' + digits;
+  else if(digits[0] === '0') digits = '94' + digits.slice(1);
+  return 'https://wa.me/' + digits + '?text=' + encodeURIComponent('Hello ' + (name || '') + ', ');
 }
-var IC_WA='<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
-var IC_X='<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';
-var IC_TICK='<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>';
-
-/* Your sales: the free tier. Everything a client types stays in THIS browser.
-   Nothing reaches a cast, the database or BB, because a cast is a public file
-   and a customer's name is not ours to publish. The device-only limit is also
-   the honest upgrade reason: the full system syncs and has team logins. */
-var LOCKED = [
-  ['doc', 'Quotes and invoices', 'Send a quote, see when it is accepted'],
-  ['brain', 'Money owed', 'Who owes you, and since when'],
-  ['post', 'Reports', 'Where your sales come from, month by month'],
-  ['video', 'Your team', 'Give your staff their own login and see who is doing what']
-];
-function renderSales(){
-  var on = !!(C.sales && C.sales.on);
-  document.getElementById('nav-sales').hidden = !on;
-  document.getElementById('chip-sales').hidden = !on;
-  if(!on) return;
-  var d = sdLoad();
-
-  var fw = document.getElementById('sd-filters'); fw.textContent = '';
-  [['open','Open'],['won','Won'],['lost','Lost'],['all','All']].forEach(function(f){
-    var b = el('button', SD_FILTER===f[0]?'on':'', f[1]);
-    b.type='button';
-    b.addEventListener('click', function(){ SD_FILTER=f[0]; renderSales(); });
-    fw.appendChild(b);
-  });
-
-  var shown = d.leads.filter(function(l){
-    if(SD_FILTER==='all') return true;
-    if(SD_FILTER==='open') return l.st==='new' || l.st==='talking';
-    return l.st===SD_FILTER;
-  });
-  document.getElementById('sd-count').textContent =
-    d.leads.length ? shown.length + ' of ' + d.leads.length : '';
-
-  var list = document.getElementById('sd-list'); list.textContent='';
-  if(!shown.length){
-    list.appendChild(el('div','empty', d.leads.length
-      ? 'Nothing in this list.' : 'No enquiries yet. Add the first one above.'));
+/* pure: move a lead along the ladder. Winning creates the customer record
+   once, never twice, and keeps the lead so the pipeline can still show it */
+function setStage(d, id, st){
+  var l = d.leads.filter(function(x){ return x.id === id; })[0];
+  if(!l) return d;
+  l.st = st;
+  if(st === 'won' && !l.customerId){
+    var c = { id: sdId(), name: l.name, phone: l.phone, bought: l.note || '',
+              value: l.value || 0, since: today(), fromLead: l.id };
+    d.customers.unshift(c); l.customerId = c.id;
   }
-  shown.forEach(function(l){
-    var r = el('div','sd');
-    var st = el('button','sd-st', stLabel(l.st)); st.type='button';
-    st.addEventListener('click', function(){
-      l.st = nextState(l.st); sdSave(d); renderSales();
+  return d;
+}
+function openDeals(d){ return d.leads.filter(function(l){ return l.st === 'talking' || l.st === 'quoted'; }); }
+function pipeValue(d){ return openDeals(d).reduce(function(a, l){ return a + (Number(l.value) || 0); }, 0); }
+
+var IC_WA = '<svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
+var IC_X = '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+var IC_LOCK = '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+
+var toastEl = null, toastT = 0;
+function toast(msg, href, label){
+  if(!toastEl){ toastEl = el('div', 's-toast'); document.body.appendChild(toastEl); }
+  toastEl.textContent = msg;
+  if(href){ var a = el('a', null, label || 'Open'); a.href = href; toastEl.appendChild(a); }
+  toastEl.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(function(){ toastEl.classList.remove('show'); }, 2800);
+}
+function waTile(l){
+  var wa = waHref(l.phone, l.name);
+  if(!wa) return null;
+  var a = el('a', 'sd-wa'); a.href = wa; a.target = '_blank'; a.rel = 'noreferrer';
+  a.setAttribute('aria-label', 'Message ' + l.name); a.innerHTML = IC_WA;
+  return a;
+}
+function xBtn(label, fn){
+  var x = el('button', 'sd-x'); x.type = 'button'; x.innerHTML = IC_X;
+  x.setAttribute('aria-label', label); x.addEventListener('click', fn);
+  return x;
+}
+function personRow(l, sub){
+  var r = el('div', 'sd');
+  var tx = el('div', 'sd-tx');
+  tx.appendChild(el('strong', null, l.name));
+  tx.appendChild(el('span', null, sub));
+  r.appendChild(tx);
+  return r;
+}
+
+/* the whole sales surface renders from one call, so every count on the
+   overview and the home screen agrees with the lists underneath it */
+function renderSales(){
+  document.getElementById('nav-sec-sales').hidden = !SALES_ON;
+  document.getElementById('railnav-sales').hidden = !SALES_ON;
+  document.getElementById('chip-sales').hidden = !SALES_ON;
+  document.getElementById('h-sales-sec').hidden = !SALES_ON;
+  if(!SALES_ON) return;
+  var d = sdLoad();
+  var news = d.leads.filter(function(l){ return l.st === 'new'; });
+  var deals = openDeals(d), worth = pipeValue(d);
+
+  /* home + overview: the same three rows */
+  var enqSub = news.length ? plural(news.length, 'enquiry', 'enquiries') + ' waiting' : 'Nothing waiting';
+  var pipSub = deals.length ? plural(deals.length, 'deal', 'deals') + ' in progress' + (worth ? ' · ' + lkr(worth) : '') : 'Nothing in progress';
+  var cusSub = d.customers.length ? plural(d.customers.length, 'customer', 'customers') : 'No customers yet';
+  ['home-sales', 's-rows'].forEach(function(id){
+    var w = document.getElementById(id); w.textContent = '';
+    w.appendChild(row('enq', 'Enquiries', enqSub, '#sales/enquiries'));
+    w.appendChild(row('pipe', 'Pipeline', pipSub, '#sales/pipeline'));
+    w.appendChild(row('cust', 'Customers', cusSub, '#sales/customers'));
+  });
+  var st = document.getElementById('s-stats'); st.textContent = '';
+  [[news.length, 'waiting', '#sales/enquiries', ''],
+   [deals.length, 'in progress', '#sales/pipeline', worth ? lkr(worth) : ''],
+   [d.customers.length, 'customers', '#sales/customers', '']].forEach(function(c){
+    var a = el('a'); a.href = c[2];
+    a.appendChild(el('strong', null, String(c[0])));
+    a.appendChild(el('span', null, c[1]));
+    if(c[3]) a.appendChild(el('em', null, c[3]));
+    st.appendChild(a);
+  });
+
+  /* enquiries */
+  document.getElementById('sd-count').textContent = news.length ? String(news.length) : '';
+  var list = document.getElementById('sd-list'); list.textContent = '';
+  if(!news.length) list.appendChild(el('div', 'empty', 'No enquiries waiting. When someone asks about your work, add them above.'));
+  news.forEach(function(l){
+    var r = personRow(l, [l.phone, l.note].filter(Boolean).join('  ·  '));
+    var go = el('button', 'sd-start', 'Start'); go.type = 'button';
+    go.setAttribute('aria-label', 'Start working ' + l.name);
+    go.addEventListener('click', function(){
+      sdSave(setStage(d, l.id, 'talking')); renderSales();
+      toast(l.name + ' is in your pipeline', '#sales/pipeline', 'See it');
     });
-    r.appendChild(st);
-    var tx = el('div','sd-tx');
-    tx.appendChild(el('strong',null,l.name));
-    tx.appendChild(el('span',null,[l.phone,l.note].filter(Boolean).join('  ·  ')));
-    r.appendChild(tx);
-    var wa = waHref(l.phone, l.name);
-    if(wa){ var a=el('a','sd-wa'); a.href=wa; a.target='_blank'; a.rel='noreferrer';
-      a.setAttribute('aria-label','Message '+l.name); a.innerHTML=IC_WA; r.appendChild(a); }
-    var x = el('button','sd-x'); x.type='button'; x.innerHTML=IC_X;
-    x.setAttribute('aria-label','Remove '+l.name);
-    x.addEventListener('click', function(){
-      if(!confirm('Remove '+l.name+'?')) return;
-      d.leads = d.leads.filter(function(y){ return y.id!==l.id; }); sdSave(d); renderSales();
-    });
-    r.appendChild(x);
+    r.appendChild(go);
+    var w = waTile(l); if(w) r.appendChild(w);
+    r.appendChild(xBtn('Remove ' + l.name, function(){
+      if(!confirm('Remove ' + l.name + '?')) return;
+      d.leads = d.leads.filter(function(y){ return y.id !== l.id; }); sdSave(d); renderSales();
+    }));
     list.appendChild(r);
   });
 
-  var tl = document.getElementById('td-list'); tl.textContent='';
-  var openT = d.todos.filter(function(t){ return !t.done; }).length;
-  document.getElementById('td-count').textContent = d.todos.length ? openT+' open' : '';
-  if(!d.todos.length) tl.appendChild(el('div','empty','Nothing to do yet.'));
-  d.todos.forEach(function(t){
-    var r = el('div','sd'+(t.done?' done':''));
-    var tk = el('button','td-tick'); tk.type='button'; tk.innerHTML=IC_TICK;
-    tk.setAttribute('aria-label', t.done?'Mark not done':'Mark done');
-    tk.addEventListener('click', function(){ t.done=!t.done; sdSave(d); renderSales(); });
-    r.appendChild(tk);
-    var tx = el('div','sd-tx'); tx.appendChild(el('strong',null,t.text)); r.appendChild(tx);
-    var x = el('button','sd-x'); x.type='button'; x.innerHTML=IC_X;
-    x.setAttribute('aria-label','Remove');
-    x.addEventListener('click', function(){
-      d.todos = d.todos.filter(function(y){ return y.id!==t.id; }); sdSave(d); renderSales();
-    });
-    r.appendChild(x);
-    tl.appendChild(r);
+  /* pipeline: open deals grouped by stage, won and lost behind a filter */
+  var fw = document.getElementById('pp-filters'); fw.textContent = '';
+  [['open','Open'],['won','Won'],['lost','Lost']].forEach(function(f){
+    var b = el('button', PP_FILTER === f[0] ? 'on' : '', f[1]); b.type = 'button';
+    b.addEventListener('click', function(){ PP_FILTER = f[0]; renderSales(); });
+    fw.appendChild(b);
+  });
+  document.getElementById('pp-sub').textContent = deals.length
+    ? plural(deals.length, 'deal', 'deals') + ' in progress' + (worth ? ', worth ' + lkr(worth) : '') + '.'
+    : 'Every deal you are working, and the next step on each.';
+  var pl = document.getElementById('pp-list'); pl.textContent = '';
+  var groups = PP_FILTER === 'open'
+    ? [['talking', 'Talking'], ['quoted', 'Quoted']]
+    : [[PP_FILTER, STATES_ALL[PP_FILTER]]];
+  var any = false;
+  groups.forEach(function(g){
+    var items = d.leads.filter(function(l){ return l.st === g[0]; });
+    if(!items.length) return;
+    any = true;
+    var sec = el('div', 'pp-group');
+    var h = el('div', 'sec-head'); h.appendChild(el('h3', null, g[1]));
+    h.appendChild(el('span', null, String(items.length))); sec.appendChild(h);
+    var card = el('div', 'card');
+    items.forEach(function(l){ card.appendChild(dealCard(d, l)); });
+    sec.appendChild(card); pl.appendChild(sec);
+  });
+  if(!any){
+    var c = el('div', 'card');
+    c.appendChild(el('div', 'empty', PP_FILTER === 'open'
+      ? 'Nothing in progress. Start an enquiry and it lands here.'
+      : 'Nothing ' + PP_FILTER + ' yet.'));
+    pl.appendChild(c);
+  }
+
+  /* customers */
+  document.getElementById('cu-count').textContent = d.customers.length ? String(d.customers.length) : '';
+  var cl = document.getElementById('cu-list'); cl.textContent = '';
+  if(!d.customers.length) cl.appendChild(el('div', 'empty', 'No customers yet. Win a deal and they appear here on their own.'));
+  d.customers.forEach(function(c){
+    var bits = ['Since ' + niceDate(c.since), c.bought, lkr(c.value)].filter(Boolean);
+    var r = personRow(c, bits.join('  ·  '));
+    var w = waTile(c); if(w) r.appendChild(w);
+    r.appendChild(xBtn('Remove ' + c.name, function(){
+      if(!confirm('Remove ' + c.name + '?')) return;
+      d.customers = d.customers.filter(function(y){ return y.id !== c.id; }); sdSave(d); renderSales();
+    }));
+    cl.appendChild(r);
   });
 
   document.getElementById('sd-privacy').textContent =
-    'This list is kept on this phone only. It is not sent to Business Booster and nobody else can see it. '
-    + 'If you clear your browser or change phone, it does not travel with you.';
+    'Everything in your sales section is kept on this phone only. It is not sent to Business Booster '
+    + 'and nobody else can see it. If you clear your browser or change phone, it does not travel with you.';
 
-  var lr = document.getElementById('locked-rows'); lr.textContent='';
+  var lr = document.getElementById('locked-rows'); lr.textContent = '';
   LOCKED.forEach(function(l){
-    var r = row(l[0], l[1], l[2]);
-    r.classList.add('locked');
-    var go = r.querySelector('.go');
-    if(go){ go.className='lock';
-      go.innerHTML='<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'; }
+    var r = row(l[0], l[1], l[2]); r.classList.add('locked');
+    var go = r.querySelector('.go'); if(go){ go.className = 'lock'; go.innerHTML = IC_LOCK; }
     lr.appendChild(r);
   });
   document.getElementById('upgrade-wa').href = 'https://wa.me/' + C.meta.wa + '?text=' +
     encodeURIComponent('Hello, this is ' + C.meta.name + ' [Library]. Tell me about the full system.');
 }
-function sdAddLead(){
-  var n=document.getElementById('sd-name'), p=document.getElementById('sd-phone'), o=document.getElementById('sd-note');
-  var name=n.value.trim();
-  if(!name){ n.focus(); return; }
-  var d=sdLoad();
-  d.leads.unshift({ id:sdId(), name:name, phone:p.value.trim(), note:o.value.trim(), st:'new' });
-  sdSave(d); n.value=''; p.value=''; o.value=''; SD_FILTER='open'; renderSales(); n.focus();
+/* one deal: who, the stage ladder, what it is worth and the next step */
+function dealCard(d, l){
+  var c = el('div', 'deal');
+  var top = el('div', 'deal-top');
+  var tx = el('div', 'sd-tx');
+  tx.appendChild(el('strong', null, l.name));
+  tx.appendChild(el('span', null, [l.phone, l.note].filter(Boolean).join('  ·  ') || 'No details yet'));
+  top.appendChild(tx);
+  var w = waTile(l); if(w) top.appendChild(w);
+  top.appendChild(xBtn('Remove ' + l.name, function(){
+    if(!confirm('Remove ' + l.name + '?')) return;
+    d.leads = d.leads.filter(function(y){ return y.id !== l.id; }); sdSave(d); renderSales();
+  }));
+  c.appendChild(top);
+  var meta = el('div', 'deal-meta');
+  var v = el('input'); v.type = 'text'; v.inputMode = 'numeric'; v.placeholder = 'Worth, in rupees';
+  v.value = l.value ? String(l.value) : ''; v.setAttribute('aria-label', 'Worth in rupees');
+  v.addEventListener('change', function(){
+    l.value = Number(String(v.value).replace(/\D/g, '')) || 0; sdSave(d); renderSales();
+  });
+  var n = el('input'); n.type = 'text'; n.placeholder = 'Next step'; n.value = l.next || '';
+  n.setAttribute('aria-label', 'Next step');
+  n.addEventListener('change', function(){ l.next = n.value.trim(); sdSave(d); });
+  meta.appendChild(v); meta.appendChild(n); c.appendChild(meta);
+  var sg = el('div', 'stages');
+  STAGES.forEach(function(s){
+    var b = el('button', s[0] + (l.st === s[0] ? ' on' : ''), s[1]); b.type = 'button';
+    b.addEventListener('click', function(){
+      if(l.st === s[0]) return;
+      sdSave(setStage(d, l.id, s[0])); renderSales();
+      if(s[0] === 'won') toast(l.name + ' is now a customer', '#sales/customers', 'See them');
+    });
+    sg.appendChild(b);
+  });
+  c.appendChild(sg);
+  return c;
 }
-function sdAddTodo(){
-  var t=document.getElementById('td-text'); var v=t.value.trim();
-  if(!v){ t.focus(); return; }
-  var d=sdLoad(); d.todos.push({ id:sdId(), text:v, done:false });
-  sdSave(d); t.value=''; renderSales(); t.focus();
+function sdAddLead(){
+  var n = document.getElementById('sd-name'), p = document.getElementById('sd-phone'), o = document.getElementById('sd-note');
+  var name = n.value.trim();
+  if(!name){ n.focus(); return; }
+  var d = sdLoad();
+  d.leads.unshift({ id: sdId(), name: name, phone: p.value.trim(), note: o.value.trim(), st: 'new', at: today() });
+  sdSave(d); n.value = ''; p.value = ''; o.value = ''; renderSales(); n.focus();
+}
+function cuAdd(){
+  var n = document.getElementById('cu-name'), p = document.getElementById('cu-phone'), b = document.getElementById('cu-bought');
+  var name = n.value.trim();
+  if(!name){ n.focus(); return; }
+  var d = sdLoad();
+  d.customers.unshift({ id: sdId(), name: name, phone: p.value.trim(), bought: b.value.trim(), value: 0, since: today() });
+  sdSave(d); n.value = ''; p.value = ''; b.value = ''; renderSales(); n.focus();
+}
+/* #sales/enquiries, #sales/pipeline, #sales/customers: three screens under
+   one section, so the back button walks up to the overview */
+var S_PANES = { '': 's-home', enquiries: 's-enq', pipeline: 's-pipe', customers: 's-cust' };
+function showSalesPane(sub){
+  if(!S_PANES.hasOwnProperty(sub)) sub = '';
+  S_SUB = sub;
+  Object.keys(S_PANES).forEach(function(k){
+    document.getElementById(S_PANES[k]).hidden = k !== sub;
+  });
 }
 
 function factSlug(k){
@@ -1129,13 +1324,15 @@ function renderBrain(){
 }
 
 renderSummary(); renderHome(); renderVideos(false); renderPosts(false); renderBrain(); renderSales();
-if(C.sales && C.sales.on){
+if(SALES_ON){
   document.getElementById('sd-save').addEventListener('click', sdAddLead);
-  document.getElementById('td-save').addEventListener('click', sdAddTodo);
+  document.getElementById('cu-save').addEventListener('click', cuAdd);
   ['sd-name','sd-phone','sd-note'].forEach(function(id){
     document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter') sdAddLead(); });
   });
-  document.getElementById('td-text').addEventListener('keydown', function(e){ if(e.key==='Enter') sdAddTodo(); });
+  ['cu-name','cu-phone','cu-bought'].forEach(function(id){
+    document.getElementById(id).addEventListener('keydown', function(e){ if(e.key==='Enter') cuAdd(); });
+  });
 }
 try{ localStorage.setItem(SEEN_KEY, String(Date.now())); }catch(e){}
 
@@ -1261,7 +1458,7 @@ if(preOpened){ beacon('open', SRC || 'direct'); startReveals(); countUp(); }
 /* ── views: every section is its own screen. The hash is the router, so the
    phone back button walks back through sections and a bookmark lands on one. ── */
 var VIEWS = ['home','videos','posts','docs','brain','sales'];
-var navLinks = Array.prototype.slice.call(document.querySelectorAll('#railnav a, #chips a'));
+var navLinks = Array.prototype.slice.call(document.querySelectorAll('#railnav a, #railnav-sales a, #chips a'));
 var chipsEl = document.getElementById('chips');
 var curView = 'home';
 function showView(v, animate){
@@ -1273,8 +1470,12 @@ function showView(v, animate){
       if(animate && !REDUCED){ el.classList.remove('vfade'); void el.offsetWidth; el.classList.add('vfade'); }
     } else { el.hidden = true; }
   });
+  /* the rail lights the exact screen (#sales/pipeline); the phone chip lights
+     the section, because the three sales screens share one chip */
+  var exact = '#' + v + (v === 'sales' && S_SUB ? '/' + S_SUB : '');
   navLinks.forEach(function(a){
-    a.classList.toggle('on', a.getAttribute('href') === '#' + v);
+    var h = a.getAttribute('href');
+    a.classList.toggle('on', h === exact || (a.parentNode.id === 'chips' && h === '#' + v));
   });
   /* centre the active chip AFTER layout. A deep link otherwise lands with the
      active section chip parked outside the visible strip */
@@ -1310,6 +1511,7 @@ function route(userNav){
     if(ph.v === 'videos' && vSel !== ph.mid){ vSel = ph.mid; renderVideos(false); }
     if(ph.v === 'posts' && pSel !== ph.mid){ pSel = ph.mid; renderPosts(false); }
   }
+  if(ph.v === 'sales') showSalesPane(ph.mid);
   showView(ph.v, userNav);
   /* #brain/<fact> from a search result lands on the fact and lights it once */
   if(ph.v === 'brain' && ph.mid){
@@ -1365,9 +1567,13 @@ if(location.search.indexOf('selftest') > -1){
   var sepOk = !document.getElementById('v-videos').hidden && document.getElementById('v-home').hidden;
   showView(_was, false);
   ok('a section opens as its own view', sepOk);
-  ok('home lists a section row for each screen',
-     document.querySelectorAll('#home-rows .row').length === (4 + ((C.sales && C.sales.on) ? 1 : 0)),
+  ok('home lists a section row for each library screen',
+     document.querySelectorAll('#home-rows .row').length === 4,
      document.querySelectorAll('#home-rows .row').length + ' rows');
+  ok('home groups the sales rows in their own card, under the library',
+     !SALES_ON || (document.querySelectorAll('#home-sales .row').length === 3 &&
+       !!(document.getElementById('h-rows-sec').compareDocumentPosition(
+          document.getElementById('h-sales-sec')) & Node.DOCUMENT_POSITION_FOLLOWING)));
   ok('summary shows three figures', document.querySelectorAll('#summary > div').length === 3);
   /* every outbound link in the whole cast, not just the newest month's videos.
      The old form read months[0] and CRASHED on a client with nothing loaded,
@@ -1453,7 +1659,19 @@ if(location.search.indexOf('selftest') > -1){
   if(!_wasOpen) closeSearch();
   var fabW = document.querySelector('.warail a').getBoundingClientRect().width;
   ok('sales section appears only when the cast opts in',
-     (!!(C.sales && C.sales.on)) === !document.getElementById('nav-sales').hidden);
+     SALES_ON === !document.getElementById('railnav-sales').hidden &&
+     SALES_ON === !document.getElementById('chip-sales').hidden);
+  ok('sales has three screens under one section, each with its own route',
+     !SALES_ON || ['enquiries','pipeline','customers'].every(function(k){
+       return !!document.querySelector('#railnav-sales a[href="#sales/' + k + '"]') &&
+              !!document.getElementById(S_PANES[k]); }));
+  var _fake = { leads: [{ id:'t1', name:'Test', phone:'0771234567', note:'Two boxes', st:'new', value: 5000 }], customers: [] };
+  setStage(_fake, 't1', 'talking'); setStage(_fake, 't1', 'quoted');
+  var _open = openDeals(_fake).length === 1 && pipeValue(_fake) === 5000;
+  setStage(_fake, 't1', 'won'); setStage(_fake, 't1', 'won');
+  ok('an enquiry walks the ladder and winning makes exactly one customer',
+     _open && _fake.customers.length === 1 && _fake.customers[0].name === 'Test' &&
+     _fake.customers[0].bought === 'Two boxes' && openDeals(_fake).length === 0);
   ok('no cast ever carries a lead, a customer name or a phone number',
      !/\b(leads|customers|contacts)\s*:/.test(JSON.stringify(C)) &&
      !/[+]?\d[\d\s-]{8,}/.test(JSON.stringify((C.sales)||{})));
@@ -1463,7 +1681,7 @@ if(location.search.indexOf('selftest') > -1){
   ok('the sales desk keeps its data on the device, never in a cast or the beacon',
      !(C.sales && C.sales.on) || (
        SD_KEY.indexOf('bblib_sales_') === 0 &&
-       !/leads|todos/.test(JSON.stringify(C)) ));
+       !/leads|customers/.test(JSON.stringify(C)) ));
   ok('a local phone number becomes a real WhatsApp link',
      waHref('0771234567','X') === 'https://wa.me/94771234567?text=Hello%20X%2C%20' &&
      waHref('','X') === null);
